@@ -17,6 +17,14 @@
 .ctrl:active,.ctrl.down{filter:brightness(1.4);transform:scale(.96)}
 #intro section{width:min(440px,calc(100vw - 32px))}
 @media(pointer:coarse),(max-width:800px){#touch{display:block}#keys{display:none}#speed{font-size:23px;padding:9px 12px}#logo{font-size:13px;padding:9px 11px}}
+html.touch-device #touch{display:block}
+html.touch-device #keys{display:none}
+html.touch-device .ctrl{width:76px;height:76px;border-radius:50%;font-size:29px;box-shadow:0 4px 14px #0006}
+html.touch-device #pedals .ctrl{width:84px;height:84px;border-radius:24px;font-size:14px}
+html.touch-device #steering{left:max(18px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom))}
+html.touch-device #pedals{right:max(18px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom))}
+html.touch-device #gas:before{content:"▲";display:block;font-size:22px;margin-bottom:2px}
+html.touch-device #brake:before{content:"▼";display:block;font-size:18px;margin-bottom:2px}
 @media(orientation:portrait) and (pointer:coarse){
  #rotate-hint{display:grid}
  #touch{visibility:hidden}
@@ -32,6 +40,7 @@ button{border:0;border-radius:12px;padding:13px 24px;background:#62dda1;color:#0
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 </head><body>
+<script>if(("ontouchstart" in window)||navigator.maxTouchPoints>0)document.documentElement.classList.add("touch-device");</script>
 <div id="rotate-hint"><section><span class="phone">📱 ↻</span><h2>Tourne ton téléphone</h2><p>K Simulateur se joue en mode paysage pour profiter de toute la route et des commandes.</p></section></div>
 <div id="logo" class="hud">K <b>SIMULATEUR</b> · 3D</div><div id="speed" class="hud">0 <small>KM/H</small></div>
 <div id="keys" class="hud">Z / W : accélérer · S : freiner<br>Q / A : gauche · D : droite<br>Espace : frein à main · R : recommencer</div>
@@ -44,7 +53,7 @@ button{border:0;border-radius:12px;padding:13px 24px;background:#62dda1;color:#0
 import * as THREE from 'three';
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x9bc9df);scene.fog=new THREE.Fog(0x9bc9df,100,270);
 const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,500);
-const isMobile=matchMedia('(pointer:coarse)').matches;const renderer=new THREE.WebGLRenderer({antialias:!isMobile,powerPreference:'high-performance'});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,isMobile?1.5:2));renderer.shadowMap.enabled=!isMobile;document.body.appendChild(renderer.domElement);
+const isMobile=('ontouchstart' in window)||navigator.maxTouchPoints>0||matchMedia('(pointer:coarse)').matches;const renderer=new THREE.WebGLRenderer({antialias:!isMobile,powerPreference:'high-performance'});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,isMobile?1.5:2));renderer.shadowMap.enabled=!isMobile;document.body.appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0xe8f7ff,0x536b4b,2));const sun=new THREE.DirectionalLight(0xfff0d2,2.2);sun.position.set(-40,80,35);sun.castShadow=true;scene.add(sun);
 const material=(c)=>new THREE.MeshStandardMaterial({color:c,roughness:.82});
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),material(0x64875c));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
