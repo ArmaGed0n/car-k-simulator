@@ -30,6 +30,13 @@ html.touch-device #brake:before{content:"▼";display:block;font-size:18px;margi
  #touch{visibility:hidden}
 }
 
+#garage-near{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:4;display:none}
+#garage-panel{position:fixed;inset:0;z-index:8;display:none;place-items:center;background:#06111de8;padding:18px}
+#garage-panel section{width:min(430px,100%);background:#172a38;border:1px solid #ffffff35;border-radius:20px;padding:22px;text-align:center}
+#garage-panel h2{margin:0 0 8px;color:#62dda1}
+.upgrade-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #ffffff20;text-align:left}
+.upgrade-row button{padding:10px 12px;white-space:nowrap}
+#garage-panel .close{margin-top:16px;background:#344957;color:white}
 #rotate-hint{display:none;position:fixed;inset:0;z-index:10;background:#07131df2;place-items:center;text-align:center;padding:28px}
 #rotate-hint section{max-width:320px}
 #rotate-hint .phone{font-size:48px;display:block;margin-bottom:12px}
@@ -48,6 +55,12 @@ button{border:0;border-radius:12px;padding:13px 24px;background:#62dda1;color:#0
  <div class="pad" id="steering"><button class="ctrl" data-control="left" aria-label="Tourner à gauche">◀</button><button class="ctrl" data-control="right" aria-label="Tourner à droite">▶</button></div>
  <div class="pad" id="pedals"><button class="ctrl" id="gas" data-control="gas">ACCÉL.</button><button class="ctrl" id="brake" data-control="brake">FREIN</button></div>
 </div>
+<button id="garage-near">ENTRER AU GARAGE</button>
+<div id="garage-panel"><section><h2>GARAGE K</h2><p>Améliore ta 205 pour prendre la route !</p>
+<div class="upgrade-row"><span><b>Moteur</b><br><small>Plus d'accélération et de vitesse</small></span><button id="upgrade-engine">Améliorer · 1</button></div>
+<div class="upgrade-row"><span><b>Pneus sport</b><br><small>Direction plus réactive</small></span><button id="upgrade-grip">Améliorer · 1</button></div>
+<div class="upgrade-row"><span><b>Peinture</b><br><small>Changer la couleur</small></span><button id="upgrade-paint">Changer</button></div>
+<p id="garage-status">Améliorations gratuites pour cette première version.</p><button class="close" id="close-garage">REPRENDRE LA ROUTE</button></section></div>
 <div id="intro"><section><h1>K <span>SIMULATEUR</span></h1><p>Bienvenue en ville ! Prends le volant et explore ton premier monde 3D.</p><button id="play">DÉMARRER</button></section></div>
 <script type="module">
 import * as THREE from 'three';
@@ -83,12 +96,52 @@ for(let x=-3;x<=3;x++)for(let z=-3;z<=3;z++){
  }
 }
 for(let i=0;i<70;i++){const x=Math.sin(i*91.7)*135,z=Math.cos(i*37.2)*135;if(Math.abs(x%42)<9||Math.abs(z%42)<9)continue;block(.45,2,.45,x,1,z,material(0x65472e));const crown=new THREE.Mesh(new THREE.SphereGeometry(1.5,8,7),material(0x39794b));crown.position.set(x,3,z);scene.add(crown)}
+// Atelier de préparation, juste à côté du point de départ.
+const garageX=13,garageZ=-9;
+block(12,6.5,9,garageX,3.25,garageZ,material(0xc6c9c5));
+block(12.4,.35,9.4,garageX,6.55,garageZ,material(0x303c43));
+block(8.2,3.8,.18,garageX,2.15,garageZ+4.56,material(0x26343b));
+block(8.6,.22,.35,garageX,4.2,garageZ+4.65,material(0x62dda1));
+block(1.2,1.4,.18,garageX-5.1,1.1,garageZ+4.62,material(0x62dda1));
+block(1.2,1.4,.18,garageX+5.1,1.1,garageZ+4.62,material(0x62dda1));
+block(9,.12,5,garageX,.08,garageZ+7,material(0x777c7b));
+block(2.5,.1,.6,garageX,.16,garageZ+9.4,material(0xf0d75b));
 const car=new THREE.Group();scene.add(car);
-// Build car parts as children
-const body=new THREE.Mesh(new THREE.BoxGeometry(2.1,.7,4.1),material(0xd63237));body.position.y=.85;body.castShadow=true;car.add(body);
-const cabin=new THREE.Mesh(new THREE.BoxGeometry(1.6,.8,2),material(0x8dbacb));cabin.position.set(0,1.55,-.25);car.add(cabin);
-const wheelmat=material(0x17191c);
-for(const x of [-1.08,1.08])for(const z of [-1.35,1.35]){const w=new THREE.Mesh(new THREE.CylinderGeometry(.43,.43,.28,16),wheelmat);w.rotation.z=Math.PI/2;w.position.set(x,.48,z);car.add(w)}
+// Carrosserie inspirée d'une petite sportive française des années 90 (silhouette 205 GTI).
+const paintColors=[0xc9252d,0xe7e7df,0x18232d,0x174b36,0xd8b52e];let paintIndex=0,engineLevel=0,gripLevel=0;
+const paintMat=new THREE.MeshStandardMaterial({color:paintColors[0],roughness:.34,metalness:.22});
+const trimMat=new THREE.MeshStandardMaterial({color:0x171a1c,roughness:.78});
+const glassMat=new THREE.MeshStandardMaterial({color:0x8ebacb,roughness:.18,metalness:.12});
+const chromeMat=new THREE.MeshStandardMaterial({color:0x9ba4a7,metalness:.78,roughness:.25});
+const lampMat=new THREE.MeshStandardMaterial({color:0xfff2c7,emissive:0x554522});
+function carPart(w,h,d,x,y,z,mat,rotX=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.rotation.x=rotX;m.castShadow=true;m.receiveShadow=true;car.add(m);return m}
+carPart(2.02,.62,4.05,0,.78,0,paintMat);
+carPart(1.96,.22,1.28,0,1.12,1.32,paintMat);
+carPart(1.96,.2,1.02,0,1.1,-1.48,paintMat);
+carPart(1.62,.13,1.95,0,1.78,-.22,paintMat);
+carPart(1.62,.68,.12,0,1.42,.72,glassMat,-.24);
+carPart(1.55,.62,.12,0,1.42,-1.18,glassMat,.22);
+for(const x of [-.83,.83]){
+ carPart(.08,.66,1.55,x,1.42,-.22,trimMat);
+ carPart(.08,.08,1.75,x,1.78,-.22,trimMat);
+ carPart(.08,.52,.08,x,1.43,.52,trimMat);
+ carPart(.08,.52,.08,x,1.43,-.98,trimMat);
+ carPart(.08,.42,.12,x*1.02,1.38,-.2,glassMat);
+}
+carPart(1.9,.16,.16,0,.55,2.04,trimMat);carPart(1.9,.16,.16,0,.55,-2.04,trimMat);
+carPart(.55,.2,.08,0,.83,2.13,trimMat);
+for(const x of [-.68,.68]){
+ carPart(.42,.22,.08,x,.91,2.13,lampMat);
+ carPart(.42,.2,.08,x,.88,-2.13,new THREE.MeshStandardMaterial({color:0xb5262c,emissive:0x300000}));
+ carPart(.09,.12,.08,x*1.25,.85,2.12,chromeMat);
+}
+carPart(1.3,.12,.08,0,.78,2.14,chromeMat);
+const wheelmat=new THREE.MeshStandardMaterial({color:0x151719,roughness:.95});
+const rimMat=new THREE.MeshStandardMaterial({color:0xb8bec0,metalness:.8,roughness:.28});
+for(const x of [-1.04,1.04])for(const z of [-1.35,1.35]){
+ const w=new THREE.Mesh(new THREE.CylinderGeometry(.43,.43,.3,20),wheelmat);w.rotation.z=Math.PI/2;w.position.set(x,.48,z);w.castShadow=true;car.add(w);
+ const rim=new THREE.Mesh(new THREE.CylinderGeometry(.23,.23,.315,12),rimMat);rim.rotation.z=Math.PI/2;rim.position.set(x*1.01,.48,z);car.add(rim);
+}
 car.position.set(0,0,0);
 const pressed={};
 addEventListener('keydown',e=>{pressed[e.key.toLowerCase()]=true;if(e.key===' ')e.preventDefault();if(e.key.toLowerCase()==='r')resetCar()});
@@ -102,13 +155,23 @@ document.querySelectorAll('[data-control]').forEach(btn=>{
  btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up);btn.addEventListener('lostpointercapture',up);
 });
 document.addEventListener('contextmenu',e=>e.preventDefault());
-let speed=0,heading=0,active=false;document.querySelector('#play').onclick=()=>{active=true;document.querySelector('#intro').style.display='none'};
+let speed=0,heading=0,active=false,garageOpen=false;
+document.querySelector('#play').onclick=()=>{active=true;document.querySelector('#intro').style.display='none'};
+const garagePanel=document.querySelector('#garage-panel'),garageButton=document.querySelector('#garage-near');
+function openGarage(){garageOpen=true;speed=0;garagePanel.style.display='grid';}
+function closeGarage(){garageOpen=false;garagePanel.style.display='none';}
+garageButton.addEventListener('click',openGarage);document.querySelector('#close-garage').addEventListener('click',closeGarage);
+document.querySelector('#upgrade-engine').addEventListener('click',()=>{if(engineLevel<3){engineLevel++;document.querySelector('#upgrade-engine').textContent='Niveau '+engineLevel+'/3';document.querySelector('#garage-status').textContent='Moteur amélioré !'}else document.querySelector('#garage-status').textContent='Moteur au maximum.'});
+document.querySelector('#upgrade-grip').addEventListener('click',()=>{if(gripLevel<3){gripLevel++;document.querySelector('#upgrade-grip').textContent='Niveau '+gripLevel+'/3';document.querySelector('#garage-status').textContent='Pneus sport installés !'}else document.querySelector('#garage-status').textContent='Pneus au maximum.'});
+document.querySelector('#upgrade-paint').addEventListener('click',()=>{paintIndex=(paintIndex+1)%paintColors.length;paintMat.color.setHex(paintColors[paintIndex]);document.querySelector('#garage-status').textContent='Nouvelle peinture appliquée !'});
 const clock=new THREE.Clock(),look=new THREE.Vector3();
 function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);
-if(active){const go=pressed.z||pressed.w||pressed.arrowup||pressed.gas,stop=pressed.s||pressed.arrowdown||pressed.brake,L=pressed.q||pressed.a||pressed.arrowleft||pressed.left,R=pressed.d||pressed.arrowright||pressed.right,hand=pressed[' '];
-if(go)speed+=22*dt;else if(stop)speed-=32*dt;else speed*=Math.pow(.986,dt*60);speed=THREE.MathUtils.clamp(speed,-11,hand?20:42);if(hand)speed*=Math.pow(.94,dt*60);
-heading+=((L?1:0)-(R?1:0))*dt*(.8+Math.min(Math.abs(speed)/20,1.3))*Math.sign(speed||1);car.rotation.y=heading;car.position.x+=Math.sin(heading)*speed*dt;car.position.z+=Math.cos(heading)*speed*dt;
+if(active&&!garageOpen){const go=pressed.z||pressed.w||pressed.arrowup||pressed.gas,stop=pressed.s||pressed.arrowdown||pressed.brake,L=pressed.q||pressed.a||pressed.arrowleft||pressed.left,R=pressed.d||pressed.arrowright||pressed.right,hand=pressed[' '];
+if(go)speed+=(22+engineLevel*5)*dt;else if(stop)speed-=32*dt;else speed*=Math.pow(.986,dt*60);speed=THREE.MathUtils.clamp(speed,-11,hand?20:42+engineLevel*6);if(hand)speed*=Math.pow(.94,dt*60);
+heading+=((L?1:0)-(R?1:0))*dt*(.8+gripLevel*.16+Math.min(Math.abs(speed)/20,1.3))*Math.sign(speed||1);car.rotation.y=heading;car.position.x+=Math.sin(heading)*speed*dt;car.position.z+=Math.cos(heading)*speed*dt;
 document.querySelector('#speed').innerHTML=Math.round(Math.abs(speed)*3.6)+' <small>KM/H</small>'}
+const nearGarage=Math.hypot(car.position.x-garageX,car.position.z-garageZ)<11;
+garageButton.style.display=nearGarage&&!garageOpen?'block':'none';
 look.set(car.position.x,1.2,car.position.z);const offset=new THREE.Vector3(-Math.sin(heading)*10,6,-Math.cos(heading)*10);camera.position.lerp(look.clone().add(offset),.09);camera.lookAt(look);renderer.render(scene,camera)}
 animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,isMobile?1.5:2))});
 </script></body></html>
