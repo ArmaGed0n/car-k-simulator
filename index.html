@@ -152,7 +152,7 @@ for(const [id,x,z,label] of wheelPositions){
 const archMat=new THREE.MeshStandardMaterial({color:0x202629,roughness:.86});
 for(const x of [-.99,.99])for(const z of [1.22,-1.28]){
  const arch=new THREE.Mesh(new THREE.TorusGeometry(.49,.045,10,40,Math.PI),archMat);
- arch.rotation.set(Math.PI/2,0,z>0?Math.PI:0);arch.position.set(x,.49,z);arch.castShadow=true;car.add(arch);
+ arch.rotation.set(0,Math.PI/2,z>0?Math.PI:0);arch.position.set(x,.49,z);arch.castShadow=true;car.add(arch);
 }
 // Portes démontables avec vitrage, poignée, baguette et rétroviseur.
 for(const [id,x,side] of [['door-left',-1.0,'gauche'],['door-right',1.0,'droite']]){
@@ -185,6 +185,19 @@ for(const x of [-.78,.78]){
  pbox(car,.22,.12,.025,x,.99,-2.075,new THREE.MeshStandardMaterial({color:0xe34237,emissive:0x380704}));
  pbox(car,.22,.09,.025,x,.86,-2.075,amber);
  pbox(car,.22,.1,.025,x,.74,-2.075,lightMat);
+}
+// Vitres latérales en deux parties, avec montant central noir.
+for(const side of [-1,1]){
+ const x=side*.755;
+ panel(car,[x,1.53,.42,x,1.53,-.12,x,1.79,-.12,x,1.79,.31],glass);
+ panel(car,[x,1.53,-.24,x,1.53,-.78,x,1.79,-.78,x,1.79,-.24],glass);
+ pbox(car,.035,.31,.055,side*.77,1.65,-.18,black);
+ // Joints de vitres et encadrement de custode.
+ pbox(car,.025,.035,.52,side*.77,1.8,.1,black);
+ pbox(car,.025,.035,.52,side*.77,1.8,-.51,black);
+ // Petit rétroviseur extérieur.
+ pbox(car,.13,.09,.18,side*.91,1.43,.52,black);
+ pbox(car,.17,.12,.2,side*1.0,1.45,.52,glass);
 }
 // Pare-chocs, plaque, essuie-glaces, échappement et détails de finition.
 pbox(car,1.98,.19,.22,0,.48,2.04,black);
