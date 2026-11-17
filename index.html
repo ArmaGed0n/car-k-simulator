@@ -102,9 +102,9 @@ for(const [id,x,side] of [['door-left',-1.0,'gauche'],['door-right',1.0,'droite'
 pbox(car,1.95,.2,.18,0,.48,2.03,black);pbox(car,1.95,.2,.18,0,.48,-2.03,black);
 for(const x of [-.68,.68]){pbox(car,.42,.22,.07,x,.88,1.99,lightMat);pbox(car,.4,.2,.07,x,.86,-1.99,redMat)}
 // Sélection visuelle : contour lumineux sur les pièces.
-const outlineMat=new THREE.MeshBasicMaterial({color:0x62dda1,wireframe:true,transparent:true,opacity:.75,depthTest:false});
+
 function setPartVisible(id,visible){parts[id].group.visible=visible;parts[id].removed=!visible}
-function choose(id){selected=id;const part=parts[id];document.querySelector('#part-name').textContent=part.name;document.querySelector('#part-info').textContent=part.description;document.querySelector('#remove').disabled=part.removed;document.querySelector('#install').disabled=!part.removed;for(const el of document.querySelectorAll('.selected-ring'))el.remove();if(!part.removed){part.group.traverse(o=>{if(o.isMesh){const edges=new THREE.EdgesGeometry(o.geometry);const line=new THREE.LineSegments(edges,outlineMat);line.position.copy(o.position);line.rotation.copy(o.rotation);line.scale.copy(o.scale);line.userData.ring=true;o.parent.add(line)}})}}
+function choose(id){selected=id;const part=parts[id];document.querySelector('#part-name').textContent=part.name;document.querySelector('#part-info').textContent=part.description;document.querySelector('#remove').disabled=part.removed;document.querySelector('#install').disabled=!part.removed;}
 function refresh(){const done=Object.values(parts).filter(p=>p.removed).length,total=Object.keys(parts).length;document.querySelector('#count').textContent=done+' / '+total;document.querySelector('#bar').style.width=(done/total*100)+'%'}
 function toast(msg){const el=document.querySelector('#toast');el.textContent=msg;el.style.opacity='1';clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.opacity='0',1600)}
 document.querySelector('#remove').addEventListener('click',()=>{if(!selected)return;const part=parts[selected];if(part.removed)return;setPartVisible(selected,false);choose(selected);refresh();toast(part.name+' démonté(e)')});
