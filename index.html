@@ -1,59 +1,36 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GARAGE CARDS — Duel automobile</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GARAGE CARDS — Ouverture de packs</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1119;--panel:#141f2b;--line:#ffffff20;--muted:#aab8c6;--gold:#f6c85f;--cyan:#69d9e8;--green:#69dfa5}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#263c50 0,#111c29 45%,#0b1119 78%);color:#f5f7fa;font-family:Inter,system-ui,Arial,sans-serif}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(14px,4vw,48px);border-bottom:1px solid var(--line);background:#0b1119b8;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
-.logo{font-weight:1000;letter-spacing:2px;font-size:20px}.logo span{color:var(--gold)}.topstats{display:flex;gap:9px;flex-wrap:wrap}.chip{background:#1b2937;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;color:#dce7ee}
-main{max-width:1160px;margin:auto;padding:26px 16px 50px}.intro{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}.kicker{font-size:10px;letter-spacing:2px;color:var(--cyan);font-weight:900}h1{font-size:clamp(26px,5vw,42px);margin:5px 0 6px;letter-spacing:-1.5px}.intro p{color:var(--muted);margin:0;font-size:14px}.primary,.secondary,.statbtn{border:0;border-radius:11px;padding:11px 15px;font-weight:900;cursor:pointer;transition:.15s}.primary{background:var(--gold);color:#211805}.secondary{background:#293b4d;color:#eff6fb;border:1px solid var(--line)}button:disabled{opacity:.4;cursor:not-allowed}button:not(:disabled):hover{transform:translateY(-2px);filter:brightness(1.08)}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:18px;align-items:start}.arena,.sidebox{background:#121d29df;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 15px 40px #0003}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.sectionhead h2{font-size:15px;margin:0;letter-spacing:.4px}.subtle{font-size:11px;color:var(--muted)}
-.hand{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
-.card{--accent:#8da8bc;position:relative;overflow:hidden;text-align:left;color:white;border:1px solid color-mix(in srgb,var(--accent),transparent 48%);border-radius:14px;padding:0;background:linear-gradient(155deg,color-mix(in srgb,var(--accent),#14202d 72%),#101821 66%);min-width:0;cursor:pointer;box-shadow:0 7px 18px #0003;transition:transform .16s,border-color .16s,box-shadow .16s}
-.card:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--accent)}.card.selected{outline:3px solid var(--gold);transform:translateY(-7px);box-shadow:0 12px 28px #0008}.card:disabled{opacity:.55;cursor:default}
-.cardtop{display:flex;justify-content:space-between;align-items:center;padding:9px 9px 0;font-size:9px;font-weight:900;letter-spacing:.7px;color:var(--accent)}.carart{height:90px;display:grid;place-items:center;position:relative;background:radial-gradient(ellipse at 50% 75%,color-mix(in srgb,var(--accent),transparent 75%),transparent 65%)}.carart:after{content:"";position:absolute;width:80%;height:10px;bottom:14px;border-radius:50%;background:#0005;filter:blur(6px)}.carart span{font-size:55px;filter:drop-shadow(0 8px 5px #0008);z-index:1}.cardname{padding:0 9px;font-size:12px;font-weight:950;min-height:32px}.cardmeta{padding:3px 9px 9px;color:#b8c5d0;font-size:9px}.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 9px 10px}.mini-stats span{background:#ffffff0c;border-radius:5px;padding:4px 5px;font-size:9px;color:#d6e0e8;display:flex;justify-content:space-between}
-.rarity{position:absolute;right:8px;top:27px;font-size:8px;color:var(--gold);font-weight:900}
-.battle{margin-top:20px;border-top:1px solid var(--line);padding-top:16px}.battlehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.battlehead h2{font-size:14px;margin:0}.round{color:var(--gold);font-size:11px;font-weight:900}
-.duel{display:grid;grid-template-columns:1fr 80px 1fr;gap:12px;align-items:center}.duelslot{min-height:130px;border:1px dashed #ffffff30;border-radius:13px;padding:12px;text-align:center;background:#ffffff05;display:flex;flex-direction:column;align-items:center;justify-content:center}.duelslot .emoji{font-size:38px}.duelslot strong{font-size:12px;margin-top:5px}.duelslot small{color:var(--muted);font-size:10px;margin-top:4px}.versus{text-align:center;color:var(--gold);font-weight:1000;font-size:20px}
-.statchoices{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.statbtn{background:#203344;color:#e7f3fb;border:1px solid #ffffff1b;font-size:11px;flex:1;min-width:95px}.statbtn:disabled{opacity:.4}.result{margin-top:12px;border-radius:11px;background:#0d1721;padding:12px;min-height:45px;color:#dce8ef;font-size:12px;line-height:1.5}.result.win{border:1px solid #69dfa566}.result.lose{border:1px solid #ff777755}.result.draw{border:1px solid #f6c85f66}
-.sidebox h2{font-size:14px;margin:0 0 12px}.guide{font-size:12px;color:var(--muted);line-height:1.6}.guide b{color:#f2f6fa}.scoreboard{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.score{background:#0c1620;border-radius:10px;padding:12px}.score small{display:block;color:var(--muted);font-size:10px}.score strong{font-size:25px;color:var(--gold)}.sidebox .secondary{width:100%;margin-top:7px}.collection{margin-top:20px}.collection-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.collection .card .carart{height:62px}.collection .card .carart span{font-size:38px}.collection .card .cardname{font-size:11px}.collection .card .mini-stats{display:none}.collection .card{cursor:default}
-footer{text-align:center;color:#718292;font-size:10px;margin-top:24px}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebox{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sidebox h2{grid-column:1/-1}.sidebox .scoreboard{margin:0}.sidebox .secondary{align-self:center}}
-@media(max-width:600px){header{padding:12px}.logo{font-size:15px}.chip{font-size:10px;padding:7px 9px}.intro{align-items:start;flex-direction:column}.hand{grid-template-columns:repeat(3,minmax(0,1fr))}.hand .card:nth-child(n+4){display:none}.carart{height:72px}.carart span{font-size:45px}.duel{grid-template-columns:1fr 38px 1fr;gap:6px}.duelslot{padding:8px;min-height:110px}.versus{font-size:14px}.sidebox{display:block}.sidebox .scoreboard{margin:12px 0}.collection-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.arena{padding:12px}}
+:root{color-scheme:dark;--bg:#0b1119;--panel:#142130;--line:#ffffff20;--muted:#aab8c6;--gold:#f6c85f;--cyan:#69d9e8}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -15%,#29445b,#111c29 48%,#0b1119 80%);color:#f5f7fa;font-family:Inter,system-ui,Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px clamp(14px,4vw,45px);background:#0b1119df;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}.logo{font-weight:1000;letter-spacing:2px}.logo span{color:var(--gold)}.topstats{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:8px 12px;border-radius:999px;background:#1b2937;border:1px solid var(--line);font-size:12px}
+main{max-width:1100px;margin:auto;padding:28px 16px 55px}.intro{margin-bottom:22px}.kicker{font-size:10px;letter-spacing:2px;color:var(--cyan);font-weight:900}h1{font-size:clamp(28px,5vw,44px);margin:5px 0}.intro p{color:var(--muted);margin:0;font-size:14px}
+.panel{background:#121e2bdc;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 16px 42px #0003}.packs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.pack{position:relative;overflow:hidden;min-height:235px;border-radius:16px;padding:20px;text-align:center;border:1px solid #ffffff26;background:linear-gradient(145deg,#29465d,#142333 65%,#101923)}.pack.premium{background:linear-gradient(145deg,#67502b,#2d2630 62%,#151c28);border-color:#f6c85f77}.pack-art{font-size:76px;filter:drop-shadow(0 10px 12px #0009);margin:5px 0 9px;animation:float 3s ease-in-out infinite}.premium .pack-art{animation-delay:.4s}@keyframes float{50%{transform:translateY(-7px)}}.pack h2{margin:4px 0;font-size:19px}.pack p{color:#bdc9d4;font-size:12px;min-height:34px}.primary,.secondary{border:0;border-radius:10px;padding:11px 16px;font-weight:900;cursor:pointer;transition:.15s}.primary{background:var(--gold);color:#241b08}.secondary{background:#293b4d;color:#eff6fb;border:1px solid var(--line)}button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08)}button:disabled{opacity:.4;cursor:not-allowed}.cost{font-size:12px;color:var(--gold);font-weight:900;margin:10px}
+.odds{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:center;gap:12px;flex-wrap:wrap;font-size:10px;color:#c1ccd6}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.common{--accent:#9daab5}.rare{--accent:#62b9e9}.epic{--accent:#b78bfa}.legendary{--accent:#f6c85f}
+.opening{margin-top:18px;text-align:center}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.sectionhead h2{font-size:15px;margin:0}.muted{font-size:11px;color:var(--muted)}.reveal-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.card{--accent:#9daab5;position:relative;overflow:hidden;text-align:left;border:1px solid color-mix(in srgb,var(--accent),transparent 35%);border-radius:13px;background:linear-gradient(155deg,color-mix(in srgb,var(--accent),#14202d 75%),#101821 68%);padding:0 0 10px;min-width:0;animation:reveal .5s both;box-shadow:0 9px 22px #0005}.card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent)}@keyframes reveal{from{opacity:0;transform:rotateY(85deg) scale(.8)}to{opacity:1;transform:rotateY(0) scale(1)}}.cardtop{display:flex;justify-content:space-between;gap:4px;padding:10px 8px 0;color:var(--accent);font-size:8px;font-weight:950}.art{height:85px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 80%,color-mix(in srgb,var(--accent),transparent 75%),transparent 65%)}.art span{font-size:51px;filter:drop-shadow(0 7px 5px #0008)}.name{font-size:12px;font-weight:950;padding:0 9px;min-height:31px}.brand{font-size:9px;color:#bdc9d4;padding:3px 9px 8px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 8px}.stats span{font-size:9px;background:#ffffff0c;border-radius:5px;padding:4px;display:flex;justify-content:space-between}.newtag{position:absolute;right:7px;top:28px;background:#69dfa5;color:#092016;font-size:8px;font-weight:1000;padding:3px 5px;border-radius:4px}.duplicate{font-size:9px;color:var(--gold);padding:7px 8px 0}
+.collection{margin-top:22px}.collection-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.collection-card{border:1px solid var(--line);border-radius:11px;padding:10px;background:#0e1924;display:flex;align-items:center;gap:9px;min-width:0}.collection-card .emoji{font-size:29px}.collection-card strong{font-size:11px;display:block}.collection-card small{font-size:9px;color:var(--muted)}.collection-card.locked{opacity:.38;filter:grayscale(1)}.collection-card .count{margin-left:auto;color:var(--gold);font-size:10px;font-weight:900}
+.notice{min-height:42px;margin-top:12px;padding:11px;border-radius:10px;background:#0c1721;color:#dce8ef;font-size:12px;text-align:center}.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}footer{text-align:center;color:#718292;font-size:10px;margin-top:25px}
+@media(max-width:720px){.packs{grid-template-columns:1fr}.reveal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.reveal-grid .card:last-child:nth-child(odd){grid-column:1/-1;max-width:calc(50% - 5px);justify-self:center}.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:13px}}
 </style>
 </head>
 <body>
-<header><div class="logo">GARAGE <span>CARDS</span></div><div class="topstats"><div class="chip">🏆 Victoires : <b id="wins">0</b></div><div class="chip">🃏 Collection : <b id="owned">12</b></div></div></header>
+<header><div class="logo">GARAGE <span>CARDS</span></div><div class="topstats"><div class="chip">🪙 Crédits : <b id="coins">500</b></div><div class="chip">🚘 Collection : <b id="owned">0/12</b></div></div></header>
 <main>
- <div class="intro"><div><div class="kicker">LE DUEL DES MOTEURS</div><h1>Choisis ta voiture.</h1><p>Affronte le garage rival dans un duel de statistiques automobiles.</p></div><button class="primary" id="newgame">NOUVEAU DUEL ↗</button></div>
- <div class="layout">
-  <section class="arena">
-   <div class="sectionhead"><h2>🃏 TA MAIN</h2><span class="subtle">Choisis une carte pour commencer</span></div>
-   <div class="hand" id="hand"></div>
-   <div class="battle">
-    <div class="battlehead"><h2>⚡ ARÈNE DE DUEL</h2><span class="round" id="round">MANCHE 1 / 3</span></div>
-    <div class="duel">
-     <div class="duelslot" id="playerSlot"><span class="emoji">❔</span><strong>Ta voiture</strong><small>Sélectionne une carte</small></div>
-     <div class="versus">VS</div>
-     <div class="duelslot" id="enemySlot"><span class="emoji">🤖</span><strong>Garage rival</strong><small>En attente du duel</small></div>
-    </div>
-    <div class="statchoices" id="statchoices">
-     <button class="statbtn" data-stat="speed" disabled>🏁 Vitesse</button><button class="statbtn" data-stat="power" disabled>🐎 Puissance</button><button class="statbtn" data-stat="accel" disabled>⚡ Accélération</button><button class="statbtn" data-stat="handling" disabled>🎯 Tenue de route</button>
-    </div>
-    <div class="result" id="result">Choisis une voiture dans ta main, puis sélectionne la statistique sur laquelle tu veux défier ton adversaire.</div>
-   </div>
-  </section>
-  <aside class="sidebox">
-   <h2>📊 TABLEAU DES SCORES</h2>
-   <div class="scoreboard"><div class="score"><small>TOI</small><strong id="playerScore">0</strong></div><div class="score"><small>RIVAL</small><strong id="enemyScore">0</strong></div></div>
-   <div><div class="guide"><b>Comment jouer ?</b><br>1. Sélectionne une voiture de ta main.<br>2. Choisis une statistique.<br>3. La carte adverse est révélée : la meilleure valeur gagne la manche.<br>4. Le premier à 2 manches remporte le duel.</div><button class="secondary" id="rules">Règles rapides</button></div>
-  </aside>
+<div class="intro"><div class="kicker">TON GARAGE, TES COLLECTIONS</div><h1>Ouvre des packs. Découvre des légendes.</h1><p>Récupère des voitures, complète ta collection et cherche les cartes légendaires.</p></div>
+<section class="panel">
+ <div class="sectionhead"><h2>🎁 BOUTIQUE DE PACKS</h2><span class="muted">Crédits virtuels uniquement · aucun achat réel</span></div>
+ <div class="packs">
+  <article class="pack"><div class="pack-art">📦</div><h2>PACK CLASSIQUE</h2><p>5 cartes automobiles. Parfait pour agrandir ton garage.</p><div class="cost">🪙 100 CRÉDITS</div><button class="primary" id="classic">OUVRIR LE PACK</button><div class="odds"><span>● Commun 65%</span><span>● Rare 25%</span><span>● Épique 8%</span><span>● Légendaire 2%</span></div></article>
+  <article class="pack premium"><div class="pack-art">💎</div><h2>PACK PREMIUM</h2><p>5 cartes avec de meilleures chances de rareté élevée.</p><div class="cost">🪙 250 CRÉDITS</div><button class="primary" id="premium">OUVRIR LE PACK</button><div class="odds"><span>● Commun 30%</span><span>● Rare 40%</span><span>● Épique 22%</span><span>● Légendaire 8%</span></div></article>
  </div>
- <section class="collection"><div class="sectionhead"><h2>🚘 GARAGE — COLLECTION</h2><span class="subtle">12 modèles à découvrir</span></div><div class="collection-grid" id="collection"></div></section>
- <footer>GARAGE CARDS · Jeu de cartes automobile · Les caractéristiques sont fictives et servent au gameplay.</footer>
+ <div class="notice" id="notice">Choisis un pack pour découvrir 5 cartes !</div>
+ <div class="opening" id="opening" hidden><div class="sectionhead"><h2 id="revealTitle">✨ CONTENU DU PACK</h2><span class="muted">Les cartes obtenues</span></div><div class="reveal-grid" id="reveals"></div><div class="actions"><button class="secondary" id="close">FERMER</button><button class="primary" id="again">OUVRIR UN AUTRE PACK</button></div></div>
+</section>
+<section class="collection panel"><div class="sectionhead"><h2>🚘 MA COLLECTION</h2><span class="muted" id="progress">0 voiture découverte</span></div><div class="collection-grid" id="collection"></div></section>
+<footer>GARAGE CARDS · Jeu de collection automobile · Notes fictives pour le jeu.</footer>
 </main>
 <script>
 const cars=[
@@ -70,39 +47,16 @@ const cars=[
 {id:11,name:"Mustang GT",brand:"FORD",emoji:"🚘",rarity:"ÉPIQUE",color:"#b88b67",speed:90,power:98,accel:82,handling:79},
 {id:12,name:"Aventador",brand:"LAMBORGHINI",emoji:"🏎️",rarity:"LÉGENDAIRE",color:"#8ecb70",speed:99,power:99,accel:98,handling:94}
 ];
-const statNames={speed:"Vitesse",power:"Puissance",accel:"Accélération",handling:"Tenue de route"};
-let hand=[],selected=null,enemy=null,round=1,playerScore=0,enemyScore=0,wins=0,finished=false,used=[];
+const rarityClass={"COMMUNE":"common","RARE":"rare","ÉPIQUE":"epic","LÉGENDAIRE":"legendary"};
+const rarityOdds={classic:[65,25,8,2],premium:[30,40,22,8]};
+let coins=500,owned={},lastPack=[];
 const $=id=>document.getElementById(id);
-function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
-function cardHTML(c,small=false){return '<div class="cardtop"><span>'+c.brand+'</span><span>★ '+c.rarity+'</span></div><div class="carart"><span>'+c.emoji+'</span></div><div class="cardname">'+c.name+'</div><div class="cardmeta">CARTE AUTOMOBILE</div><div class="mini-stats"><span>VIT. <b>'+c.speed+'</b></span><span>PUISS. <b>'+c.power+'</b></span><span>ACC. <b>'+c.accel+'</b></span><span>ROUTE <b>'+c.handling+'</b></span></div>'}
-function renderHand(){
- $('hand').innerHTML='';
- hand.forEach(c=>{const b=document.createElement('button');b.className='card'+(selected&&selected.id===c.id?' selected':'');b.style.setProperty('--accent',c.color);b.innerHTML=cardHTML(c);b.disabled=finished||used.includes(c.id);b.addEventListener('click',()=>selectCard(c));$('hand').appendChild(b)});
-}
-function renderCollection(){$('collection').innerHTML=cars.map(c=>'<div class="card" style="--accent:'+c.color+'">'+cardHTML(c,true)+'</div>').join('')}
-function selectCard(c){if(finished||used.includes(c.id))return;selected=c;renderHand();$('playerSlot').innerHTML='<span class="emoji">'+c.emoji+'</span><strong>'+c.name+'</strong><small>'+c.brand+' · Carte sélectionnée</small>';document.querySelectorAll('.statbtn').forEach(b=>b.disabled=false);$('result').className='result';$('result').textContent='Choisis maintenant une statistique pour lancer le duel.'}
-function startGame(){hand=shuffle(cars).slice(0,5);selected=null;enemy=null;round=1;playerScore=0;enemyScore=0;finished=false;used=[];$('playerScore').textContent='0';$('enemyScore').textContent='0';$('round').textContent='MANCHE 1 / 3';$('playerSlot').innerHTML='<span class="emoji">❔</span><strong>Ta voiture</strong><small>Sélectionne une carte</small>';$('enemySlot').innerHTML='<span class="emoji">🤖</span><strong>Garage rival</strong><small>En attente du duel</small>';$('result').className='result';$('result').textContent='Choisis une voiture dans ta main, puis sélectionne une statistique.';document.querySelectorAll('.statbtn').forEach(b=>b.disabled=true);renderHand()}
-function play(stat){
- if(!selected||finished||used.includes(selected.id))return;
- const pool=cars.filter(c=>c.id!==selected.id);enemy=pool[Math.floor(Math.random()*pool.length)];
- used.push(selected.id);
- $('enemySlot').innerHTML='<span class="emoji">'+enemy.emoji+'</span><strong>'+enemy.name+'</strong><small>'+enemy.brand+' · '+statNames[stat]+': '+enemy[stat]+'</small>';
- $('playerSlot').innerHTML='<span class="emoji">'+selected.emoji+'</span><strong>'+selected.name+'</strong><small>'+selected.brand+' · '+statNames[stat]+': '+selected[stat]+'</small>';
- const p=selected[stat],e=enemy[stat];let msg,cls;
- if(p>e){playerScore++;msg='🏆 Manche gagnée ! '+selected.name+' remporte '+statNames[stat]+' ('+p+' contre '+e+').';cls='win'}
- else if(p<e){enemyScore++;msg='💥 Manche perdue. '+enemy.name+' gagne '+statNames[stat]+' ('+e+' contre '+p+').';cls='lose'}
- else{msg='🤝 Égalité parfaite sur '+statNames[stat]+' ('+p+' partout).';cls='draw'}
- $('playerScore').textContent=playerScore;$('enemyScore').textContent=enemyScore;$('result').className='result '+cls;$('result').textContent=msg;
- document.querySelectorAll('.statbtn').forEach(b=>b.disabled=true);
- if(playerScore>=2||enemyScore>=2||round>=3){finished=true;if(playerScore>enemyScore){wins++;$('wins').textContent=wins;$('result').textContent+=' Tu remportes le duel ! 🏆'}else if(playerScore<enemyScore){$('result').textContent+=' Le rival remporte le duel. Retente ta chance !'}else{$('result').textContent+=' Duel à égalité !'}$('newgame').textContent='REJOUER ↗';renderHand();return}
- round++;$('round').textContent='MANCHE '+round+' / 3';
- // Prépare la manche suivante avec les cartes restantes de la main.
- selected=null;enemy=null;$('playerSlot').innerHTML='<span class="emoji">❔</span><strong>Ta voiture</strong><small>Choisis une autre carte</small>';$('enemySlot').innerHTML='<span class="emoji">🤖</span><strong>Garage rival</strong><small>Prêt pour la manche '+round+'</small>';document.querySelectorAll('.statbtn').forEach(b=>b.disabled=true);renderHand();
-}
-document.querySelectorAll('.statbtn').forEach(b=>b.addEventListener('click',()=>play(b.dataset.stat)));
-$('newgame').addEventListener('click',()=>{startGame();$('newgame').textContent='NOUVEAU DUEL ↗'});
-$('rules').addEventListener('click',()=>{$('result').className='result';$('result').textContent='Chaque voiture possède 4 notes sur 100. Choisis la caractéristique où ta voiture est la plus forte. Deux manches gagnées suffisent pour remporter le duel.'});
-renderCollection();startGame();
+function rarityFor(kind){const odds=rarityOdds[kind],n=Math.random()*100;let sum=0;for(let i=0;i<odds.length;i++){sum+=odds[i];if(n<sum)return ["COMMUNE","RARE","ÉPIQUE","LÉGENDAIRE"][i]}return "COMMUNE"}
+function cardMarkup(c,isNew,index){return '<article class="card '+rarityClass[c.rarity]+'" style="--accent:'+c.color+';animation-delay:'+(index*.12)+'s"><div class="cardtop"><span>'+c.brand+'</span><span>'+c.rarity+'</span></div><div class="art"><span>'+c.emoji+'</span></div><div class="name">'+c.name+'</div><div class="brand">CARTE AUTOMOBILE</div><div class="stats"><span>VIT. <b>'+c.speed+'</b></span><span>PUISS. <b>'+c.power+'</b></span><span>ACC. <b>'+c.accel+'</b></span><span>ROUTE <b>'+c.handling+'</b></span></div>'+(isNew?'<span class="newtag">NOUVEAU !</span>':'<div class="duplicate">DOUBLON · +1 exemplaire</div>')+'</article>'}
+function renderCollection(){$('collection').innerHTML=cars.map(c=>{const count=owned[c.id]||0;return '<div class="collection-card '+(!count?'locked':'')+'"><span class="emoji">'+(count?c.emoji:'❔')+'</span><div><strong>'+(count?c.name:'Voiture inconnue')+'</strong><small>'+(count?c.brand+' · '+c.rarity:'À découvrir dans un pack')+'</small></div>'+(count?'<span class="count">×'+count+'</span>':'')+'</div>'}).join('');const total=cars.filter(c=>owned[c.id]).length;$('owned').textContent=total+'/12';$('progress').textContent=total+' voiture'+(total>1?'s':'')+' découverte'+(total>1?'s':'')}
+function updateCoins(){$('coins').textContent=coins;$('classic').disabled=coins<100;$('premium').disabled=coins<250}
+function openPack(kind){const cost=kind==='classic'?100:250;if(coins<cost){$('notice').textContent='Pas assez de crédits pour ce pack. Ouvre un pack classique ou reviens plus tard.';return}coins-=cost;updateCoins();lastPack=[];for(let i=0;i<5;i++){const rarity=rarityFor(kind);const pool=cars.filter(c=>c.rarity===rarity);const c=pool[Math.floor(Math.random()*pool.length)]||cars[0];const isNew=!owned[c.id];owned[c.id]=(owned[c.id]||0)+1;lastPack.push({car:c,isNew})}renderCollection();$('reveals').innerHTML=lastPack.map((x,i)=>cardMarkup(x.car,x.isNew,i)).join('');$('revealTitle').textContent='✨ PACK '+(kind==='classic'?'CLASSIQUE':'PREMIUM')+' OUVERT !';$('opening').hidden=false;$('notice').textContent='Bien joué ! Voici les 5 cartes de ton pack.';$('opening').scrollIntoView({behavior:'smooth',block:'nearest'})}
+$('classic').addEventListener('click',()=>openPack('classic'));$('premium').addEventListener('click',()=>openPack('premium'));$('close').addEventListener('click',()=>{$('opening').hidden=true});$('again').addEventListener('click',()=>{$('opening').hidden=true;window.scrollTo({top:0,behavior:'smooth'})});
+renderCollection();updateCoins();
 </script>
-</body>
-</html>
+</body></html>
