@@ -2,261 +2,107 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>K Mécanique Simulator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GARAGE CARDS — Duel automobile</title>
 <style>
-:root{color-scheme:dark;--green:#62dda1;--panel:#111d29;--line:#ffffff20}
-*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#101820;color:#f3f6f8;font-family:system-ui,Arial,sans-serif}canvas{display:block;touch-action:none}
-#top{position:fixed;z-index:3;left:14px;right:14px;top:12px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
-.brand,.pill{background:#101923df;border:1px solid var(--line);border-radius:12px;padding:10px 14px;backdrop-filter:blur(8px)}.brand{font-weight:950;letter-spacing:1.5px}.brand b{color:var(--green)}.pill{font-size:12px;color:#cbd5dc}
-#panel{position:fixed;z-index:4;right:14px;top:76px;width:min(300px,calc(100vw - 28px));background:#111d29ed;border:1px solid var(--line);border-radius:16px;padding:16px;backdrop-filter:blur(12px);box-shadow:0 12px 36px #0005}
-.eyebrow{font-size:10px;letter-spacing:1.6px;color:var(--green);font-weight:900}h1{font-size:20px;margin:5px 0 7px}p{font-size:13px;line-height:1.45;color:#b9c6cf;margin:0 0 12px}
-button{border:0;border-radius:10px;padding:11px 13px;font-weight:850;cursor:pointer;background:var(--green);color:#071a12}button:disabled{opacity:.4;cursor:default}.secondary{background:#293b49;color:#e9f0f4}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1;font-size:12px;min-width:88px}#view-reset{background:#344957;color:#eaf4f8}#restore-all{width:100%;margin-top:8px;background:#263b48;color:#dceaf0;font-size:11px}
-#progress{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.progress-head{display:flex;justify-content:space-between;font-size:11px;color:#cbd5dc;margin-bottom:7px}.bar{height:7px;background:#293844;border-radius:9px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
-#hint{position:fixed;z-index:2;left:50%;bottom:15px;transform:translateX(-50%);background:#101923d9;border:1px solid var(--line);padding:9px 13px;border-radius:12px;color:#cbd5dc;font-size:11px;white-space:nowrap;pointer-events:none}
-#toast{position:fixed;z-index:5;left:50%;top:76px;transform:translateX(-50%);background:#173d30;color:#dffff0;border:1px solid #62dda155;padding:10px 15px;border-radius:12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
-@media(max-width:650px){#panel{top:auto;bottom:55px;left:10px;right:10px;width:auto;padding:12px}h1{font-size:17px}p{font-size:12px;margin-bottom:8px}#progress{margin-top:9px;padding-top:8px}#hint{bottom:8px;font-size:10px}.brand{font-size:12px}.pill{font-size:10px;padding:8px}}
+:root{color-scheme:dark;--bg:#0b1119;--panel:#141f2b;--line:#ffffff20;--muted:#aab8c6;--gold:#f6c85f;--cyan:#69d9e8;--green:#69dfa5}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#263c50 0,#111c29 45%,#0b1119 78%);color:#f5f7fa;font-family:Inter,system-ui,Arial,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(14px,4vw,48px);border-bottom:1px solid var(--line);background:#0b1119b8;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.logo{font-weight:1000;letter-spacing:2px;font-size:20px}.logo span{color:var(--gold)}.topstats{display:flex;gap:9px;flex-wrap:wrap}.chip{background:#1b2937;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;color:#dce7ee}
+main{max-width:1160px;margin:auto;padding:26px 16px 50px}.intro{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}.kicker{font-size:10px;letter-spacing:2px;color:var(--cyan);font-weight:900}h1{font-size:clamp(26px,5vw,42px);margin:5px 0 6px;letter-spacing:-1.5px}.intro p{color:var(--muted);margin:0;font-size:14px}.primary,.secondary,.statbtn{border:0;border-radius:11px;padding:11px 15px;font-weight:900;cursor:pointer;transition:.15s}.primary{background:var(--gold);color:#211805}.secondary{background:#293b4d;color:#eff6fb;border:1px solid var(--line)}button:disabled{opacity:.4;cursor:not-allowed}button:not(:disabled):hover{transform:translateY(-2px);filter:brightness(1.08)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:18px;align-items:start}.arena,.sidebox{background:#121d29df;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 15px 40px #0003}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.sectionhead h2{font-size:15px;margin:0;letter-spacing:.4px}.subtle{font-size:11px;color:var(--muted)}
+.hand{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.card{--accent:#8da8bc;position:relative;overflow:hidden;text-align:left;color:white;border:1px solid color-mix(in srgb,var(--accent),transparent 48%);border-radius:14px;padding:0;background:linear-gradient(155deg,color-mix(in srgb,var(--accent),#14202d 72%),#101821 66%);min-width:0;cursor:pointer;box-shadow:0 7px 18px #0003;transition:transform .16s,border-color .16s,box-shadow .16s}
+.card:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--accent)}.card.selected{outline:3px solid var(--gold);transform:translateY(-7px);box-shadow:0 12px 28px #0008}.card:disabled{opacity:.55;cursor:default}
+.cardtop{display:flex;justify-content:space-between;align-items:center;padding:9px 9px 0;font-size:9px;font-weight:900;letter-spacing:.7px;color:var(--accent)}.carart{height:90px;display:grid;place-items:center;position:relative;background:radial-gradient(ellipse at 50% 75%,color-mix(in srgb,var(--accent),transparent 75%),transparent 65%)}.carart:after{content:"";position:absolute;width:80%;height:10px;bottom:14px;border-radius:50%;background:#0005;filter:blur(6px)}.carart span{font-size:55px;filter:drop-shadow(0 8px 5px #0008);z-index:1}.cardname{padding:0 9px;font-size:12px;font-weight:950;min-height:32px}.cardmeta{padding:3px 9px 9px;color:#b8c5d0;font-size:9px}.mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 9px 10px}.mini-stats span{background:#ffffff0c;border-radius:5px;padding:4px 5px;font-size:9px;color:#d6e0e8;display:flex;justify-content:space-between}
+.rarity{position:absolute;right:8px;top:27px;font-size:8px;color:var(--gold);font-weight:900}
+.battle{margin-top:20px;border-top:1px solid var(--line);padding-top:16px}.battlehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.battlehead h2{font-size:14px;margin:0}.round{color:var(--gold);font-size:11px;font-weight:900}
+.duel{display:grid;grid-template-columns:1fr 80px 1fr;gap:12px;align-items:center}.duelslot{min-height:130px;border:1px dashed #ffffff30;border-radius:13px;padding:12px;text-align:center;background:#ffffff05;display:flex;flex-direction:column;align-items:center;justify-content:center}.duelslot .emoji{font-size:38px}.duelslot strong{font-size:12px;margin-top:5px}.duelslot small{color:var(--muted);font-size:10px;margin-top:4px}.versus{text-align:center;color:var(--gold);font-weight:1000;font-size:20px}
+.statchoices{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.statbtn{background:#203344;color:#e7f3fb;border:1px solid #ffffff1b;font-size:11px;flex:1;min-width:95px}.statbtn:disabled{opacity:.4}.result{margin-top:12px;border-radius:11px;background:#0d1721;padding:12px;min-height:45px;color:#dce8ef;font-size:12px;line-height:1.5}.result.win{border:1px solid #69dfa566}.result.lose{border:1px solid #ff777755}.result.draw{border:1px solid #f6c85f66}
+.sidebox h2{font-size:14px;margin:0 0 12px}.guide{font-size:12px;color:var(--muted);line-height:1.6}.guide b{color:#f2f6fa}.scoreboard{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.score{background:#0c1620;border-radius:10px;padding:12px}.score small{display:block;color:var(--muted);font-size:10px}.score strong{font-size:25px;color:var(--gold)}.sidebox .secondary{width:100%;margin-top:7px}.collection{margin-top:20px}.collection-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.collection .card .carart{height:62px}.collection .card .carart span{font-size:38px}.collection .card .cardname{font-size:11px}.collection .card .mini-stats{display:none}.collection .card{cursor:default}
+footer{text-align:center;color:#718292;font-size:10px;margin-top:24px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebox{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sidebox h2{grid-column:1/-1}.sidebox .scoreboard{margin:0}.sidebox .secondary{align-self:center}}
+@media(max-width:600px){header{padding:12px}.logo{font-size:15px}.chip{font-size:10px;padding:7px 9px}.intro{align-items:start;flex-direction:column}.hand{grid-template-columns:repeat(3,minmax(0,1fr))}.hand .card:nth-child(n+4){display:none}.carart{height:72px}.carart span{font-size:45px}.duel{grid-template-columns:1fr 38px 1fr;gap:6px}.duelslot{padding:8px;min-height:110px}.versus{font-size:14px}.sidebox{display:block}.sidebox .scoreboard{margin:12px 0}.collection-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.arena{padding:12px}}
 </style>
-<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 </head>
 <body>
-<div id="top"><div class="brand">K <b>MÉCANIQUE</b> · SIMULATOR</div><div class="pill">ATELIER 01 · PEUGEOT 205</div></div>
-<aside id="panel">
- <div class="eyebrow">POSTE DE TRAVAIL</div><h1 id="part-name">Sélectionne une pièce</h1>
- <p id="part-info">Clique sur une pièce de la voiture pour afficher sa fiche et commencer le démontage.</p>
- <div class="actions"><button id="remove" disabled>DÉMONTER</button><button id="install" class="secondary" disabled>REMETTRE</button><button id="view-reset" type="button">VUE 360°</button></div><button id="restore-all" type="button">REMONTAGE COMPLET</button>
- <div id="progress"><div class="progress-head"><span>PIÈCES DÉMONTÉES</span><b id="count">0 / 9</b></div><div class="bar"><span id="bar"></span></div></div>
-</aside>
-<div id="toast"></div>
-<div id="hint">GLISSE POUR TOURNER · PINCE / MOLETTE POUR ZOOMER · CLIQUE POUR SÉLECTIONNER</div>
-<script type="module">
-import * as THREE from 'three';
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x18232d);scene.fog=new THREE.Fog(0x18232d,18,38);
-const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,100); 
-const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;document.body.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xc8e5ff,0x34302b,2.1));
-const key=new THREE.DirectionalLight(0xffe4bd,3.1);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
-const fill=new THREE.PointLight(0x73aaff,45,18);fill.position.set(5,5,-4);scene.add(fill);
-const floorMat=new THREE.MeshStandardMaterial({color:0x454c50,roughness:.88});
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(60,60),floorMat);floor.rotation.x=-Math.PI/2;floor.position.y=-.04;floor.receiveShadow=true;scene.add(floor);
-const grid=new THREE.GridHelper(40,40,0x65717a,0x59636a);grid.position.y=-.025;scene.add(grid);
-const wallMat=new THREE.MeshStandardMaterial({color:0x263541,roughness:.9});
-function box(parent,w,h,d,x,y,z,mat,cast=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;parent.add(m);return m}
-box(scene,20,7,.35,0,3.45,-7.8,wallMat,false);
-for(let x=-7;x<=7;x+=3.5){box(scene,.08,5,.1,x,3.1,-7.58,new THREE.MeshStandardMaterial({color:0x344754}),false)}
-// Établi et rangements pour donner une identité visuelle à l'atelier.
-box(scene,3.8,.18,1.1,-5,.95,-3.7,new THREE.MeshStandardMaterial({color:0x9b7652}));
-for(const x of [-6.5,-3.5])box(scene,.12,.95,.12,x,.45,-3.7,new THREE.MeshStandardMaterial({color:0x202a31}));
-for(let i=0;i<4;i++)box(scene,.62,.42,.45,-6.2+i*.78,1.35,-3.7,new THREE.MeshStandardMaterial({color:[0x267b69,0x42647d,0xb77b32,0x9d4141][i]}));
-const liftMat=new THREE.MeshStandardMaterial({color:0xe1b83e,metalness:.25,roughness:.55});
-for(const x of [-2.15,2.15]){box(scene,.18,2.6,.2,x,1.3,-.15,liftMat);box(scene,1.05,.13,.22,x,1.02,.15,liftMat)}
-// Peugeot 205 : carrosserie complète, volumes plus cohérents et éléments mécaniques séparés.
-const car=new THREE.Group();scene.add(car);
-const paint=new THREE.MeshStandardMaterial({color:0xb91f2a,metalness:.32,roughness:.27});
-const paintDark=new THREE.MeshStandardMaterial({color:0x7f1720,metalness:.25,roughness:.34});
-const black=new THREE.MeshStandardMaterial({color:0x171b1e,roughness:.7});
-const rubber=new THREE.MeshStandardMaterial({color:0x101214,roughness:.96});
-const glass=new THREE.MeshStandardMaterial({color:0x294957,metalness:.25,roughness:.16});
-const metal=new THREE.MeshStandardMaterial({color:0xb8c2c5,metalness:.86,roughness:.22});
-const alloy=new THREE.MeshStandardMaterial({color:0x7e898e,metalness:.82,roughness:.28});
-const lightMat=new THREE.MeshStandardMaterial({color:0xfff0c9,emissive:0x6a4b1b});
-const redMat=new THREE.MeshStandardMaterial({color:0xb51f27,emissive:0x390609});
-const amber=new THREE.MeshStandardMaterial({color:0xffa52e,emissive:0x65300a});
-const parts={};let selected=null;let selectionHelper=null;let busy=false;
-function makePart(id,name,description){const g=new THREE.Group();g.userData.partId=id;car.add(g);parts[id]={group:g,name,description,removed:false};return g}
-function pbox(parent,w,h,d,x,y,z,mat,bevel=false){
- const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;
+<header><div class="logo">GARAGE <span>CARDS</span></div><div class="topstats"><div class="chip">🏆 Victoires : <b id="wins">0</b></div><div class="chip">🃏 Collection : <b id="owned">12</b></div></div></header>
+<main>
+ <div class="intro"><div><div class="kicker">LE DUEL DES MOTEURS</div><h1>Choisis ta voiture.</h1><p>Affronte le garage rival dans un duel de statistiques automobiles.</p></div><button class="primary" id="newgame">NOUVEAU DUEL ↗</button></div>
+ <div class="layout">
+  <section class="arena">
+   <div class="sectionhead"><h2>🃏 TA MAIN</h2><span class="subtle">Choisis une carte pour commencer</span></div>
+   <div class="hand" id="hand"></div>
+   <div class="battle">
+    <div class="battlehead"><h2>⚡ ARÈNE DE DUEL</h2><span class="round" id="round">MANCHE 1 / 3</span></div>
+    <div class="duel">
+     <div class="duelslot" id="playerSlot"><span class="emoji">❔</span><strong>Ta voiture</strong><small>Sélectionne une carte</small></div>
+     <div class="versus">VS</div>
+     <div class="duelslot" id="enemySlot"><span class="emoji">🤖</span><strong>Garage rival</strong><small>En attente du duel</small></div>
+    </div>
+    <div class="statchoices" id="statchoices">
+     <button class="statbtn" data-stat="speed" disabled>🏁 Vitesse</button><button class="statbtn" data-stat="power" disabled>🐎 Puissance</button><button class="statbtn" data-stat="accel" disabled>⚡ Accélération</button><button class="statbtn" data-stat="handling" disabled>🎯 Tenue de route</button>
+    </div>
+    <div class="result" id="result">Choisis une voiture dans ta main, puis sélectionne la statistique sur laquelle tu veux défier ton adversaire.</div>
+   </div>
+  </section>
+  <aside class="sidebox">
+   <h2>📊 TABLEAU DES SCORES</h2>
+   <div class="scoreboard"><div class="score"><small>TOI</small><strong id="playerScore">0</strong></div><div class="score"><small>RIVAL</small><strong id="enemyScore">0</strong></div></div>
+   <div><div class="guide"><b>Comment jouer ?</b><br>1. Sélectionne une voiture de ta main.<br>2. Choisis une statistique.<br>3. La carte adverse est révélée : la meilleure valeur gagne la manche.<br>4. Le premier à 2 manches remporte le duel.</div><button class="secondary" id="rules">Règles rapides</button></div>
+  </aside>
+ </div>
+ <section class="collection"><div class="sectionhead"><h2>🚘 GARAGE — COLLECTION</h2><span class="subtle">12 modèles à découvrir</span></div><div class="collection-grid" id="collection"></div></section>
+ <footer>GARAGE CARDS · Jeu de cartes automobile · Les caractéristiques sont fictives et servent au gameplay.</footer>
+</main>
+<script>
+const cars=[
+{id:1,name:"205 GTI",brand:"PEUGEOT",emoji:"🚗",rarity:"RARE",color:"#e75a55",speed:82,power:78,accel:88,handling:91},
+{id:2,name:"Clio Williams",brand:"RENAULT",emoji:"🚙",rarity:"ÉPIQUE",color:"#e5b64e",speed:84,power:81,accel:86,handling:89},
+{id:3,name:"Golf GTI",brand:"VOLKSWAGEN",emoji:"🚘",rarity:"RARE",color:"#e36c43",speed:83,power:80,accel:82,handling:85},
+{id:4,name:"Impreza WRX",brand:"SUBARU",emoji:"🏎️",rarity:"LÉGENDAIRE",color:"#5a9be8",speed:91,power:94,accel:92,handling:88},
+{id:5,name:"MX-5",brand:"MAZDA",emoji:"🚗",rarity:"RARE",color:"#d85b65",speed:78,power:70,accel:84,handling:96},
+{id:6,name:"911 Carrera",brand:"PORSCHE",emoji:"🏎️",rarity:"LÉGENDAIRE",color:"#d8b15b",speed:96,power:95,accel:94,handling:97},
+{id:7,name:"A110",brand:"ALPINE",emoji:"🚙",rarity:"ÉPIQUE",color:"#5ba9d8",speed:88,power:83,accel:91,handling:95},
+{id:8,name:"M3 E30",brand:"BMW",emoji:"🚘",rarity:"ÉPIQUE",color:"#7a9bdb",speed:87,power:86,accel:85,handling:90},
+{id:9,name:"Delta Integrale",brand:"LANCIA",emoji:"🚗",rarity:"ÉPIQUE",color:"#65a783",speed:89,power:90,accel:91,handling:87},
+{id:10,name:"Civic Type R",brand:"HONDA",emoji:"🏎️",rarity:"RARE",color:"#c4cbd2",speed:86,power:84,accel:89,handling:92},
+{id:11,name:"Mustang GT",brand:"FORD",emoji:"🚘",rarity:"ÉPIQUE",color:"#b88b67",speed:90,power:98,accel:82,handling:79},
+{id:12,name:"Aventador",brand:"LAMBORGHINI",emoji:"🏎️",rarity:"LÉGENDAIRE",color:"#8ecb70",speed:99,power:99,accel:98,handling:94}
+];
+const statNames={speed:"Vitesse",power:"Puissance",accel:"Accélération",handling:"Tenue de route"};
+let hand=[],selected=null,enemy=null,round=1,playerScore=0,enemyScore=0,wins=0,finished=false,used=[];
+const $=id=>document.getElementById(id);
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function cardHTML(c,small=false){return '<div class="cardtop"><span>'+c.brand+'</span><span>★ '+c.rarity+'</span></div><div class="carart"><span>'+c.emoji+'</span></div><div class="cardname">'+c.name+'</div><div class="cardmeta">CARTE AUTOMOBILE</div><div class="mini-stats"><span>VIT. <b>'+c.speed+'</b></span><span>PUISS. <b>'+c.power+'</b></span><span>ACC. <b>'+c.accel+'</b></span><span>ROUTE <b>'+c.handling+'</b></span></div>'}
+function renderHand(){
+ $('hand').innerHTML='';
+ hand.forEach(c=>{const b=document.createElement('button');b.className='card'+(selected&&selected.id===c.id?' selected':'');b.style.setProperty('--accent',c.color);b.innerHTML=cardHTML(c);b.disabled=finished||used.includes(c.id);b.addEventListener('click',()=>selectCard(c));$('hand').appendChild(b)});
 }
-function cylinder(parent,radius,length,x,y,z,mat,axis='x',segments=32){
- const m=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,segments),mat);
- if(axis==='x')m.rotation.z=Math.PI/2;else if(axis==='z')m.rotation.x=Math.PI/2;
- m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;
+function renderCollection(){$('collection').innerHTML=cars.map(c=>'<div class="card" style="--accent:'+c.color+'">'+cardHTML(c,true)+'</div>').join('')}
+function selectCard(c){if(finished||used.includes(c.id))return;selected=c;renderHand();$('playerSlot').innerHTML='<span class="emoji">'+c.emoji+'</span><strong>'+c.name+'</strong><small>'+c.brand+' · Carte sélectionnée</small>';document.querySelectorAll('.statbtn').forEach(b=>b.disabled=false);$('result').className='result';$('result').textContent='Choisis maintenant une statistique pour lancer le duel.'}
+function startGame(){hand=shuffle(cars).slice(0,5);selected=null;enemy=null;round=1;playerScore=0;enemyScore=0;finished=false;used=[];$('playerScore').textContent='0';$('enemyScore').textContent='0';$('round').textContent='MANCHE 1 / 3';$('playerSlot').innerHTML='<span class="emoji">❔</span><strong>Ta voiture</strong><small>Sélectionne une carte</small>';$('enemySlot').innerHTML='<span class="emoji">🤖</span><strong>Garage rival</strong><small>En attente du duel</small>';$('result').className='result';$('result').textContent='Choisis une voiture dans ta main, puis sélectionne une statistique.';document.querySelectorAll('.statbtn').forEach(b=>b.disabled=true);renderHand()}
+function play(stat){
+ if(!selected||finished||used.includes(selected.id))return;
+ const pool=cars.filter(c=>c.id!==selected.id);enemy=pool[Math.floor(Math.random()*pool.length)];
+ used.push(selected.id);
+ $('enemySlot').innerHTML='<span class="emoji">'+enemy.emoji+'</span><strong>'+enemy.name+'</strong><small>'+enemy.brand+' · '+statNames[stat]+': '+enemy[stat]+'</small>';
+ $('playerSlot').innerHTML='<span class="emoji">'+selected.emoji+'</span><strong>'+selected.name+'</strong><small>'+selected.brand+' · '+statNames[stat]+': '+selected[stat]+'</small>';
+ const p=selected[stat],e=enemy[stat];let msg,cls;
+ if(p>e){playerScore++;msg='🏆 Manche gagnée ! '+selected.name+' remporte '+statNames[stat]+' ('+p+' contre '+e+').';cls='win'}
+ else if(p<e){enemyScore++;msg='💥 Manche perdue. '+enemy.name+' gagne '+statNames[stat]+' ('+e+' contre '+p+').';cls='lose'}
+ else{msg='🤝 Égalité parfaite sur '+statNames[stat]+' ('+p+' partout).';cls='draw'}
+ $('playerScore').textContent=playerScore;$('enemyScore').textContent=enemyScore;$('result').className='result '+cls;$('result').textContent=msg;
+ document.querySelectorAll('.statbtn').forEach(b=>b.disabled=true);
+ if(playerScore>=2||enemyScore>=2||round>=3){finished=true;if(playerScore>enemyScore){wins++;$('wins').textContent=wins;$('result').textContent+=' Tu remportes le duel ! 🏆'}else if(playerScore<enemyScore){$('result').textContent+=' Le rival remporte le duel. Retente ta chance !'}else{$('result').textContent+=' Duel à égalité !'}$('newgame').textContent='REJOUER ↗';renderHand();return}
+ round++;$('round').textContent='MANCHE '+round+' / 3';
+ // Prépare la manche suivante avec les cartes restantes de la main.
+ selected=null;enemy=null;$('playerSlot').innerHTML='<span class="emoji">❔</span><strong>Ta voiture</strong><small>Choisis une autre carte</small>';$('enemySlot').innerHTML='<span class="emoji">🤖</span><strong>Garage rival</strong><small>Prêt pour la manche '+round+'</small>';document.querySelectorAll('.statbtn').forEach(b=>b.disabled=true);renderHand();
 }
-function panel(parent,verts,mat){
- const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
- geo.setIndex([0,1,2,0,2,3]);geo.computeVertexNormals();
- const mesh=new THREE.Mesh(geo,mat);mesh.material.side=THREE.DoubleSide;mesh.castShadow=true;parent.add(mesh);return mesh;
-}
-// Châssis et coque basse, avec pare-chocs enveloppants.
-pbox(car,1.82,.28,3.72,0,.52,-.02,black);
-pbox(car,1.94,.38,3.62,0,.78,-.02,paint);
-pbox(car,1.88,.2,1.02,0,.89,-1.31,paint);
-pbox(car,1.9,.2,1.02,0,.89,1.31,paint);
-pbox(car,1.88,.16,3.15,0,.48,-.02,paintDark);
-pbox(car,1.98,.2,.2,0,.48,2.02,black);
-pbox(car,1.98,.2,.2,0,.48,-2.02,black);
-// Habitacle trapézoïdal : toit, montants et vitrages.
-pbox(car,1.48,.12,1.83,0,1.88,-.18,paint);
-for(const x of [-.73,.73]){
- pbox(car,.075,.73,.09,x,1.48,-.18,paintDark);
- pbox(car,.075,.72,.09,x,1.48,.55,paintDark);
- pbox(car,.075,.68,.09,x,1.48,-.91,paintDark);
-}
-panel(car,[-.69,1.52,.58,.69,1.52,.58,.58,1.82,.42,-.58,1.82,.42],glass);
-panel(car,[-.58,1.82,.42,.58,1.82,.42,.66,1.91,-.18,-.66,1.91,-.18],paint);
-panel(car,[-.66,1.82,-.18,.66,1.82,-.18,.69,1.52,-.82,-.69,1.52,-.82],glass);
-panel(car,[-.69,1.52,-.82,.69,1.52,-.82,.58,1.82,-.91,-.58,1.82,-.91],paintDark);
-// Pare-brise avant et lunette arrière inclinés.
-panel(car,[-.68,1.52,.59,.68,1.52,.59,.56,1.83,.36,-.56,1.83,.36],glass);
-panel(car,[-.56,1.83,-.93,.56,1.83,-.93,.68,1.52,-.83,-.68,1.52,-.83],glass);
-// Tableau de bord, sièges, volant et console.
-pbox(car,1.32,.13,.32,0,1.13,.48,black);
-for(const x of [-.43,.43]){
- pbox(car,.43,.48,.42,x,1.25,-.45,black);
- pbox(car,.43,.12,.42,x,1.51,-.52,black);
- pbox(car,.39,.12,.38,x,1.12,-.9,black);
-}
-cylinder(car,.19,.035,-.43,1.34,.34,black,'z');
-cylinder(car,.15,.045,-.43,1.34,.34,metal,'z');
-pbox(car,.18,.23,.34,0,1.18,-.05,black);
-// Capot amovible, avec nervures et charnières.
-const hood=makePart('hood','Capot moteur','Capot avant avec nervures embouties. Retire-le pour accéder au moteur et à la batterie.');
-pbox(hood,1.78,.12,1.12,0,1.035,1.29,paint);
-for(const x of [-.68,.68]){const ridge=pbox(hood,.035,.035,.88,x,1.105,1.29,paintDark);ridge.rotation.x=-.025}
-for(const x of [-.68,.68])pbox(car,.08,.09,.12,x,.99,.72,metal);
-// Moteur détaillé : bloc, culasse, admission, durites et ventilateur.
-const engine=makePart('engine','Moteur','Bloc moteur avec culasse, admission, alternateur et durites. Il se trouve sous le capot.');
-const engineMetal=new THREE.MeshStandardMaterial({color:0x68747a,metalness:.72,roughness:.38});
-pbox(engine,.82,.52,.76,0,1.02,1.1,engineMetal);
-pbox(engine,.72,.18,.68,0,1.36,1.1,black);
-pbox(engine,.56,.12,.42,0,1.49,1.1,alloy);
-for(let i=0;i<4;i++)pbox(engine,.1,.2,.12,-.27+i*.18,1.58,1.1,metal);
-cylinder(engine,.16,.22,-.53,1.08,.94,alloy,'x');
-cylinder(engine,.12,.2,.5,1.02,1.3,black,'x');
-for(const x of [-.28,.28]){cylinder(engine,.045,.46,x,1.15,1.53,black,'z');}
-const battery=makePart('battery','Batterie','Batterie 12 V avec cosses positives et négatives et étiquette supérieure.');
-const batteryMat=new THREE.MeshStandardMaterial({color:0x263d4a,roughness:.65});
-pbox(battery,.46,.4,.4,-.62,1.12,1.42,batteryMat);
-pbox(battery,.34,.035,.3,-.62,1.34,1.42,black);
-cylinder(battery,.045,.055,-.75,1.39,1.42,metal,'y');
-cylinder(battery,.045,.055,-.49,1.39,1.42,redMat,'y');
-// Quatre roues démontables, pneus, jantes alliage et disques.
-const wheelIds=[];
-const wheelPositions=[['wheel-fl',-1.02,1.22,'avant gauche'],['wheel-fr',1.02,1.22,'avant droite'],['wheel-rl',-1.02,-1.28,'arrière gauche'],['wheel-rr',1.02,-1.28,'arrière droite']];
-for(const [id,x,z,label] of wheelPositions){
- wheelIds.push(id);const g=makePart(id,'Roue '+label,'Pneu, jante alliage et moyeu. La roue peut être déposée pour accéder au frein.');
- cylinder(g,.43,.29,x,.49,z,rubber);
- cylinder(g,.29,.31,x+Math.sign(x)*.015,.49,z,alloy);
- cylinder(g,.225,.025,x+Math.sign(x)*.17,.49,z,new THREE.MeshStandardMaterial({color:0x555f64,metalness:.8,roughness:.3}));
- cylinder(g,.115,.04,x+Math.sign(x)*.19,.49,z,metal);
- for(let k=0;k<5;k++){
-  const a=k*Math.PI*2/5;
-  const spoke=pbox(g,.075,.29,.065,x+Math.sign(x)*.17,.49+Math.sin(a)*.13,z+Math.cos(a)*.13,metal);
-  spoke.rotation.x=a;
-  cylinder(g,.022,.045,x+Math.sign(x)*.215,.49+Math.sin(a)*.145,z+Math.cos(a)*.145,black,'x',12);
- }
- // Sculptures latérales discrètes.
- for(let k=0;k<20;k++){const a=k*Math.PI*2/20;const t=pbox(g,.24,.035,.055,x,.49+Math.sin(a)*.405,z+Math.cos(a)*.405,black);t.rotation.x=-a}
-}
-// Passages de roues, arches noires et ailes avant/arrière.
-const archMat=new THREE.MeshStandardMaterial({color:0x202629,roughness:.86});
-for(const x of [-.99,.99])for(const z of [1.22,-1.28]){
- const arch=new THREE.Mesh(new THREE.TorusGeometry(.49,.045,10,40,Math.PI),archMat);
- arch.rotation.set(0,Math.PI/2,z>0?Math.PI:0);arch.position.set(x,.49,z);arch.castShadow=true;car.add(arch);
-}
-// Portes démontables avec vitrage, poignée, baguette et rétroviseur.
-for(const [id,x,side] of [['door-left',-1.0,'gauche'],['door-right',1.0,'droite']]){
- const g=makePart(id,'Porte '+side,'Porte complète avec vitre, poignée et baguette de protection. Elle peut être déposée.');
- pbox(g,.09,.67,1.14,x,1.12,-.08,paint);
- pbox(g,.045,.035,.95,x*1.01,.78,-.08,paintDark);
- pbox(g,.045,.06,.17,x*1.03,1.31,.32,metal);
- pbox(g,.045,.035,.09,x*1.03,1.31,.32,black);
- pbox(g,.065,.055,.16,x*1.02,1.57,-.47,black);
- pbox(g,.06,.035,.13,x*1.02,1.59,-.47,metal);
-}
-for(const x of [-.96,.96]){
- pbox(car,.11,.12,.22,x,1.31,.62,black);
- pbox(car,.18,.11,.2,x*1.08,1.38,.62,glass);
- pbox(car,.08,.12,2.12,x,.48,-.04,black);
- pbox(car,.025,.045,1.9,x*1.015,.76,-.05,metal);
-}
-// Face avant : calandre, lion stylisé, phares rectangulaires et clignotants.
-pbox(car,1.12,.22,.055,0,.73,2.105,black);
-for(let i=0;i<7;i++)pbox(car,.025,.15,.025,-.42+i*.14,.73,2.14,metal);
-pbox(car,.22,.13,.045,0,.75,2.17,metal);
-for(const x of [-.69,.69]){
- pbox(car,.43,.24,.09,x,.91,2.02,lightMat);
- pbox(car,.18,.18,.07,x*1.43,.86,2.02,amber);
- pbox(car,.43,.055,.06,x,.75,2.055,black);
-}
-// Feux arrière verticaux en plusieurs sections.
-for(const x of [-.78,.78]){
- pbox(car,.29,.38,.08,x,.88,-2.02,redMat);
- pbox(car,.22,.12,.025,x,.99,-2.075,new THREE.MeshStandardMaterial({color:0xe34237,emissive:0x380704}));
- pbox(car,.22,.09,.025,x,.86,-2.075,amber);
- pbox(car,.22,.1,.025,x,.74,-2.075,lightMat);
-}
-// Vitres latérales en deux parties, avec montant central noir.
-for(const side of [-1,1]){
- const x=side*.755;
- panel(car,[x,1.53,.42,x,1.53,-.12,x,1.79,-.12,x,1.79,.31],glass);
- panel(car,[x,1.53,-.24,x,1.53,-.78,x,1.79,-.78,x,1.79,-.24],glass);
- pbox(car,.035,.31,.055,side*.77,1.65,-.18,black);
- // Joints de vitres et encadrement de custode.
- pbox(car,.025,.035,.52,side*.77,1.8,.1,black);
- pbox(car,.025,.035,.52,side*.77,1.8,-.51,black);
- // Petit rétroviseur extérieur.
- pbox(car,.13,.09,.18,side*.91,1.43,.52,black);
- pbox(car,.17,.12,.2,side*1.0,1.45,.52,glass);
-}
-// Pare-chocs, plaque, essuie-glaces, échappement et détails de finition.
-pbox(car,1.98,.19,.22,0,.48,2.04,black);
-pbox(car,1.98,.19,.22,0,.48,-2.04,black);
-pbox(car,.58,.12,.025,0,.51,2.16,metal);
-pbox(car,.44,.07,.018,0,.51,2.18,black);
-pbox(car,.58,.12,.025,0,.51,-2.16,metal);
-for(const x of [-.32,.32]){const w=pbox(car,.035,.018,.43,x,.98,.55,black);w.rotation.y=x>0?-.18:.18}
-cylinder(car,.075,.24,-.47,.3,-2.12,metal,'x');
-for(const x of [-.55,.55])pbox(car,.08,.045,.035,x,1.19,-.93,metal);
-// Sélection visuelle : contour lumineux sur les pièces.
-
-function animatePart(id,removing){
- const part=parts[id],g=part.group;
- if(busy)return;
- busy=true;
- if(selectionHelper){scene.remove(selectionHelper);selectionHelper.geometry.dispose();selectionHelper.material.dispose();selectionHelper=null}
- if(!removing){g.visible=true;g.position.y-=.75}
- const start=g.position.y,target=start+(removing?.75:-.75),t0=performance.now(),duration=420;
- document.querySelector('#remove').disabled=true;document.querySelector('#install').disabled=true;
- function frame(now){
-  const t=Math.min(1,(now-t0)/duration),ease=1-Math.pow(1-t,3);
-  g.position.y=start+(target-start)*ease;
-  if(t<1){requestAnimationFrame(frame);return}
-  if(removing){g.visible=false;part.removed=true}else{g.position.y=0;part.removed=false}
-  busy=false;choose(id);refresh();toast(part.name+(removing?' démonté(e)':' remonté(e)'));
- }
- requestAnimationFrame(frame);
-}
-function choose(id){
- if(busy)return;selected=id;const part=parts[id];
- document.querySelector('#part-name').textContent=part.name;
- document.querySelector('#part-info').textContent=part.description;
- document.querySelector('#remove').disabled=part.removed;
- document.querySelector('#install').disabled=!part.removed;
- if(selectionHelper){scene.remove(selectionHelper);selectionHelper.geometry.dispose();selectionHelper.material.dispose();selectionHelper=null}
- if(!part.removed){selectionHelper=new THREE.BoxHelper(part.group,0x65f0ad);selectionHelper.material.depthTest=false;selectionHelper.material.transparent=true;selectionHelper.material.opacity=.95;scene.add(selectionHelper)}
-}
-function refresh(){const done=Object.values(parts).filter(p=>p.removed).length,total=Object.keys(parts).length;document.querySelector('#count').textContent=done+' / '+total;document.querySelector('#bar').style.width=(done/total*100)+'%'}
-function toast(msg){const el=document.querySelector('#toast');el.textContent=msg;el.style.opacity='1';clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.opacity='0',1600)}
-document.querySelector('#remove').addEventListener('click',()=>{if(!selected||busy)return;const part=parts[selected];if(part.removed)return;animatePart(selected,true)});
-document.querySelector('#install').addEventListener('click',()=>{if(!selected||busy)return;const part=parts[selected];if(!part.removed)return;animatePart(selected,false)});
-document.querySelector('#restore-all').addEventListener('click',()=>{if(busy)return;const removed=Object.keys(parts).filter(id=>parts[id].removed);if(!removed.length){toast('Toutes les pièces sont déjà montées');return}let index=0;function next(){if(index>=removed.length){if(selected)choose(selected);refresh();toast('Voiture entièrement remontée');return}const id=removed[index++];animatePart(id,false);const wait=()=>{if(busy)requestAnimationFrame(wait);else next()};requestAnimationFrame(wait)}next()});
-// Contrôle caméra : glisser pour tourner, molette/pincement pour zoomer.
-let azimuth=.72,polar=1.13,distance=8.8,drag=null,pinchStart=0,moved=false;
-const target=new THREE.Vector3(0,.85,0);
-function updateCamera(){polar=THREE.MathUtils.clamp(polar,.35,1.48);distance=THREE.MathUtils.clamp(distance,4.8,15);camera.position.set(target.x+distance*Math.sin(polar)*Math.sin(azimuth),target.y+distance*Math.cos(polar),target.z+distance*Math.sin(polar)*Math.cos(azimuth));camera.lookAt(target)}
-updateCamera();
-const pointers=new Map();
-renderer.domElement.addEventListener('pointerdown',e=>{renderer.domElement.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;if(pointers.size===1)drag={x:e.clientX,y:e.clientY,az:azimuth,pol:polar};if(pointers.size===2){const a=[...pointers.values()];pinchStart=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}});
-renderer.domElement.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1&&drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>5)moved=true;azimuth=drag.az-dx*.008;polar=drag.pol+dy*.006;updateCamera()}else if(pointers.size===2){const a=[...pointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);if(pinchStart>0){distance*=pinchStart/d;pinchStart=d;updateCamera()}}});
-function pointerUp(e){pointers.delete(e.pointerId);if(pointers.size===0){drag=null;pinchStart=0}}
-renderer.domElement.addEventListener('pointerup',pointerUp);renderer.domElement.addEventListener('pointercancel',pointerUp);
-renderer.domElement.addEventListener('wheel',e=>{distance+=e.deltaY*.008;updateCamera()},{passive:true});
-// Cliquer sur une pièce seulement si le pointeur n'a pas servi à déplacer la caméra.
-const raycaster=new THREE.Raycaster(),mouse=new THREE.Vector2();let downAt=null;
-renderer.domElement.addEventListener('pointerdown',e=>{downAt={x:e.clientX,y:e.clientY,id:e.pointerId}});
-renderer.domElement.addEventListener('pointerup',e=>{if(busy)return;if(!downAt||downAt.id!==e.pointerId)return;const movedPx=Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y);downAt=null;if(movedPx>7||pointers.size>0)return;const rect=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-rect.left)/rect.width)*2-1;mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(mouse,camera);const hits=raycaster.intersectObject(car,true);for(const hit of hits){let o=hit.object;while(o&&o!==car&&!o.userData.partId)o=o.parent;if(o&&o.userData.partId){choose(o.userData.partId);return}}});
-window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7))});
-function animate(){requestAnimationFrame(animate);if(selectionHelper)selectionHelper.update();renderer.render(scene,camera)}animate();
+document.querySelectorAll('.statbtn').forEach(b=>b.addEventListener('click',()=>play(b.dataset.stat)));
+$('newgame').addEventListener('click',()=>{startGame();$('newgame').textContent='NOUVEAU DUEL ↗'});
+$('rules').addEventListener('click',()=>{$('result').className='result';$('result').textContent='Chaque voiture possède 4 notes sur 100. Choisis la caractéristique où ta voiture est la plus forte. Deux manches gagnées suffisent pour remporter le duel.'});
+renderCollection();startGame();
 </script>
-</body></html>
+</body>
+</html>
