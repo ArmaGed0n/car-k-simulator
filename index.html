@@ -1,235 +1,130 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>K Simulateur 3D</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>K Mécanique Simulator</title>
 <style>
-*{box-sizing:border-box}body{margin:0;overflow:hidden;font-family:system-ui,Arial;background:#91b9cf;color:white}canvas{display:block}
-.hud{position:fixed;background:#101923d9;border:1px solid #ffffff30;border-radius:13px;padding:12px 16px;backdrop-filter:blur(8px);z-index:2}
-#logo{top:14px;left:14px;font-weight:900;letter-spacing:2px}#logo b{color:#62dda1}
-#speed{top:14px;right:14px;text-align:right;font-size:28px;font-weight:900}#speed small{font-size:11px}
-#keys{display:none}
-#touch{position:fixed;inset:0;z-index:3;pointer-events:none;display:none;touch-action:none}
-.pad{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));display:flex;gap:12px;align-items:end;pointer-events:auto}
-#steering{left:16px}#pedals{right:16px;flex-direction:column;align-items:stretch}
-.ctrl{width:68px;height:68px;border-radius:22px;background:#101923b8;border:2px solid #ffffff70;color:white;font-size:26px;font-weight:900;touch-action:none;user-select:none;-webkit-user-select:none}
-#pedals .ctrl{width:76px;height:76px;font-size:15px}#gas{background:#168b61dc}#brake{background:#b13b42dc}
-.ctrl:active,.ctrl.down{filter:brightness(1.4);transform:scale(.96)}
-#intro section{width:min(440px,calc(100vw - 32px))}
-@media(pointer:coarse),(max-width:800px){#touch{display:block}#keys{display:none}#speed{font-size:23px;padding:9px 12px}#logo{font-size:13px;padding:9px 11px}}
-html.touch-device #touch{display:block}
-html.touch-device #keys{display:none}
-html.touch-device .ctrl{width:76px;height:76px;border-radius:50%;font-size:29px;box-shadow:0 4px 14px #0006}
-html.touch-device #pedals .ctrl{width:84px;height:84px;border-radius:24px;font-size:14px}
-html.touch-device #steering{left:max(18px,env(safe-area-inset-left));bottom:max(22px,env(safe-area-inset-bottom))}
-html.touch-device #pedals{right:max(18px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom))}
-html.touch-device #gas:before{content:"▲";display:block;font-size:22px;margin-bottom:2px}
-html.touch-device #brake:before{content:"▼";display:block;font-size:18px;margin-bottom:2px}
-@media(orientation:portrait) and (pointer:coarse){
- #rotate-hint{display:grid}
- #touch{visibility:hidden}
-}
-
-#garage-near{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:4;display:none}
-#garage-panel{position:fixed;inset:0;z-index:8;display:none;place-items:center;background:#06111de8;padding:18px}
-#garage-panel section{width:min(430px,100%);background:#172a38;border:1px solid #ffffff35;border-radius:20px;padding:22px;text-align:center}
-#garage-panel h2{margin:0 0 8px;color:#62dda1}
-.upgrade-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #ffffff20;text-align:left}
-.upgrade-row button{padding:10px 12px;white-space:nowrap}
-#garage-panel .close{margin-top:16px;background:#344957;color:white}
-#rotate-hint{display:none;position:fixed;inset:0;z-index:10;background:#07131df2;place-items:center;text-align:center;padding:28px}
-#rotate-hint section{max-width:320px}
-#rotate-hint .phone{font-size:48px;display:block;margin-bottom:12px}
-#intro{position:fixed;inset:0;background:#07131dcc;display:grid;place-items:center;z-index:5}
-#intro section{background:#142330;border:1px solid #ffffff30;border-radius:20px;padding:30px;text-align:center;max-width:420px;margin:18px}
-h1{margin:0 0 10px;font-size:34px}h1 span{color:#62dda1}p{color:#c4d2dc}
-button{border:0;border-radius:12px;padding:13px 24px;background:#62dda1;color:#092017;font-weight:900;font-size:15px;cursor:pointer}
+:root{color-scheme:dark;--green:#62dda1;--panel:#111d29;--line:#ffffff20}
+*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#101820;color:#f3f6f8;font-family:system-ui,Arial,sans-serif}canvas{display:block;touch-action:none}
+#top{position:fixed;z-index:3;left:14px;right:14px;top:12px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.brand,.pill{background:#101923df;border:1px solid var(--line);border-radius:12px;padding:10px 14px;backdrop-filter:blur(8px)}.brand{font-weight:950;letter-spacing:1.5px}.brand b{color:var(--green)}.pill{font-size:12px;color:#cbd5dc}
+#panel{position:fixed;z-index:4;right:14px;top:76px;width:min(300px,calc(100vw - 28px));background:#111d29ed;border:1px solid var(--line);border-radius:16px;padding:16px;backdrop-filter:blur(12px);box-shadow:0 12px 36px #0005}
+.eyebrow{font-size:10px;letter-spacing:1.6px;color:var(--green);font-weight:900}h1{font-size:20px;margin:5px 0 7px}p{font-size:13px;line-height:1.45;color:#b9c6cf;margin:0 0 12px}
+button{border:0;border-radius:10px;padding:11px 13px;font-weight:850;cursor:pointer;background:var(--green);color:#071a12}button:disabled{opacity:.4;cursor:default}.secondary{background:#293b49;color:#e9f0f4}.actions{display:flex;gap:8px}.actions button{flex:1;font-size:12px}
+#progress{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.progress-head{display:flex;justify-content:space-between;font-size:11px;color:#cbd5dc;margin-bottom:7px}.bar{height:7px;background:#293844;border-radius:9px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
+#hint{position:fixed;z-index:2;left:50%;bottom:15px;transform:translateX(-50%);background:#101923d9;border:1px solid var(--line);padding:9px 13px;border-radius:12px;color:#cbd5dc;font-size:11px;white-space:nowrap;pointer-events:none}
+#toast{position:fixed;z-index:5;left:50%;top:76px;transform:translateX(-50%);background:#173d30;color:#dffff0;border:1px solid #62dda155;padding:10px 15px;border-radius:12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+@media(max-width:650px){#panel{top:auto;bottom:55px;left:10px;right:10px;width:auto;padding:12px}h1{font-size:17px}p{font-size:12px;margin-bottom:8px}#progress{margin-top:9px;padding-top:8px}#hint{bottom:8px;font-size:10px}.brand{font-size:12px}.pill{font-size:10px;padding:8px}}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
-</head><body>
-<script>if(("ontouchstart" in window)||navigator.maxTouchPoints>0)document.documentElement.classList.add("touch-device");</script>
-<div id="rotate-hint"><section><span class="phone">📱 ↻</span><h2>Tourne ton téléphone</h2><p>K Simulateur se joue en mode paysage pour profiter de toute la route et des commandes.</p></section></div>
-<div id="logo" class="hud">K <b>SIMULATEUR</b> · 3D</div><div id="speed" class="hud">0 <small>KM/H</small></div>
-<div id="keys" class="hud">Z / W : accélérer · S : freiner<br>Q / A : gauche · D : droite<br>Espace : frein à main · R : recommencer</div>
-<div id="touch">
- <div class="pad" id="steering"><button class="ctrl" data-control="left" aria-label="Tourner à gauche">◀</button><button class="ctrl" data-control="right" aria-label="Tourner à droite">▶</button></div>
- <div class="pad" id="pedals"><button class="ctrl" id="gas" data-control="gas">ACCÉL.</button><button class="ctrl" id="brake" data-control="brake">FREIN</button></div>
-</div>
-<button id="garage-near">ENTRER AU GARAGE</button>
-<div id="garage-panel"><section><h2>GARAGE K</h2><p>Améliore ta 205 pour prendre la route !</p>
-<div class="upgrade-row"><span><b>Moteur</b><br><small>Plus d'accélération et de vitesse</small></span><button id="upgrade-engine">Niveau 0/3</button></div>
-<div class="upgrade-row"><span><b>Pneus sport</b><br><small>Direction plus réactive</small></span><button id="upgrade-grip">Améliorer · 1</button></div>
-<div class="upgrade-row"><span><b>Peinture</b><br><small>Changer la couleur</small></span><button id="upgrade-paint">Changer</button></div>
-<p id="garage-status">Améliorations gratuites pour cette première version.</p><button class="close" id="close-garage">REPRENDRE LA ROUTE</button></section></div>
-<div id="intro"><section><h1>K <span>SIMULATEUR</span></h1><p>Bienvenue en ville ! Prends le volant et explore ton premier monde 3D.</p><button id="play">DÉMARRER</button></section></div>
+</head>
+<body>
+<div id="top"><div class="brand">K <b>MÉCANIQUE</b> · SIMULATOR</div><div class="pill">ATELIER 01 · PEUGEOT 205</div></div>
+<aside id="panel">
+ <div class="eyebrow">POSTE DE TRAVAIL</div><h1 id="part-name">Sélectionne une pièce</h1>
+ <p id="part-info">Clique sur une pièce de la voiture pour afficher sa fiche et commencer le démontage.</p>
+ <div class="actions"><button id="remove" disabled>DÉMONTER</button><button id="install" class="secondary" disabled>REMETTRE</button></div>
+ <div id="progress"><div class="progress-head"><span>PIÈCES DÉMONTÉES</span><b id="count">0 / 7</b></div><div class="bar"><span id="bar"></span></div></div>
+</aside>
+<div id="toast"></div>
+<div id="hint">FAIS GLISSER POUR TOURNER · PINCE POUR ZOOMER · CLIQUE SUR UNE PIÈCE</div>
 <script type="module">
 import * as THREE from 'three';
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x9bc9df);scene.fog=new THREE.Fog(0x9bc9df,100,270);
-const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,500);
-const isMobile=('ontouchstart' in window)||navigator.maxTouchPoints>0||matchMedia('(pointer:coarse)').matches;const renderer=new THREE.WebGLRenderer({antialias:!isMobile,powerPreference:'high-performance'});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,isMobile?1.5:2));renderer.shadowMap.enabled=!isMobile;document.body.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xe8f7ff,0x536b4b,2));const sun=new THREE.DirectionalLight(0xfff0d2,2.2);sun.position.set(-40,80,35);sun.castShadow=true;scene.add(sun);
-function makeTexture(base,noise=24,repeat=1){
- const canvas=document.createElement('canvas');canvas.width=canvas.height=256;
- const ctx=canvas.getContext('2d');ctx.fillStyle=base;ctx.fillRect(0,0,256,256);
- for(let i=0;i<5200;i++){const v=Math.floor(Math.random()*noise);ctx.fillStyle=i%2?'rgba(255,255,255,'+(v/900)+')':'rgba(0,0,0,'+(v/900)+')';const s=Math.random()*2+1;ctx.fillRect(Math.random()*256,Math.random()*256,s,s)}
- const tex=new THREE.CanvasTexture(canvas);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(repeat,repeat);tex.colorSpace=THREE.SRGBColorSpace;return tex;
-}
-const grassTex=makeTexture('#64875c',30,18),asphaltTex=makeTexture('#343a40',34,8),concreteTex=makeTexture('#aaa99f',18,5);
-const facadeCanvas=document.createElement('canvas');facadeCanvas.width=256;facadeCanvas.height=256;
-const fctx=facadeCanvas.getContext('2d');fctx.fillStyle='#a99f90';fctx.fillRect(0,0,256,256);
-for(let row=0;row<6;row++)for(let col=0;col<5;col++){fctx.fillStyle='#354d5a';fctx.fillRect(12+col*49,12+row*40,27,23);fctx.fillStyle='#a8d0d9';fctx.fillRect(14+col*49,14+row*40,23,3)}
-const facadeTex=new THREE.CanvasTexture(facadeCanvas);facadeTex.colorSpace=THREE.SRGBColorSpace;
-const material=(c,map=null,roughness=.82)=>new THREE.MeshStandardMaterial({color:c,map,roughness});
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),material(0xffffff,grassTex));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
-const roadmat=material(0xffffff,asphaltTex),side=material(0xffffff,concreteTex),windowmat=material(0x86bdcc);
-function block(w,h,d,x,y,z,m){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o}
-const lineMat=new THREE.MeshStandardMaterial({color:0xf3e8b2,roughness:.7});
-for(let i=-3;i<=3;i++){
- block(12,.12,310,i*42,.06,0,roadmat);block(310,.12,12,0,.06,i*42,roadmat);
- for(let p=-145;p<=145;p+=12){block(.16,.025,5,i*42,.135,p,lineMat);block(5,.025,.16,p,.135,i*42,lineMat)}
-}
-for(let x=-3;x<=3;x++)for(let z=-3;z<=3;z++){
- const cx=x*42,cz=z*42;block(27,.3,27,cx+21,.16,cz+21,side);
- for(let n=0;n<4;n++){const bx=cx+9+(n%2)*14,bz=cz+9+Math.floor(n/2)*14,h=8+((x*13+z*7+n*11+100)%17);
- block(8,h,8,bx,h/2+.35,bz,material([0xb9aa96,0x8ba8b3,0xc9bda7,0x87949b][(n+x-z+20)%4],facadeTex));block(8.2,.3,8.2,bx,h+.5,bz,material(0x56616a));
- for(let yy=2;yy<h-1;yy+=3)for(let xx of [-2,2])block(.08,1,.9,bx+xx,yy,bz-4.05,windowmat);
- }
-}
-for(let i=0;i<70;i++){const x=Math.sin(i*91.7)*135,z=Math.cos(i*37.2)*135;if(Math.abs(x%42)<9||Math.abs(z%42)<9)continue;block(.45,2,.45,x,1,z,material(0x65472e));const crown=new THREE.Mesh(new THREE.SphereGeometry(1.5,8,7),material(0x39794b));crown.position.set(x,3,z);scene.add(crown)}
-// Atelier de préparation, juste à côté du point de départ.
-const garageX=13,garageZ=-9;
-block(12,6.5,9,garageX,3.25,garageZ,material(0xc6c9c5));
-block(12.4,.35,9.4,garageX,6.55,garageZ,material(0x303c43));
-block(8.2,3.8,.18,garageX,2.15,garageZ+4.56,material(0x26343b));
-block(8.6,.22,.35,garageX,4.2,garageZ+4.65,material(0x62dda1));
-block(1.2,1.4,.18,garageX-5.1,1.1,garageZ+4.62,material(0x62dda1));
-block(1.2,1.4,.18,garageX+5.1,1.1,garageZ+4.62,material(0x62dda1));
-block(9,.12,5,garageX,.08,garageZ+7,material(0x777c7b));
-block(2.5,.1,.6,garageX,.16,garageZ+9.4,material(0xf0d75b));
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x18232d);scene.fog=new THREE.Fog(0x18232d,18,38);
+const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,100); 
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;document.body.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xc8e5ff,0x34302b,2.1));
+const key=new THREE.DirectionalLight(0xffe4bd,3.1);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
+const fill=new THREE.PointLight(0x73aaff,45,18);fill.position.set(5,5,-4);scene.add(fill);
+const floorMat=new THREE.MeshStandardMaterial({color:0x454c50,roughness:.88});
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(60,60),floorMat);floor.rotation.x=-Math.PI/2;floor.position.y=-.04;floor.receiveShadow=true;scene.add(floor);
+const grid=new THREE.GridHelper(40,40,0x65717a,0x59636a);grid.position.y=-.025;scene.add(grid);
+const wallMat=new THREE.MeshStandardMaterial({color:0x263541,roughness:.9});
+function box(parent,w,h,d,x,y,z,mat,cast=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=true;parent.add(m);return m}
+box(scene,20,7,.35,0,3.45,-7.8,wallMat,false);
+for(let x=-7;x<=7;x+=3.5){box(scene,.08,5,.1,x,3.1,-7.58,new THREE.MeshStandardMaterial({color:0x344754}),false)}
+// Établi et rangements pour donner une identité visuelle à l'atelier.
+box(scene,3.8,.18,1.1,-5,.95,-3.7,new THREE.MeshStandardMaterial({color:0x9b7652}));
+for(const x of [-6.5,-3.5])box(scene,.12,.95,.12,x,.45,-3.7,new THREE.MeshStandardMaterial({color:0x202a31}));
+for(let i=0;i<4;i++)box(scene,.62,.42,.45,-6.2+i*.78,1.35,-3.7,new THREE.MeshStandardMaterial({color:[0x267b69,0x42647d,0xb77b32,0x9d4141][i]}));
+const liftMat=new THREE.MeshStandardMaterial({color:0xe1b83e,metalness:.25,roughness:.55});
+for(const x of [-2.15,2.15]){box(scene,.18,2.6,.2,x,1.3,-.15,liftMat);box(scene,1.05,.13,.22,x,1.02,.15,liftMat)}
+// Voiture orientée vers l'avant (+Z).
 const car=new THREE.Group();scene.add(car);
-// Modèle détaillé original inspiré de la silhouette d'une 205 GTI 1991.
-const paintColors=[0xc9252d,0xe7e7df,0x18232d,0x174b36,0xd8b52e];let paintIndex=0,engineLevel=0,gripLevel=0;
-const paintMat=new THREE.MeshStandardMaterial({color:paintColors[0],roughness:.3,metalness:.18});
-const trimMat=new THREE.MeshStandardMaterial({color:0x171a1c,roughness:.72});
-const rubberMat=new THREE.MeshStandardMaterial({color:0x101214,roughness:.95});
-const glassMat=new THREE.MeshStandardMaterial({color:0x477080,roughness:.16,metalness:.25,transparent:true,opacity:.88});
-const chromeMat=new THREE.MeshStandardMaterial({color:0xb9c0c1,metalness:.82,roughness:.22});
-const rimMat=new THREE.MeshStandardMaterial({color:0x899398,metalness:.78,roughness:.28});
-const lampMat=new THREE.MeshStandardMaterial({color:0xfff4d1,emissive:0x6c572d,emissiveIntensity:.45});
-const redLampMat=new THREE.MeshStandardMaterial({color:0xc51f25,emissive:0x390000});
-const darkGlass=new THREE.MeshStandardMaterial({color:0x17272e,roughness:.2,metalness:.15});
-function part(w,h,d,x,y,z,mat,rx=0,ry=0,rz=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=true;car.add(m);return m}
-function cylinder(radius,length,x,y,z,mat,axis='x',segments=24){const m=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,segments),mat);if(axis==='x')m.rotation.z=Math.PI/2;else if(axis==='z')m.rotation.x=Math.PI/2;m.position.set(x,y,z);m.castShadow=true;car.add(m);return m}
-// Bas de caisse et panneaux de carrosserie aux volumes arrondis simulés par des pièces superposées.
-part(1.94,.48,3.72,0,.72,0,paintMat);
-part(1.98,.22,1.18,0,.94,1.28,paintMat);
-part(1.98,.22,1.08,0,.94,-1.34,paintMat);
-part(1.91,.17,1.12,0,1.02,.22,paintMat);
-part(1.91,.17,1.02,0,1.02,-.92,paintMat);
-part(1.98,.12,3.55,0,.49,0,trimMat);
-// Habitacle : pavillon, pare-brise et lunette arrière inclinés.
-const cabinShape=new THREE.Shape();
-cabinShape.moveTo(-1.08,1.02);cabinShape.lineTo(-.78,1.72);cabinShape.quadraticCurveTo(-.68,1.86,-.48,1.88);cabinShape.lineTo(.58,1.88);cabinShape.quadraticCurveTo(.78,1.86,.88,1.68);cabinShape.lineTo(1.12,1.02);cabinShape.closePath();
-const cabinGeo=new THREE.ExtrudeGeometry(cabinShape,{depth:1.52,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.045,bevelThickness:.045});
-const cabinMesh=new THREE.Mesh(cabinGeo,paintMat);cabinMesh.rotation.y=Math.PI/2;cabinMesh.position.x=-.76;cabinMesh.castShadow=true;car.add(cabinMesh);
-// Vitres latérales, séparations et joints noirs.
-for(const sideSign of [-1,1]){
- const x=sideSign*.775;
- part(.025,.52,.78,x,1.48,-.57,glassMat,0,0,sideSign*.08);
- part(.025,.52,.62,x,1.48,.35,glassMat,0,0,-sideSign*.08);
- part(.055,.64,.075,x*1.01,1.45,-.08,trimMat);
- part(.055,.06,1.48,x*1.01,1.79,-.1,trimMat);
- part(.09,.12,.18,sideSign*.91,1.48,.72,trimMat,0,0,sideSign*.15);
- part(.12,.1,.2,sideSign*1.01,1.55,.73,paintMat);
- // baguette latérale rouge/noire typique et poignée de porte
- part(.045,.13,2.55,sideSign*.985,.77,-.02,trimMat);
- part(.05,.055,2.45,sideSign*1.012,.79,-.02,paintMat);
- part(.035,.055,.2,sideSign*1.005,1.13,-.05,chromeMat);
- // joints et contours d'ailes
- for(const z of [-1.35,1.35]){
-  const arch=new THREE.Mesh(new THREE.TorusGeometry(.51,.055,8,28,Math.PI),trimMat);
-  arch.rotation.z=Math.PI;arch.position.set(sideSign*1.005,.49,z);arch.castShadow=true;car.add(arch);
- }
+const paint=new THREE.MeshStandardMaterial({color:0xc52c32,metalness:.24,roughness:.3});
+const black=new THREE.MeshStandardMaterial({color:0x151a1e,roughness:.72});
+const rubber=new THREE.MeshStandardMaterial({color:0x101214,roughness:.96});
+const glass=new THREE.MeshStandardMaterial({color:0x345665,metalness:.2,roughness:.2});
+const metal=new THREE.MeshStandardMaterial({color:0xaeb9bd,metalness:.82,roughness:.25});
+const lightMat=new THREE.MeshStandardMaterial({color:0xffefc4,emissive:0x4c3914});
+const redMat=new THREE.MeshStandardMaterial({color:0xb51f27,emissive:0x250000});
+const parts={};let selected=null;
+function makePart(id,name,description){const g=new THREE.Group();g.userData.partId=id;car.add(g);parts[id]={group:g,name,description,removed:false};return g}
+function pbox(parent,w,h,d,x,y,z,mat){const m=box(parent,w,h,d,x,y,z,mat);return m}
+function cylinder(parent,radius,length,x,y,z,mat,axis='x'){const m=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,28),mat);if(axis==='x')m.rotation.z=Math.PI/2;else if(axis==='z')m.rotation.x=Math.PI/2;m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+// Structure permanente
+pbox(car,1.95,.42,3.85,0,.65,0,black);
+pbox(car,1.9,.38,3.55,0,.82,0,paint);
+pbox(car,1.94,.22,1.05,0,.91,-1.22,paint);
+pbox(car,1.94,.22,1.05,0,.91,1.28,paint);
+// Habitacle
+const cabin=new THREE.Group();car.add(cabin);
+pbox(cabin,1.52,.72,1.9,0,1.48,-.15,paint);
+pbox(cabin,1.42,.5,1.72,0,1.51,-.15,glass);
+pbox(cabin,1.56,.09,1.94,0,1.88,-.15,paint);
+for(const x of [-.79,.79]){pbox(cabin,.07,.72,.08,x,1.48,-.15,black);pbox(cabin,.07,.08,1.8,x,1.83,-.15,black)}
+// Intérieur visible
+pbox(car,1.35,.12,1.5,0,1.12,-.12,black);
+for(const x of [-.48,.48]){pbox(car,.42,.48,.38,x,1.36,-.5,black);pbox(car,.42,.48,.38,x,1.36,.32,black)}
+// Capot amovible
+const hood=makePart('hood','Capot moteur','Protège le compartiment moteur. Retire-le pour accéder au moteur et à la batterie.');
+pbox(hood,1.83,.13,1.12,0,1.04,1.28,paint);
+pbox(hood,1.68,.035,.92,0,1.115,1.28,new THREE.MeshStandardMaterial({color:0xd94a4e,roughness:.4}));
+// Moteur et batterie accessibles après retrait du capot
+const engine=makePart('engine','Moteur','Bloc moteur principal. Il est installé dans le compartiment avant.');
+pbox(engine,.9,.62,.85,0,1.02,1.05,new THREE.MeshStandardMaterial({color:0x68747a,metalness:.65,roughness:.45}));
+pbox(engine,.62,.16,.55,0,1.42,1.05,black);
+for(let i=0;i<4;i++)pbox(engine,.12,.25,.16,-.28+i*.19,1.58,1.05,metal);
+const battery=makePart('battery','Batterie','Alimente le système électrique du véhicule. Deux bornes sont visibles sur le dessus.');
+pbox(battery,.48,.42,.42,-.62,1.12,1.42,new THREE.MeshStandardMaterial({color:0x263d4a}));
+pbox(battery,.12,.06,.12,-.72,1.36,1.42,metal);pbox(battery,.12,.06,.12,-.52,1.36,1.42,redMat);
+// Roues indépendantes
+const wheelIds=[];
+for(const [id,x,z,label] of [['wheel-fl',-1.03,1.22,'avant gauche'],['wheel-fr',1.03,1.22,'avant droite'],['wheel-rl',-1.03,-1.28,'arrière gauche'],['wheel-rr',1.03,-1.28,'arrière droite']]){
+ wheelIds.push(id);const g=makePart(id,'Roue '+label,'Ensemble roue et pneu. Cette pièce peut être déposée pour accéder au moyeu.');
+ cylinder(g,.43,.27,x,.48,z,rubber);cylinder(g,.27,.29,x*1.01,.48,z,metal);cylinder(g,.11,.31,x*1.02,.48,z,black);
+ for(let k=0;k<8;k++){const a=k*Math.PI/4;const spoke=pbox(g,.055,.25,.045,x+Math.sign(x)*.15,.48+Math.sin(a)*.12,z+Math.cos(a)*.12,metal);spoke.rotation.x=a}
 }
-// Pare-brise et lunette : panneaux inclinés, avec joints.
-part(1.42,.055,.72,0,1.49,.78,glassMat,-.62);
-part(1.38,.05,.62,0,1.49,-.9,glassMat,.62);
-part(1.55,.07,.08,0,1.82,-.16,paintMat);
-// Intérieur visible à travers les vitres.
-part(1.38,.12,1.45,0,1.18,-.12,darkGlass);
-for(const x of [-.48,.48]){
- part(.42,.48,.38,x,1.42,-.38,trimMat);
- part(.42,.16,.18,x,1.69,-.42,trimMat);
- part(.42,.48,.38,x,1.42,.36,trimMat);
-}
-part(1.3,.12,.24,0,1.3,.65,trimMat);
-const steering=new THREE.Mesh(new THREE.TorusGeometry(.19,.025,8,24),chromeMat);steering.position.set(-.42,1.42,.48);steering.rotation.y=.25;car.add(steering);
-// Pare-chocs avant/arrière, calandre, badge et optiques.
-part(1.92,.22,.22,0,.57,2.02,trimMat);
-part(1.92,.12,.12,0,.49,2.08,chromeMat);
-part(1.92,.2,.22,0,.57,-2.02,trimMat);
-part(1.82,.08,.08,0,.49,-2.13,chromeMat);
-part(1.02,.23,.055,0,.79,2.035,trimMat);
-for(let i=0;i<7;i++)part(.035,.16,.025,-.42+i*.14,.79,2.07,chromeMat);
-part(.22,.16,.045,0,.86,2.08,chromeMat);
-for(const x of [-.69,.69]){
- part(.48,.24,.09,x,.91,2.055,lampMat);
- part(.18,.17,.08,x*1.48,.88,2.06,new THREE.MeshStandardMaterial({color:0xe6a24b}));
- part(.46,.22,.08,x,.89,-2.055,redLampMat);
- part(.16,.2,.08,x*1.48,.89,-2.06,redLampMat);
-}
-part(.75,.09,.06,0,.91,2.11,trimMat);
-part(.55,.1,.06,0,.88,-2.11,trimMat);
-// Rétroviseurs, essuie-glaces, antenne et petit becquet arrière.
-for(const x of [-.9,.9]){
- part(.13,.13,.2,x,1.49,.72,trimMat,0,0,x*.3);
- const mirror=part(.19,.14,.22,x*1.13,1.55,.73,paintMat,0,0,x*.12);
-}
-part(1.3,.035,.08,0,1.12,.98,trimMat,-.08);
-part(1.3,.035,.08,0,1.12,-1.08,trimMat,.08);
-part(1.72,.09,.34,0,1.7,-1.12,trimMat,-.12);
-// Roues, pneus, jantes à branches, moyeux et écrous.
-const wheelMeshes=[];
-for(const x of [-1.02,1.02])for(const z of [-1.34,1.34]){
- const tire=cylinder(.43,.28,x,.48,z,rubberMat);wheelMeshes.push(tire);
- cylinder(.285,.30,x*1.01,.48,z,rimMat);
- cylinder(.105,.315,x*1.015,.48,z,trimMat);
- for(let k=0;k<8;k++){const a=k*Math.PI/4;part(.055,.29,.045,x+Math.sign(x)*.16,.48+Math.sin(a)*.14,z+Math.cos(a)*.14,chromeMat,0,a);}
- for(let k=0;k<4;k++){const a=k*Math.PI/2;cylinder(.025,.32,x*1.02,.48+Math.sin(a)*.19,z+Math.cos(a)*.19,chromeMat)}
-}
-// Sorties d'échappement et petits détails de finition.
-cylinder(.075,.24,.62,.38,-2.08,chromeMat);
-part(1.92,.045,.08,0,.43,0,trimMat);
-car.position.set(0,0,0);
-const pressed={};
-addEventListener('keydown',e=>{pressed[e.key.toLowerCase()]=true;if(e.key===' ')e.preventDefault();if(e.key.toLowerCase()==='r')resetCar()});
-addEventListener('keyup',e=>pressed[e.key.toLowerCase()]=false);
-function resetCar(){car.position.set(0,0,0);car.rotation.y=0;heading=0;speed=0}
-const touchMap={left:'left',right:'right',gas:'gas',brake:'brake'};
-document.querySelectorAll('[data-control]').forEach(btn=>{
- const key=touchMap[btn.dataset.control];
- const down=e=>{e.preventDefault();pressed[key]=true;btn.classList.add('down');if(btn.setPointerCapture&&e.pointerId!==undefined)btn.setPointerCapture(e.pointerId)};
- const up=e=>{e.preventDefault();pressed[key]=false;btn.classList.remove('down')};
- btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up);btn.addEventListener('lostpointercapture',up);
-});
-document.addEventListener('contextmenu',e=>e.preventDefault());
-let speed=0,heading=0,active=false,garageOpen=false;
-document.querySelector('#play').onclick=()=>{active=true;document.querySelector('#intro').style.display='none'};
-const garagePanel=document.querySelector('#garage-panel'),garageButton=document.querySelector('#garage-near');
-function openGarage(){garageOpen=true;speed=0;garagePanel.style.display='grid';}
-function closeGarage(){garageOpen=false;garagePanel.style.display='none';}
-garageButton.addEventListener('click',openGarage);document.querySelector('#close-garage').addEventListener('click',closeGarage);
-document.querySelector('#upgrade-engine').addEventListener('click',()=>{if(engineLevel<3){engineLevel++;document.querySelector('#upgrade-engine').textContent='Niveau '+engineLevel+'/3';document.querySelector('#garage-status').textContent='Moteur amélioré !'}else document.querySelector('#garage-status').textContent='Moteur au maximum.'});
-document.querySelector('#upgrade-grip').addEventListener('click',()=>{if(gripLevel<3){gripLevel++;document.querySelector('#upgrade-grip').textContent='Niveau '+gripLevel+'/3';document.querySelector('#garage-status').textContent='Pneus sport installés !'}else document.querySelector('#garage-status').textContent='Pneus au maximum.'});
-document.querySelector('#upgrade-paint').addEventListener('click',()=>{paintIndex=(paintIndex+1)%paintColors.length;paintMat.color.setHex(paintColors[paintIndex]);document.querySelector('#garage-status').textContent='Nouvelle peinture appliquée !'});
-const clock=new THREE.Clock(),look=new THREE.Vector3();
-function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);
-if(active&&!garageOpen){const go=pressed.z||pressed.w||pressed.arrowup||pressed.gas,stop=pressed.s||pressed.arrowdown||pressed.brake,L=pressed.q||pressed.a||pressed.arrowleft||pressed.left,R=pressed.d||pressed.arrowright||pressed.right,hand=pressed[' '];
-if(go)speed+=(22+engineLevel*5)*dt;else if(stop)speed-=32*dt;else speed*=Math.pow(.986,dt*60);speed=THREE.MathUtils.clamp(speed,-11,hand?20:42+engineLevel*6);if(hand)speed*=Math.pow(.94,dt*60);
-heading+=((L?1:0)-(R?1:0))*dt*(.8+gripLevel*.16+Math.min(Math.abs(speed)/20,1.3))*Math.sign(speed||1);car.rotation.y=heading;car.position.x+=Math.sin(heading)*speed*dt;car.position.z+=Math.cos(heading)*speed*dt;
-document.querySelector('#speed').innerHTML=Math.round(Math.abs(speed)*3.6)+' <small>KM/H</small>'}
-const nearGarage=Math.hypot(car.position.x-garageX,car.position.z-garageZ)<11;
-garageButton.style.display=nearGarage&&!garageOpen?'block':'none';
-look.set(car.position.x,1.2,car.position.z);const offset=new THREE.Vector3(-Math.sin(heading)*10,6,-Math.cos(heading)*10);camera.position.lerp(look.clone().add(offset),.09);camera.lookAt(look);renderer.render(scene,camera)}
-animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,isMobile?1.5:2))});
-</script></body></html>
+// Portes amovibles
+for(const [id,x,side] of [['door-left',-1.0,'gauche'],['door-right',1.0,'droite']]){const g=makePart(id,'Porte '+side,'Panneau de porte et vitre latérale. Tu peux le déposer puis le remettre.');pbox(g,.09,.72,1.05,x,1.13,-.05,paint);pbox(g,.07,.37,.83,x,1.65,-.05,glass);pbox(g,.1,.06,.18,x*1.02,1.32,.3,metal)}
+// Pare-chocs et éclairage
+pbox(car,1.95,.2,.18,0,.48,2.03,black);pbox(car,1.95,.2,.18,0,.48,-2.03,black);
+for(const x of [-.68,.68]){pbox(car,.42,.22,.07,x,.88,1.99,lightMat);pbox(car,.4,.2,.07,x,.86,-1.99,redMat)}
+// Sélection visuelle : contour lumineux sur les pièces.
+const outlineMat=new THREE.MeshBasicMaterial({color:0x62dda1,wireframe:true,transparent:true,opacity:.75,depthTest:false});
+function setPartVisible(id,visible){parts[id].group.visible=visible;parts[id].removed=!visible}
+function choose(id){selected=id;const part=parts[id];document.querySelector('#part-name').textContent=part.name;document.querySelector('#part-info').textContent=part.description;document.querySelector('#remove').disabled=part.removed;document.querySelector('#install').disabled=!part.removed;for(const el of document.querySelectorAll('.selected-ring'))el.remove();if(!part.removed){part.group.traverse(o=>{if(o.isMesh){const edges=new THREE.EdgesGeometry(o.geometry);const line=new THREE.LineSegments(edges,outlineMat);line.position.copy(o.position);line.rotation.copy(o.rotation);line.scale.copy(o.scale);line.userData.ring=true;o.parent.add(line)}})}}
+function refresh(){const done=Object.values(parts).filter(p=>p.removed).length,total=Object.keys(parts).length;document.querySelector('#count').textContent=done+' / '+total;document.querySelector('#bar').style.width=(done/total*100)+'%'}
+function toast(msg){const el=document.querySelector('#toast');el.textContent=msg;el.style.opacity='1';clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.opacity='0',1600)}
+document.querySelector('#remove').addEventListener('click',()=>{if(!selected)return;const part=parts[selected];if(part.removed)return;setPartVisible(selected,false);choose(selected);refresh();toast(part.name+' démonté(e)')});
+document.querySelector('#install').addEventListener('click',()=>{if(!selected)return;const part=parts[selected];if(!part.removed)return;setPartVisible(selected,true);choose(selected);refresh();toast(part.name+' remonté(e)')});
+// Contrôle caméra : glisser pour tourner, molette/pincement pour zoomer.
+let azimuth=.72,polar=1.13,distance=8.8,drag=null,pinchStart=0,moved=false;
+const target=new THREE.Vector3(0,.85,0);
+function updateCamera(){polar=THREE.MathUtils.clamp(polar,.35,1.48);distance=THREE.MathUtils.clamp(distance,4.8,15);camera.position.set(target.x+distance*Math.sin(polar)*Math.sin(azimuth),target.y+distance*Math.cos(polar),target.z+distance*Math.sin(polar)*Math.cos(azimuth));camera.lookAt(target)}
+updateCamera();
+const pointers=new Map();
+renderer.domElement.addEventListener('pointerdown',e=>{renderer.domElement.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=false;if(pointers.size===1)drag={x:e.clientX,y:e.clientY,az:azimuth,pol:polar};if(pointers.size===2){const a=[...pointers.values()];pinchStart=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}});
+renderer.domElement.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1&&drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>5)moved=true;azimuth=drag.az-dx*.008;polar=drag.pol+dy*.006;updateCamera()}else if(pointers.size===2){const a=[...pointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);if(pinchStart>0){distance*=pinchStart/d;pinchStart=d;updateCamera()}}});
+function pointerUp(e){pointers.delete(e.pointerId);if(pointers.size===0){drag=null;pinchStart=0}}
+renderer.domElement.addEventListener('pointerup',pointerUp);renderer.domElement.addEventListener('pointercancel',pointerUp);
+renderer.domElement.addEventListener('wheel',e=>{distance+=e.deltaY*.008;updateCamera()},{passive:true});
+// Cliquer sur une pièce seulement si le pointeur n'a pas servi à déplacer la caméra.
+const raycaster=new THREE.Raycaster(),mouse=new THREE.Vector2();let downAt=null;
+renderer.domElement.addEventListener('pointerdown',e=>{downAt={x:e.clientX,y:e.clientY,id:e.pointerId}});
+renderer.domElement.addEventListener('pointerup',e=>{if(!downAt||downAt.id!==e.pointerId)return;const movedPx=Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y);downAt=null;if(movedPx>7||pointers.size>0)return;const rect=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-rect.left)/rect.width)*2-1;mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(mouse,camera);const hits=raycaster.intersectObject(car,true);for(const hit of hits){let o=hit.object;while(o&&o!==car&&!o.userData.partId)o=o.parent;if(o&&o.userData.partId){choose(o.userData.partId);return}}});
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7))});
+function animate(){requestAnimationFrame(animate);renderer.render(scene,camera)}animate();
+</script>
+</body></html>
