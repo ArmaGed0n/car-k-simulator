@@ -11,7 +11,7 @@
 .brand,.pill{background:#101923df;border:1px solid var(--line);border-radius:12px;padding:10px 14px;backdrop-filter:blur(8px)}.brand{font-weight:950;letter-spacing:1.5px}.brand b{color:var(--green)}.pill{font-size:12px;color:#cbd5dc}
 #panel{position:fixed;z-index:4;right:14px;top:76px;width:min(300px,calc(100vw - 28px));background:#111d29ed;border:1px solid var(--line);border-radius:16px;padding:16px;backdrop-filter:blur(12px);box-shadow:0 12px 36px #0005}
 .eyebrow{font-size:10px;letter-spacing:1.6px;color:var(--green);font-weight:900}h1{font-size:20px;margin:5px 0 7px}p{font-size:13px;line-height:1.45;color:#b9c6cf;margin:0 0 12px}
-button{border:0;border-radius:10px;padding:11px 13px;font-weight:850;cursor:pointer;background:var(--green);color:#071a12}button:disabled{opacity:.4;cursor:default}.secondary{background:#293b49;color:#e9f0f4}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1;font-size:12px;min-width:88px}#view-reset{background:#344957;color:#eaf4f8}
+button{border:0;border-radius:10px;padding:11px 13px;font-weight:850;cursor:pointer;background:var(--green);color:#071a12}button:disabled{opacity:.4;cursor:default}.secondary{background:#293b49;color:#e9f0f4}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1;font-size:12px;min-width:88px}#view-reset{background:#344957;color:#eaf4f8}#restore-all{width:100%;margin-top:8px;background:#263b48;color:#dceaf0;font-size:11px}
 #progress{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.progress-head{display:flex;justify-content:space-between;font-size:11px;color:#cbd5dc;margin-bottom:7px}.bar{height:7px;background:#293844;border-radius:9px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}
 #hint{position:fixed;z-index:2;left:50%;bottom:15px;transform:translateX(-50%);background:#101923d9;border:1px solid var(--line);padding:9px 13px;border-radius:12px;color:#cbd5dc;font-size:11px;white-space:nowrap;pointer-events:none}
 #toast{position:fixed;z-index:5;left:50%;top:76px;transform:translateX(-50%);background:#173d30;color:#dffff0;border:1px solid #62dda155;padding:10px 15px;border-radius:12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
@@ -24,11 +24,11 @@ button{border:0;border-radius:10px;padding:11px 13px;font-weight:850;cursor:poin
 <aside id="panel">
  <div class="eyebrow">POSTE DE TRAVAIL</div><h1 id="part-name">Sélectionne une pièce</h1>
  <p id="part-info">Clique sur une pièce de la voiture pour afficher sa fiche et commencer le démontage.</p>
- <div class="actions"><button id="remove" disabled>DÉMONTER</button><button id="install" class="secondary" disabled>REMETTRE</button><button id="view-reset" type="button">VUE 360°</button></div>
+ <div class="actions"><button id="remove" disabled>DÉMONTER</button><button id="install" class="secondary" disabled>REMETTRE</button><button id="view-reset" type="button">VUE 360°</button></div><button id="restore-all" type="button">REMONTAGE COMPLET</button>
  <div id="progress"><div class="progress-head"><span>PIÈCES DÉMONTÉES</span><b id="count">0 / 9</b></div><div class="bar"><span id="bar"></span></div></div>
 </aside>
 <div id="toast"></div>
-<div id="hint">FAIS GLISSER POUR TOURNER · PINCE POUR ZOOMER · CLIQUE SUR UNE PIÈCE</div>
+<div id="hint">GLISSE POUR TOURNER · PINCE / MOLETTE POUR ZOOMER · CLIQUE POUR SÉLECTIONNER</div>
 <script type="module">
 import * as THREE from 'three';
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x18232d);scene.fog=new THREE.Fog(0x18232d,18,38);
@@ -59,7 +59,7 @@ const glass=new THREE.MeshStandardMaterial({color:0x345665,metalness:.2,roughnes
 const metal=new THREE.MeshStandardMaterial({color:0xaeb9bd,metalness:.82,roughness:.25});
 const lightMat=new THREE.MeshStandardMaterial({color:0xffefc4,emissive:0x4c3914});
 const redMat=new THREE.MeshStandardMaterial({color:0xb51f27,emissive:0x250000});
-const parts={};let selected=null;let selectionHelper=null;
+const parts={};let selected=null;let selectionHelper=null;let busy=false;
 function makePart(id,name,description){const g=new THREE.Group();g.userData.partId=id;car.add(g);parts[id]={group:g,name,description,removed:false};return g}
 function pbox(parent,w,h,d,x,y,z,mat){const m=box(parent,w,h,d,x,y,z,mat);return m}
 function cylinder(parent,radius,length,x,y,z,mat,axis='x'){const m=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,28),mat);if(axis==='x')m.rotation.z=Math.PI/2;else if(axis==='z')m.rotation.x=Math.PI/2;m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
@@ -110,9 +110,25 @@ pbox(car,1.95,.2,.18,0,.48,2.03,black);pbox(car,1.95,.2,.18,0,.48,-2.03,black);
 for(const x of [-.68,.68]){pbox(car,.42,.22,.07,x,.88,1.99,lightMat);pbox(car,.4,.2,.07,x,.86,-1.99,redMat)}
 // Sélection visuelle : contour lumineux sur les pièces.
 
-function setPartVisible(id,visible){parts[id].group.visible=visible;parts[id].removed=!visible}
+function animatePart(id,removing){
+ const part=parts[id],g=part.group;
+ if(busy)return;
+ busy=true;
+ if(selectionHelper){scene.remove(selectionHelper);selectionHelper.geometry.dispose();selectionHelper.material.dispose();selectionHelper=null}
+ if(!removing){g.visible=true;g.position.y-=.75}
+ const start=g.position.y,target=start+(removing?.75:-.75),t0=performance.now(),duration=420;
+ document.querySelector('#remove').disabled=true;document.querySelector('#install').disabled=true;
+ function frame(now){
+  const t=Math.min(1,(now-t0)/duration),ease=1-Math.pow(1-t,3);
+  g.position.y=start+(target-start)*ease;
+  if(t<1){requestAnimationFrame(frame);return}
+  if(removing){g.visible=false;part.removed=true}else{g.position.y=0;part.removed=false}
+  busy=false;choose(id);refresh();toast(part.name+(removing?' démonté(e)':' remonté(e)'));
+ }
+ requestAnimationFrame(frame);
+}
 function choose(id){
- selected=id;const part=parts[id];
+ if(busy)return;selected=id;const part=parts[id];
  document.querySelector('#part-name').textContent=part.name;
  document.querySelector('#part-info').textContent=part.description;
  document.querySelector('#remove').disabled=part.removed;
@@ -122,8 +138,9 @@ function choose(id){
 }
 function refresh(){const done=Object.values(parts).filter(p=>p.removed).length,total=Object.keys(parts).length;document.querySelector('#count').textContent=done+' / '+total;document.querySelector('#bar').style.width=(done/total*100)+'%'}
 function toast(msg){const el=document.querySelector('#toast');el.textContent=msg;el.style.opacity='1';clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.opacity='0',1600)}
-document.querySelector('#remove').addEventListener('click',()=>{if(!selected)return;const part=parts[selected];if(part.removed)return;setPartVisible(selected,false);choose(selected);refresh();toast(part.name+' démonté(e)')});
-document.querySelector('#install').addEventListener('click',()=>{if(!selected)return;const part=parts[selected];if(!part.removed)return;setPartVisible(selected,true);choose(selected);refresh();toast(part.name+' remonté(e)')});
+document.querySelector('#remove').addEventListener('click',()=>{if(!selected||busy)return;const part=parts[selected];if(part.removed)return;animatePart(selected,true)});
+document.querySelector('#install').addEventListener('click',()=>{if(!selected||busy)return;const part=parts[selected];if(!part.removed)return;animatePart(selected,false)});
+document.querySelector('#restore-all').addEventListener('click',()=>{if(busy)return;const removed=Object.keys(parts).filter(id=>parts[id].removed);if(!removed.length){toast('Toutes les pièces sont déjà montées');return}let index=0;function next(){if(index>=removed.length){if(selected)choose(selected);refresh();toast('Voiture entièrement remontée');return}const id=removed[index++];animatePart(id,false);const wait=()=>{if(busy)requestAnimationFrame(wait);else next()};requestAnimationFrame(wait)}next()});
 // Contrôle caméra : glisser pour tourner, molette/pincement pour zoomer.
 let azimuth=.72,polar=1.13,distance=8.8,drag=null,pinchStart=0,moved=false;
 const target=new THREE.Vector3(0,.85,0);
@@ -138,7 +155,7 @@ renderer.domElement.addEventListener('wheel',e=>{distance+=e.deltaY*.008;updateC
 // Cliquer sur une pièce seulement si le pointeur n'a pas servi à déplacer la caméra.
 const raycaster=new THREE.Raycaster(),mouse=new THREE.Vector2();let downAt=null;
 renderer.domElement.addEventListener('pointerdown',e=>{downAt={x:e.clientX,y:e.clientY,id:e.pointerId}});
-renderer.domElement.addEventListener('pointerup',e=>{if(!downAt||downAt.id!==e.pointerId)return;const movedPx=Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y);downAt=null;if(movedPx>7||pointers.size>0)return;const rect=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-rect.left)/rect.width)*2-1;mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(mouse,camera);const hits=raycaster.intersectObject(car,true);for(const hit of hits){let o=hit.object;while(o&&o!==car&&!o.userData.partId)o=o.parent;if(o&&o.userData.partId){choose(o.userData.partId);return}}});
+renderer.domElement.addEventListener('pointerup',e=>{if(busy)return;if(!downAt||downAt.id!==e.pointerId)return;const movedPx=Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y);downAt=null;if(movedPx>7||pointers.size>0)return;const rect=renderer.domElement.getBoundingClientRect();mouse.x=((e.clientX-rect.left)/rect.width)*2-1;mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;raycaster.setFromCamera(mouse,camera);const hits=raycaster.intersectObject(car,true);for(const hit of hits){let o=hit.object;while(o&&o!==car&&!o.userData.partId)o=o.parent;if(o&&o.userData.partId){choose(o.userData.partId);return}}});
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7))});
 function animate(){requestAnimationFrame(animate);if(selectionHelper)selectionHelper.update();renderer.render(scene,camera)}animate();
 </script>
