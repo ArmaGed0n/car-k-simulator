@@ -50,95 +50,151 @@ for(const x of [-6.5,-3.5])box(scene,.12,.95,.12,x,.45,-3.7,new THREE.MeshStanda
 for(let i=0;i<4;i++)box(scene,.62,.42,.45,-6.2+i*.78,1.35,-3.7,new THREE.MeshStandardMaterial({color:[0x267b69,0x42647d,0xb77b32,0x9d4141][i]}));
 const liftMat=new THREE.MeshStandardMaterial({color:0xe1b83e,metalness:.25,roughness:.55});
 for(const x of [-2.15,2.15]){box(scene,.18,2.6,.2,x,1.3,-.15,liftMat);box(scene,1.05,.13,.22,x,1.02,.15,liftMat)}
-// Voiture orientée vers l'avant (+Z).
+// Peugeot 205 : carrosserie complète, volumes plus cohérents et éléments mécaniques séparés.
 const car=new THREE.Group();scene.add(car);
-const paint=new THREE.MeshStandardMaterial({color:0xc52c32,metalness:.24,roughness:.3});
-const black=new THREE.MeshStandardMaterial({color:0x151a1e,roughness:.72});
+const paint=new THREE.MeshStandardMaterial({color:0xb91f2a,metalness:.32,roughness:.27});
+const paintDark=new THREE.MeshStandardMaterial({color:0x7f1720,metalness:.25,roughness:.34});
+const black=new THREE.MeshStandardMaterial({color:0x171b1e,roughness:.7});
 const rubber=new THREE.MeshStandardMaterial({color:0x101214,roughness:.96});
-const glass=new THREE.MeshStandardMaterial({color:0x345665,metalness:.2,roughness:.2});
-const metal=new THREE.MeshStandardMaterial({color:0xaeb9bd,metalness:.82,roughness:.25});
-const lightMat=new THREE.MeshStandardMaterial({color:0xffefc4,emissive:0x4c3914});
-const redMat=new THREE.MeshStandardMaterial({color:0xb51f27,emissive:0x250000});
+const glass=new THREE.MeshStandardMaterial({color:0x294957,metalness:.25,roughness:.16});
+const metal=new THREE.MeshStandardMaterial({color:0xb8c2c5,metalness:.86,roughness:.22});
+const alloy=new THREE.MeshStandardMaterial({color:0x7e898e,metalness:.82,roughness:.28});
+const lightMat=new THREE.MeshStandardMaterial({color:0xfff0c9,emissive:0x6a4b1b});
+const redMat=new THREE.MeshStandardMaterial({color:0xb51f27,emissive:0x390609});
+const amber=new THREE.MeshStandardMaterial({color:0xffa52e,emissive:0x65300a});
 const parts={};let selected=null;let selectionHelper=null;let busy=false;
 function makePart(id,name,description){const g=new THREE.Group();g.userData.partId=id;car.add(g);parts[id]={group:g,name,description,removed:false};return g}
-function pbox(parent,w,h,d,x,y,z,mat){const m=box(parent,w,h,d,x,y,z,mat);return m}
-function cylinder(parent,radius,length,x,y,z,mat,axis='x'){const m=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,28),mat);if(axis==='x')m.rotation.z=Math.PI/2;else if(axis==='z')m.rotation.x=Math.PI/2;m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
-// Structure permanente
-pbox(car,1.95,.42,3.85,0,.65,0,black);
-pbox(car,1.9,.38,3.55,0,.82,0,paint);
-pbox(car,1.94,.22,1.05,0,.91,-1.22,paint);
-pbox(car,1.94,.22,1.05,0,.91,1.28,paint);
-// Habitacle
-const cabin=new THREE.Group();car.add(cabin);
-pbox(cabin,1.52,.72,1.9,0,1.48,-.15,paint);
-pbox(cabin,1.42,.5,1.72,0,1.51,-.15,glass);
-pbox(cabin,1.56,.09,1.94,0,1.88,-.15,paint);
-for(const x of [-.79,.79]){pbox(cabin,.07,.72,.08,x,1.48,-.15,black);pbox(cabin,.07,.08,1.8,x,1.83,-.15,black)}
-// Intérieur visible
-pbox(car,1.35,.12,1.5,0,1.12,-.12,black);
-for(const x of [-.48,.48]){pbox(car,.42,.48,.38,x,1.36,-.5,black);pbox(car,.42,.48,.38,x,1.36,.32,black)}
-// Capot amovible
-const hood=makePart('hood','Capot moteur','Protège le compartiment moteur. Retire-le pour accéder au moteur et à la batterie.');
-pbox(hood,1.83,.13,1.12,0,1.04,1.28,paint);
-pbox(hood,1.68,.035,.92,0,1.115,1.28,new THREE.MeshStandardMaterial({color:0xd94a4e,roughness:.4}));
-// Moteur et batterie accessibles après retrait du capot
-const engine=makePart('engine','Moteur','Bloc moteur principal. Il est installé dans le compartiment avant.');
-pbox(engine,.9,.62,.85,0,1.02,1.05,new THREE.MeshStandardMaterial({color:0x68747a,metalness:.65,roughness:.45}));
-pbox(engine,.62,.16,.55,0,1.42,1.05,black);
-for(let i=0;i<4;i++)pbox(engine,.12,.25,.16,-.28+i*.19,1.58,1.05,metal);
-const battery=makePart('battery','Batterie','Alimente le système électrique du véhicule. Deux bornes sont visibles sur le dessus.');
-pbox(battery,.48,.42,.42,-.62,1.12,1.42,new THREE.MeshStandardMaterial({color:0x263d4a}));
-pbox(battery,.12,.06,.12,-.72,1.36,1.42,metal);pbox(battery,.12,.06,.12,-.52,1.36,1.42,redMat);
-// Roues indépendantes
+function pbox(parent,w,h,d,x,y,z,mat,bevel=false){
+ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;
+}
+function cylinder(parent,radius,length,x,y,z,mat,axis='x',segments=32){
+ const m=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,segments),mat);
+ if(axis==='x')m.rotation.z=Math.PI/2;else if(axis==='z')m.rotation.x=Math.PI/2;
+ m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;
+}
+function panel(parent,verts,mat){
+ const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));
+ geo.setIndex([0,1,2,0,2,3]);geo.computeVertexNormals();
+ const mesh=new THREE.Mesh(geo,mat);mesh.material.side=THREE.DoubleSide;mesh.castShadow=true;parent.add(mesh);return mesh;
+}
+// Châssis et coque basse, avec pare-chocs enveloppants.
+pbox(car,1.82,.28,3.72,0,.52,-.02,black);
+pbox(car,1.94,.38,3.62,0,.78,-.02,paint);
+pbox(car,1.88,.2,1.02,0,.89,-1.31,paint);
+pbox(car,1.9,.2,1.02,0,.89,1.31,paint);
+pbox(car,1.88,.16,3.15,0,.48,-.02,paintDark);
+pbox(car,1.98,.2,.2,0,.48,2.02,black);
+pbox(car,1.98,.2,.2,0,.48,-2.02,black);
+// Habitacle trapézoïdal : toit, montants et vitrages.
+pbox(car,1.48,.12,1.83,0,1.88,-.18,paint);
+for(const x of [-.73,.73]){
+ pbox(car,.075,.73,.09,x,1.48,-.18,paintDark);
+ pbox(car,.075,.72,.09,x,1.48,.55,paintDark);
+ pbox(car,.075,.68,.09,x,1.48,-.91,paintDark);
+}
+panel(car,[-.69,1.52,.58,.69,1.52,.58,.58,1.82,.42,-.58,1.82,.42],glass);
+panel(car,[-.58,1.82,.42,.58,1.82,.42,.66,1.91,-.18,-.66,1.91,-.18],paint);
+panel(car,[-.66,1.82,-.18,.66,1.82,-.18,.69,1.52,-.82,-.69,1.52,-.82],glass);
+panel(car,[-.69,1.52,-.82,.69,1.52,-.82,.58,1.82,-.91,-.58,1.82,-.91],paintDark);
+// Pare-brise avant et lunette arrière inclinés.
+panel(car,[-.68,1.52,.59,.68,1.52,.59,.56,1.83,.36,-.56,1.83,.36],glass);
+panel(car,[-.56,1.83,-.93,.56,1.83,-.93,.68,1.52,-.83,-.68,1.52,-.83],glass);
+// Tableau de bord, sièges, volant et console.
+pbox(car,1.32,.13,.32,0,1.13,.48,black);
+for(const x of [-.43,.43]){
+ pbox(car,.43,.48,.42,x,1.25,-.45,black);
+ pbox(car,.43,.12,.42,x,1.51,-.52,black);
+ pbox(car,.39,.12,.38,x,1.12,-.9,black);
+}
+cylinder(car,.19,.035,-.43,1.34,.34,black,'z');
+cylinder(car,.15,.045,-.43,1.34,.34,metal,'z');
+pbox(car,.18,.23,.34,0,1.18,-.05,black);
+// Capot amovible, avec nervures et charnières.
+const hood=makePart('hood','Capot moteur','Capot avant avec nervures embouties. Retire-le pour accéder au moteur et à la batterie.');
+pbox(hood,1.78,.12,1.12,0,1.035,1.29,paint);
+for(const x of [-.68,.68]){const ridge=pbox(hood,.035,.035,.88,x,1.105,1.29,paintDark);ridge.rotation.x=-.025}
+for(const x of [-.68,.68])pbox(car,.08,.09,.12,x,.99,.72,metal);
+// Moteur détaillé : bloc, culasse, admission, durites et ventilateur.
+const engine=makePart('engine','Moteur','Bloc moteur avec culasse, admission, alternateur et durites. Il se trouve sous le capot.');
+const engineMetal=new THREE.MeshStandardMaterial({color:0x68747a,metalness:.72,roughness:.38});
+pbox(engine,.82,.52,.76,0,1.02,1.1,engineMetal);
+pbox(engine,.72,.18,.68,0,1.36,1.1,black);
+pbox(engine,.56,.12,.42,0,1.49,1.1,alloy);
+for(let i=0;i<4;i++)pbox(engine,.1,.2,.12,-.27+i*.18,1.58,1.1,metal);
+cylinder(engine,.16,.22,-.53,1.08,.94,alloy,'x');
+cylinder(engine,.12,.2,.5,1.02,1.3,black,'x');
+for(const x of [-.28,.28]){cylinder(engine,.045,.46,x,1.15,1.53,black,'z');}
+const battery=makePart('battery','Batterie','Batterie 12 V avec cosses positives et négatives et étiquette supérieure.');
+const batteryMat=new THREE.MeshStandardMaterial({color:0x263d4a,roughness:.65});
+pbox(battery,.46,.4,.4,-.62,1.12,1.42,batteryMat);
+pbox(battery,.34,.035,.3,-.62,1.34,1.42,black);
+cylinder(battery,.045,.055,-.75,1.39,1.42,metal,'y');
+cylinder(battery,.045,.055,-.49,1.39,1.42,redMat,'y');
+// Quatre roues démontables, pneus, jantes alliage et disques.
 const wheelIds=[];
-for(const [id,x,z,label] of [['wheel-fl',-1.03,1.22,'avant gauche'],['wheel-fr',1.03,1.22,'avant droite'],['wheel-rl',-1.03,-1.28,'arrière gauche'],['wheel-rr',1.03,-1.28,'arrière droite']]){
- wheelIds.push(id);const g=makePart(id,'Roue '+label,'Ensemble roue et pneu. Cette pièce peut être déposée pour accéder au moyeu.');
- cylinder(g,.43,.27,x,.48,z,rubber);cylinder(g,.27,.29,x*1.01,.48,z,metal);cylinder(g,.11,.31,x*1.02,.48,z,black);
- // Jante à cinq branches, disque de frein et boulons de roue.
- for(let k=0;k<5;k++){const a=k*Math.PI*2/5;const spoke=pbox(g,.065,.29,.055,x+Math.sign(x)*.155,.48+Math.sin(a)*.135,z+Math.cos(a)*.135,metal);spoke.rotation.x=a}
- cylinder(g,.19,.025,x+Math.sign(x)*.17,.48,z,new THREE.MeshStandardMaterial({color:0x68747a,metalness:.8,roughness:.3}));
- cylinder(g,.105,.035,x+Math.sign(x)*.19,.48,z,metal);
- for(let k=0;k<5;k++){const a=k*Math.PI*2/5;cylinder(g,.022,.045,x+Math.sign(x)*.205,.48+Math.sin(a)*.14,z+Math.cos(a)*.14,black)}
- // Sculptures de gomme sur les flancs et la bande de roulement.
- const treadMat=new THREE.MeshStandardMaterial({color:0x25292b,roughness:1});
- for(let k=0;k<24;k++){const a=k*Math.PI*2/24;const tread=pbox(g,.29,.045,.075,x,.48+Math.sin(a)*.405,z+Math.cos(a)*.405,treadMat);tread.rotation.x=-a}
+const wheelPositions=[['wheel-fl',-1.02,1.22,'avant gauche'],['wheel-fr',1.02,1.22,'avant droite'],['wheel-rl',-1.02,-1.28,'arrière gauche'],['wheel-rr',1.02,-1.28,'arrière droite']];
+for(const [id,x,z,label] of wheelPositions){
+ wheelIds.push(id);const g=makePart(id,'Roue '+label,'Pneu, jante alliage et moyeu. La roue peut être déposée pour accéder au frein.');
+ cylinder(g,.43,.29,x,.49,z,rubber);
+ cylinder(g,.29,.31,x+Math.sign(x)*.015,.49,z,alloy);
+ cylinder(g,.225,.025,x+Math.sign(x)*.17,.49,z,new THREE.MeshStandardMaterial({color:0x555f64,metalness:.8,roughness:.3}));
+ cylinder(g,.115,.04,x+Math.sign(x)*.19,.49,z,metal);
+ for(let k=0;k<5;k++){
+  const a=k*Math.PI*2/5;
+  const spoke=pbox(g,.075,.29,.065,x+Math.sign(x)*.17,.49+Math.sin(a)*.13,z+Math.cos(a)*.13,metal);
+  spoke.rotation.x=a;
+  cylinder(g,.022,.045,x+Math.sign(x)*.215,.49+Math.sin(a)*.145,z+Math.cos(a)*.145,black,'x',12);
+ }
+ // Sculptures latérales discrètes.
+ for(let k=0;k<20;k++){const a=k*Math.PI*2/20;const t=pbox(g,.24,.035,.055,x,.49+Math.sin(a)*.405,z+Math.cos(a)*.405,black);t.rotation.x=-a}
 }
-// Élargisseurs d'ailes, joints et détails de carrosserie.
-const archMat=new THREE.MeshStandardMaterial({color:0x202629,roughness:.82});
+// Passages de roues, arches noires et ailes avant/arrière.
+const archMat=new THREE.MeshStandardMaterial({color:0x202629,roughness:.86});
 for(const x of [-.99,.99])for(const z of [1.22,-1.28]){
- const arch=new THREE.Mesh(new THREE.TorusGeometry(.49,.035,10,40),archMat);
- arch.rotation.y=Math.PI/2;arch.position.set(x,.48,z);arch.castShadow=true;car.add(arch);
+ const arch=new THREE.Mesh(new THREE.TorusGeometry(.49,.045,10,40,Math.PI),archMat);
+ arch.rotation.set(Math.PI/2,0,z>0?Math.PI:0);arch.position.set(x,.49,z);arch.castShadow=true;car.add(arch);
 }
-for(const x of [-.985,.985]){
- // Bas de caisse et baguettes latérales typiques d'une petite sportive des années 80.
- pbox(car,.075,.13,2.15,x,.48,-.02,black);
- pbox(car,.025,.045,1.8,x*1.012,.76,-.05,metal);
+// Portes démontables avec vitrage, poignée, baguette et rétroviseur.
+for(const [id,x,side] of [['door-left',-1.0,'gauche'],['door-right',1.0,'droite']]){
+ const g=makePart(id,'Porte '+side,'Porte complète avec vitre, poignée et baguette de protection. Elle peut être déposée.');
+ pbox(g,.09,.67,1.14,x,1.12,-.08,paint);
+ pbox(g,.045,.035,.95,x*1.01,.78,-.08,paintDark);
+ pbox(g,.045,.06,.17,x*1.03,1.31,.32,metal);
+ pbox(g,.045,.035,.09,x*1.03,1.31,.32,black);
+ pbox(g,.065,.055,.16,x*1.02,1.57,-.47,black);
+ pbox(g,.06,.035,.13,x*1.02,1.59,-.47,metal);
 }
-// Ouïes du capot, essuie-glaces et plaque avant.
-for(let i=0;i<5;i++)pbox(hood,.16,.018,.055,-.32+i*.16,1.14,1.05,black);
-for(const x of [-.32,.32]){const wiper=pbox(car,.035,.018,.48,x,.96,.63,black);wiper.rotation.y=x>0?-.16:.16}
-pbox(car,.55,.12,.025,0,.51,2.13,metal);
-pbox(car,.42,.075,.018,0,.51,2.15,new THREE.MeshStandardMaterial({color:0x17232a}));
-// Feux arrière segmentés et répétiteurs latéraux.
+for(const x of [-.96,.96]){
+ pbox(car,.11,.12,.22,x,1.31,.62,black);
+ pbox(car,.18,.11,.2,x*1.08,1.38,.62,glass);
+ pbox(car,.08,.12,2.12,x,.48,-.04,black);
+ pbox(car,.025,.045,1.9,x*1.015,.76,-.05,metal);
+}
+// Face avant : calandre, lion stylisé, phares rectangulaires et clignotants.
+pbox(car,1.12,.22,.055,0,.73,2.105,black);
+for(let i=0;i<7;i++)pbox(car,.025,.15,.025,-.42+i*.14,.73,2.14,metal);
+pbox(car,.22,.13,.045,0,.75,2.17,metal);
+for(const x of [-.69,.69]){
+ pbox(car,.43,.24,.09,x,.91,2.02,lightMat);
+ pbox(car,.18,.18,.07,x*1.43,.86,2.02,amber);
+ pbox(car,.43,.055,.06,x,.75,2.055,black);
+}
+// Feux arrière verticaux en plusieurs sections.
 for(const x of [-.78,.78]){
- pbox(car,.3,.29,.075,x,.86,-2.015,redMat);
- pbox(car,.12,.09,.018,x,.79,-2.06,lightMat);
- pbox(car,.1,.08,.018,x,.91,-2.06,new THREE.MeshStandardMaterial({color:0xff4545,emissive:0x5a0808}));
- pbox(car,.08,.07,.025,x*1.015,.88,.95,lightMat);
+ pbox(car,.29,.38,.08,x,.88,-2.02,redMat);
+ pbox(car,.22,.12,.025,x,.99,-2.075,new THREE.MeshStandardMaterial({color:0xe34237,emissive:0x380704}));
+ pbox(car,.22,.09,.025,x,.86,-2.075,amber);
+ pbox(car,.22,.1,.025,x,.74,-2.075,lightMat);
 }
-//
-// Portes amovibles
-for(const [id,x,side] of [['door-left',-1.0,'gauche'],['door-right',1.0,'droite']]){const g=makePart(id,'Porte '+side,'Panneau de porte et vitre latérale. Tu peux le déposer puis le remettre.');pbox(g,.09,.72,1.05,x,1.13,-.05,paint);pbox(g,.07,.37,.83,x,1.65,-.05,glass);pbox(g,.1,.06,.18,x*1.02,1.32,.3,metal)}
-// Petits détails de carrosserie pour rendre la 205 plus lisible.
-pbox(car,1.12,.2,.055,0,.72,2.105,black);
-for(let i=0;i<5;i++)pbox(car,.035,.14,.025,-.42+i*.21,.72,2.14,metal);
-cylinder(car,.075,.035,0,.76,2.16,metal,'z');
-for(const x of [-.98,.98]){pbox(car,.13,.12,.22,x,1.26,.72,black);pbox(car,.17,.1,.16,x*1.08,1.31,.72,glass)}
-for(const x of [-.53,.53])pbox(car,.12,.045,.035,x,1.24,-.62,metal);
-cylinder(car,.065,.34,-.42,.3,-2.12,metal,'x');
-// Pare-chocs et éclairage
-pbox(car,1.95,.2,.18,0,.48,2.03,black);pbox(car,1.95,.2,.18,0,.48,-2.03,black);
-for(const x of [-.68,.68]){pbox(car,.42,.22,.07,x,.88,1.99,lightMat);pbox(car,.4,.2,.07,x,.86,-1.99,redMat)}
+// Pare-chocs, plaque, essuie-glaces, échappement et détails de finition.
+pbox(car,1.98,.19,.22,0,.48,2.04,black);
+pbox(car,1.98,.19,.22,0,.48,-2.04,black);
+pbox(car,.58,.12,.025,0,.51,2.16,metal);
+pbox(car,.44,.07,.018,0,.51,2.18,black);
+pbox(car,.58,.12,.025,0,.51,-2.16,metal);
+for(const x of [-.32,.32]){const w=pbox(car,.035,.018,.43,x,.98,.55,black);w.rotation.y=x>0?-.18:.18}
+cylinder(car,.075,.24,-.47,.3,-2.12,metal,'x');
+for(const x of [-.55,.55])pbox(car,.08,.045,.035,x,1.19,-.93,metal);
 // Sélection visuelle : contour lumineux sur les pièces.
 
 function animatePart(id,removing){
