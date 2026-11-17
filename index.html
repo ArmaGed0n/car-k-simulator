@@ -94,8 +94,39 @@ const wheelIds=[];
 for(const [id,x,z,label] of [['wheel-fl',-1.03,1.22,'avant gauche'],['wheel-fr',1.03,1.22,'avant droite'],['wheel-rl',-1.03,-1.28,'arrière gauche'],['wheel-rr',1.03,-1.28,'arrière droite']]){
  wheelIds.push(id);const g=makePart(id,'Roue '+label,'Ensemble roue et pneu. Cette pièce peut être déposée pour accéder au moyeu.');
  cylinder(g,.43,.27,x,.48,z,rubber);cylinder(g,.27,.29,x*1.01,.48,z,metal);cylinder(g,.11,.31,x*1.02,.48,z,black);
- for(let k=0;k<8;k++){const a=k*Math.PI/4;const spoke=pbox(g,.055,.25,.045,x+Math.sign(x)*.15,.48+Math.sin(a)*.12,z+Math.cos(a)*.12,metal);spoke.rotation.x=a}
+ // Jante à cinq branches, disque de frein et boulons de roue.
+ for(let k=0;k<5;k++){const a=k*Math.PI*2/5;const spoke=pbox(g,.065,.29,.055,x+Math.sign(x)*.155,.48+Math.sin(a)*.135,z+Math.cos(a)*.135,metal);spoke.rotation.x=a}
+ cylinder(g,.19,.025,x+Math.sign(x)*.17,.48,z,new THREE.MeshStandardMaterial({color:0x68747a,metalness:.8,roughness:.3}));
+ cylinder(g,.105,.035,x+Math.sign(x)*.19,.48,z,metal);
+ for(let k=0;k<5;k++){const a=k*Math.PI*2/5;cylinder(g,.022,.045,x+Math.sign(x)*.205,.48+Math.sin(a)*.14,z+Math.cos(a)*.14,black)}
+ // Sculptures de gomme sur les flancs et la bande de roulement.
+ const treadMat=new THREE.MeshStandardMaterial({color:0x25292b,roughness:1});
+ for(let k=0;k<24;k++){const a=k*Math.PI*2/24;const tread=pbox(g,.29,.045,.075,x,.48+Math.sin(a)*.405,z+Math.cos(a)*.405,treadMat);tread.rotation.x=-a}
 }
+// Élargisseurs d'ailes, joints et détails de carrosserie.
+const archMat=new THREE.MeshStandardMaterial({color:0x202629,roughness:.82});
+for(const x of [-.99,.99])for(const z of [1.22,-1.28]){
+ const arch=new THREE.Mesh(new THREE.TorusGeometry(.49,.035,10,40),archMat);
+ arch.rotation.y=Math.PI/2;arch.position.set(x,.48,z);arch.castShadow=true;car.add(arch);
+}
+for(const x of [-.985,.985]){
+ // Bas de caisse et baguettes latérales typiques d'une petite sportive des années 80.
+ pbox(car,.075,.13,2.15,x,.48,-.02,black);
+ pbox(car,.025,.045,1.8,x*1.012,.76,-.05,metal);
+}
+// Ouïes du capot, essuie-glaces et plaque avant.
+for(let i=0;i<5;i++)pbox(hood,.16,.018,.055,-.32+i*.16,1.14,1.05,black);
+for(const x of [-.32,.32]){const wiper=pbox(car,.035,.018,.48,x,.96,.63,black);wiper.rotation.y=x>0?-.16:.16}
+pbox(car,.55,.12,.025,0,.51,2.13,metal);
+pbox(car,.42,.075,.018,0,.51,2.15,new THREE.MeshStandardMaterial({color:0x17232a}));
+// Feux arrière segmentés et répétiteurs latéraux.
+for(const x of [-.78,.78]){
+ pbox(car,.3,.29,.075,x,.86,-2.015,redMat);
+ pbox(car,.12,.09,.018,x,.79,-2.06,lightMat);
+ pbox(car,.1,.08,.018,x,.91,-2.06,new THREE.MeshStandardMaterial({color:0xff4545,emissive:0x5a0808}));
+ pbox(car,.08,.07,.025,x*1.015,.88,.95,lightMat);
+}
+//
 // Portes amovibles
 for(const [id,x,side] of [['door-left',-1.0,'gauche'],['door-right',1.0,'droite']]){const g=makePart(id,'Porte '+side,'Panneau de porte et vitre latérale. Tu peux le déposer puis le remettre.');pbox(g,.09,.72,1.05,x,1.13,-.05,paint);pbox(g,.07,.37,.83,x,1.65,-.05,glass);pbox(g,.1,.06,.18,x*1.02,1.32,.3,metal)}
 // Petits détails de carrosserie pour rendre la 205 plus lisible.
