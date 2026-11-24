@@ -79,6 +79,37 @@ body{min-width:320px;min-height:100svh;overflow-x:hidden;overscroll-behavior-y:c
 button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 @media(max-width:360px){.shell{padding-left:9px;padding-right:9px}.brand small{display:none}.mobile-nav .nav{font-size:10px}.touch-btn{width:48px}.stats{gap:5px}.stat strong{font-size:15px}}
 
+
+/* HUD refresh 2.1 — immersive, clean and thumb-first */
+.game-stage{border:0;border-radius:22px;background:#081b2a;box-shadow:0 18px 42px #0004}
+.game-hud{position:absolute;z-index:3;top:12px;left:12px;right:auto;display:inline-flex;width:max-content;max-width:calc(100% - 24px);padding:8px 13px;border:1px solid #ffffff35;border-radius:999px;background:#071a2bc9;color:#f2fbff;font-size:12px;backdrop-filter:blur(12px);box-shadow:0 5px 18px #06152255}
+.game-hud span:last-child{display:none}
+#fishingCanvas{aspect-ratio:16/10}
+.game-status{padding:14px 12px 3px;min-height:42px;color:#f1f8fc;font-size:16px;letter-spacing:.1px}
+.game-tip{padding:2px 12px 13px;color:#91aebe;font-size:12px}
+.game-controls{padding:8px 14px 16px;background:transparent;gap:12px}
+.move-controls{gap:10px}
+.touch-btn{width:58px;height:58px;border-radius:50%;border:1px solid #42677a;background:linear-gradient(180deg,#1d3b50,#102a3d);color:#e8f7ff;font-size:20px;box-shadow:0 5px 0 #081a28,0 8px 18px #0003}
+.touch-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #081a28}
+.game-controls .btn{min-height:58px;border:0;border-radius:17px;background:linear-gradient(135deg,#39c4d4,#1686a7);color:#06202b;font-size:15px;font-weight:850;box-shadow:0 5px 0 #0c526b,0 8px 18px #0003}
+.game-controls .btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0c526b}
+.fight-meter{margin:0 12px 12px;padding:13px 14px;border:1px solid #ffffff1c;border-radius:16px;background:#102638}
+.fight-label{font-size:12px}
+.fight-track{height:22px;border:0;background:#263c4b}
+.fight-safe{left:42%;width:18%;border-radius:6px;background:#63d69a88}
+.fight-marker{width:8px;border-radius:8px}
+.fight-meter p{font-size:11px;line-height:1.45}
+.game-feedback{margin:0 12px 14px;border-radius:15px}
+@media(max-width:520px){
+ .game-stage{border-radius:19px}
+ .game-hud{top:10px;left:10px;padding:7px 11px;font-size:11px}
+ .game-status{font-size:15px;padding-top:12px}
+ .game-tip{font-size:11px;padding-bottom:11px}
+ .game-controls{padding:7px 12px 15px;gap:9px}
+ .touch-btn{width:54px;height:54px}
+ .game-controls .btn{min-height:56px;font-size:14px}
+ .fight-meter{margin:0 10px 10px}
+}
 </style>
 </head>
 <body>
