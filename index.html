@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
-<title>Fishing World — Explore. Catch. Collect.</title>
+<title>Fishing World 2.0 — Pêche tactile</title>
 <style>
 :root{--bg:#09121f;--panel:#111e2e;--panel2:#17263a;--line:#25374d;--text:#eaf2fb;--muted:#93a8bf;--cyan:#55d4e8;--green:#8de0b2;--gold:#f6c86a;--purple:#bd9bff}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0,#17324c 0,transparent 40%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button{font:inherit;color:inherit;cursor:pointer}.shell{max-width:1320px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#47d3df,#2788ad);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #33b9d333}.brand h1{font-size:19px;letter-spacing:.5px;margin:0}.brand small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.wallet{display:flex;gap:10px}.pill{border:1px solid var(--line);background:#111e2c;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px}.pill span{color:var(--gold)}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px}.sidebar,.panel{background:linear-gradient(180deg,#132338,#101b2a);border:1px solid var(--line);border-radius:18px}.sidebar{padding:12px;height:max-content;position:sticky;top:20px}.nav{width:100%;text-align:left;padding:13px 14px;border:0;background:transparent;border-radius:12px;color:var(--muted);margin:3px 0;font-weight:650}.nav.active,.nav:hover{color:var(--text);background:#1d3047}.nav .ico{display:inline-block;width:27px}.main{min-width:0}.hero{min-height:245px;border:1px solid #28455c;border-radius:20px;overflow:hidden;background:linear-gradient(90deg,#10263cdd,#122b41a0),url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1600&q=85') center/cover;display:flex;align-items:end;padding:28px;margin-bottom:18px}.hero h2{font-size:clamp(26px,4vw,38px);margin:0 0 8px}.hero p{margin:0;color:#c4d8e9}.hero-tag{display:inline-flex;padding:6px 10px;background:#55d4e822;border:1px solid #55d4e855;color:#b9f5ff;border-radius:30px;font-size:12px;font-weight:700;margin-bottom:12px}.hero-content{max-width:550px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat{padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:23px;margin-top:5px}.panel{padding:20px;margin-bottom:16px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.panel-head h3{margin:0;font-size:17px}.sub{color:var(--muted);font-size:13px}.btn{border:1px solid #3c7186;background:linear-gradient(135deg,#1e6b86,#237f9b);padding:11px 16px;border-radius:11px;font-weight:750}.btn:disabled{opacity:.5;cursor:not-allowed}.btn.secondary{background:#1a293a;border-color:var(--line)}.fish-zone{min-height:230px;border-radius:15px;background:linear-gradient(180,#18334c,#102638);border:1px solid #294a61;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;overflow:hidden}.fish-zone:before,.fish-zone:after{content:"";position:absolute;border-radius:50%;width:300px;height:90px;border:1px solid #55d4e818;bottom:25px;left:-60px;transform:rotate(-10deg)}.fish-zone:after{left:auto;right:-100px;bottom:60px;transform:rotate(14deg)}.fish-emoji{font-size:56px;filter:drop-shadow(0 7px 12px #0003);margin-bottom:12px;z-index:1}.zone-status{font-weight:750;font-size:18px;z-index:1}.zone-tip{color:var(--muted);margin:8px 0 18px;z-index:1}.catch-result{display:none;margin-top:12px;padding:12px;border:1px solid #42627a;background:#182b3c;border-radius:12px}.catch-result.show{display:block}.catch-result b{color:var(--green)}.grid-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.fish-card,.place-card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}.fish-card .emoji{font-size:32px}.fish-card h4{margin:8px 0 5px}.fish-card p{margin:0;color:var(--muted);font-size:12px}.rarity{font-size:11px;font-weight:800;letter-spacing:.4px;margin-top:8px;display:inline-block}.common{color:#9cb3c8}.rare{color:#55d4e8}.epic{color:#bd9bff}.legendary{color:#f6c86a}.place-card{min-height:150px;display:flex;flex-direction:column;justify-content:space-between}.place-card.locked{opacity:.65}.place-card h4{margin:6px 0}.place-card p{font-size:12px;color:var(--muted);margin:0 0 12px}.place-card button{width:100%}.progress{height:8px;background:#27384b;border-radius:99px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4ccbdc,#89e3b0);border-radius:99px}.hidden{display:none!important}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);padding:12px 18px;background:#183044;border:1px solid #3a617c;border-radius:12px;box-shadow:0 12px 40px #0005;z-index:5;opacity:0;transition:.25s;pointer-events:none}.toast.visible{opacity:1}.empty{color:var(--muted);padding:20px;text-align:center}.mobile-nav{display:none}
@@ -37,6 +37,16 @@
 
 
 /* Mobile-only layout: keep the experience phone-sized on every viewport */
+:focus-visible{outline:3px solid #9cecf2;outline-offset:3px}
+.nav:active,.btn:active,.touch-btn:active{filter:brightness(1.18)}
+.game-stage{box-shadow:0 12px 30px #0002}
+.game-controls{padding-bottom:max(12px,env(safe-area-inset-bottom))}
+.touch-btn{min-width:54px;min-height:54px;box-shadow:inset 0 1px #ffffff18,0 4px 0 #0a1d2b}
+.touch-btn:active{box-shadow:inset 0 1px #ffffff18,0 1px 0 #0a1d2b}
+.game-controls .btn{box-shadow:0 4px 0 #0b4357}
+.game-controls .btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0b4357}
+.game-status{min-height:25px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 html{min-width:320px;background:var(--bg);-webkit-text-size-adjust:100%}
 body{min-width:320px;min-height:100svh;overflow-x:hidden;overscroll-behavior-y:contain}
 .shell{width:100%;max-width:520px;margin:0 auto;padding:12px 12px calc(94px + env(safe-area-inset-bottom))}
@@ -87,7 +97,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <button class="nav" data-view="profile"><span class="ico">👤</span> Profil</button>
 </aside>
 <main class="main">
-<section class="hero"><div class="hero-content"><span class="hero-tag">AVENTURE 2D · ZONE DE DÉPART</span><h2>Bienvenue au Lac Paisible</h2><p>Déplace ton pêcheur, observe les poissons et maîtrise le ferrage pour remplir ton carnet.</p></div></section>
+<section class="hero"><div class="hero-content"><span class="hero-tag">FISHING WORLD · ÉDITION MOBILE 2.0</span><h2>À toi de jouer !</h2><p>Explore les eaux, lance ta ligne et ramène de nouvelles espèces. Tout se joue au toucher.</p></div></section>
 <div class="stats"><div class="stat"><small>Poissons découverts</small><strong id="fishCount">0 / 12</strong></div><div class="stat"><small>XP du pêcheur</small><strong id="xp">0 XP</strong></div><div class="stat"><small>Équipement</small><strong id="rodName">Canne basique</strong></div></div>
 <section id="view-fish">
 <div class="panel"><div class="panel-head"><h3>🎣 Session de pêche</h3><span class="sub" id="currentSpot">Lac Paisible</span></div>
@@ -95,12 +105,12 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <div class="game-hud"><span id="scenePlace">🏞️ Lac Paisible</span><span>Commandes tactiles</span></div>
 <canvas id="fishingCanvas" width="960" height="540" aria-label="Scène de pêche en deux dimensions"></canvas>
 <div class="game-status" id="fishStatus">Le lac est calme…</div>
-<div class="game-tip" id="fishTip">Déplace-toi sur la berge puis lance ta ligne.</div>
+<div class="game-tip" id="fishTip">Maintiens ◀ ou ▶ pour te déplacer, puis lance ta ligne.</div>
 <div class="game-controls">
 <div class="move-controls"><button class="touch-btn" id="leftBtn" aria-label="Aller à gauche">◀</button><button class="touch-btn" id="rightBtn" aria-label="Aller à droite">▶</button></div>
 <button class="btn" id="castBtn">Lancer la ligne</button>
 </div>
-<div class="fight-meter" id="fightMeter"><div class="fight-label"><span>🎯 Zone de ferrage</span><b id="fightScore">0 / 3 réussites</b></div><div class="fight-track"><span class="fight-safe"></span><span class="fight-marker" id="fightMarker"></span></div><p>Appuie sur « Ramener ! » quand le repère doré traverse la zone verte.</p></div>
+<div class="fight-meter" id="fightMeter"><div class="fight-label"><span>🎯 Zone de ferrage</span><b id="fightScore">0 / 3 réussites</b></div><div class="fight-track"><span class="fight-safe"></span><span class="fight-marker" id="fightMarker"></span></div><p>Touche « Ramener ! » lorsque le repère doré passe dans la zone verte.</p></div>
 <div class="game-feedback" id="catchResult"></div>
 </div>
 </div>
@@ -135,6 +145,8 @@ let state=JSON.parse(localStorage.getItem('fishingWorldSave')||'null')||{coins:1
 const canvas=document.getElementById('fishingCanvas');
 const ctx=canvas.getContext('2d');
 let fishing='idle',timer=null,activeView='fish';
+let animationFrame=0;
+function haptic(pattern=12){if('vibrate' in navigator)navigator.vibrate(pattern)}
 let playerX=260,moveLeft=false,moveRight=false;
 let currentFish=null,fightHits=0,fightMisses=0;
 const palettes={
@@ -166,7 +178,7 @@ if(fishing!=='idle')return;
 fishing='waiting';const btn=document.getElementById('castBtn');btn.disabled=true;btn.textContent='La ligne est dans l’eau…';
 document.getElementById('catchResult').classList.remove('show');document.getElementById('fightMeter').classList.remove('active');
 setStatus('Ligne lancée…','Observe le flotteur : un poisson peut mordre à tout moment.');
-timer=setTimeout(()=>{fishing='bite';btn.disabled=false;btn.textContent='Ferrer !';setStatus('Ça mord !','Appuie vite sur « Ferrer ! » pour accrocher le poisson.');timer=setTimeout(escapeFish,3600);},1900+Math.random()*2600);
+timer=setTimeout(()=>{fishing='bite';btn.disabled=false;btn.textContent='Ferrer !';haptic([35,25,35]);setStatus('Ça mord !','Appuie vite sur « Ferrer ! » pour accrocher le poisson.');timer=setTimeout(escapeFish,3600);},1900+Math.random()*2600);
 }
 function chooseFish(){
 const pool=fishList.filter(f=>f.places.includes(state.place));
@@ -188,11 +200,11 @@ function reel(){
 if(fishing!=='fight')return;
 const marker=(Math.sin(performance.now()/360)+1)/2;
 if(marker>=.42&&marker<=.60){
-fightHits++;document.getElementById('fightScore').textContent=fightHits+' / 3 réussites';
+fightHits++;haptic(18);document.getElementById('fightScore').textContent=fightHits+' / 3 réussites';
 setStatus('Bien joué !','Tu gardes le contrôle de la ligne. Encore '+(3-fightHits)+' réussite(s).');
 if(fightHits>=3){catchFish();return}
 }else{
-fightMisses++;setStatus('La ligne tire fort !','Essaie de viser le passage dans la zone verte.');
+fightMisses++;haptic([45,35,45]);setStatus('La ligne tire fort !','Essaie de viser le passage dans la zone verte.');
 if(fightMisses>=3){escapeFish();return}
 }
 }
@@ -203,7 +215,7 @@ const fish=currentFish;state.caught++;state.xp+=fish.xp;state.coins+=fish.value;
 const newDiscovery=!state.discovered.includes(fish.id);if(newDiscovery)state.discovered.push(fish.id);save();
 const result=document.getElementById('catchResult');
 result.innerHTML='<b>'+fish.emoji+' '+fish.name+'</b> · '+rarityName(fish.rarity)+'<br>+'+fish.xp+' XP · +'+fish.value+' pièces'+(newDiscovery?'<br><span style="color:#8de0b2">✨ Nouvelle espèce dans le carnet !</span>':'');
-result.classList.add('show');setStatus(newDiscovery?'Nouvelle découverte !':'Belle prise !','La prise est ajoutée à ton carnet.');
+result.classList.add('show');haptic([25,35,65]);setStatus(newDiscovery?'Nouvelle découverte !':'Belle prise !','La prise est ajoutée à ton carnet.');
 const btn=document.getElementById('castBtn');btn.textContent='Lancer à nouveau';btn.disabled=false;currentFish=null;render();
 if(level()>1)toast('Niveau '+level()+' atteint !');
 }
@@ -265,14 +277,22 @@ if(fishing==='fight'){ctx.fillStyle='#fff2b3';ctx.font='bold 20px system-ui';ctx
 if(state.place==='abyss'){ctx.fillStyle='#a7e9f0';for(let i=0;i<18;i++){const bx=(i*61+time*.02)%960,by=320+(i*43)%210;ctx.globalAlpha=.3+Math.sin(time/300+i)*.2;ctx.beginPath();ctx.arc(bx,by,2+(i%3),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
 }
 function gameLoop(time){
-if(moveLeft)playerX=Math.max(115,playerX-3.2);if(moveRight)playerX=Math.min(365,playerX+3.2);
+if(document.hidden){animationFrame=requestAnimationFrame(gameLoop);return}
+if(moveLeft)playerX=Math.max(85,playerX-4.2);if(moveRight)playerX=Math.min(430,playerX+4.2);
 drawScene(time);if(fishing==='fight'){const marker=(Math.sin(time/360)+1)/2;document.getElementById('fightMarker').style.left='calc('+((marker*100).toFixed(1))+'% - 3px)'}
 requestAnimationFrame(gameLoop);
 }
-document.getElementById('castBtn').addEventListener('click',handleFishingAction);
-document.getElementById('leftBtn').addEventListener('pointerdown',e=>{e.preventDefault();moveLeft=true});
-document.getElementById('rightBtn').addEventListener('pointerdown',e=>{e.preventDefault();moveRight=true});
-['pointerup','pointercancel','pointerleave'].forEach(type=>{document.getElementById('leftBtn').addEventListener(type,()=>moveLeft=false);document.getElementById('rightBtn').addEventListener(type,()=>moveRight=false)});
+document.getElementById('castBtn').addEventListener('click',()=>{haptic(8);handleFishingAction()});
+function bindMoveButton(id,setMoving){
+const button=document.getElementById(id);
+button.addEventListener('contextmenu',e=>e.preventDefault());
+button.addEventListener('pointerdown',e=>{e.preventDefault();if(button.setPointerCapture)button.setPointerCapture(e.pointerId);setMoving(true)});
+const stop=()=>setMoving(false);
+['pointerup','pointercancel','lostpointercapture','blur'].forEach(type=>button.addEventListener(type,stop));
+}
+bindMoveButton('leftBtn',v=>{moveLeft=v});
+bindMoveButton('rightBtn',v=>{moveRight=v});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){moveLeft=false;moveRight=false}});
 requestAnimationFrame(gameLoop);
 document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.view)));
 
