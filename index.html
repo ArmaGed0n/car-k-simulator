@@ -132,7 +132,7 @@ if(fishing!=='idle')return;
 fishing='waiting';const btn=document.getElementById('castBtn');btn.disabled=true;btn.textContent='La ligne est dans l’eau…';
 document.getElementById('catchResult').classList.remove('show');document.getElementById('fightMeter').classList.remove('active');
 setStatus('Ligne lancée…','Observe le flotteur : un poisson peut mordre à tout moment.');
-timer=setTimeout(()=>{fishing='bite';btn.disabled=false;btn.textContent='Ferrrer !';setStatus('Ça mord !','Appuie vite sur « Ferrer ! » pour accrocher le poisson.');timer=setTimeout(escapeFish,3600);},1900+Math.random()*2600);
+timer=setTimeout(()=>{fishing='bite';btn.disabled=false;btn.textContent='Ferrer !';setStatus('Ça mord !','Appuie vite sur « Ferrer ! » pour accrocher le poisson.');timer=setTimeout(escapeFish,3600);},1900+Math.random()*2600);
 }
 function chooseFish(){
 const pool=fishList.filter(f=>f.places.includes(state.place));
