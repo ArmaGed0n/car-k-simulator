@@ -98,23 +98,6 @@ const fishList=[
 const places=[{id:'lake',name:'Lac Paisible',icon:'🏞️',desc:'Un lac tranquille idéal pour débuter.',unlock:1},{id:'river',name:'Rivière Sauvage',icon:'🌲',desc:'Courant vif et poissons plus rares.',unlock:5},{id:'lagoon',name:'Lagune Tropicale',icon:'🌴',desc:'Eaux turquoise et espèces colorées.',unlock:12},{id:'abyss',name:'Les Abysses',icon:'🌌',desc:'Une zone mystérieuse aux découvertes extraordinaires.',unlock:20}];
 const rods=[{name:'Canne basique',cost:0,bonus:0,desc:'Ton premier équipement.'},{name:'Canne souple',cost:100,bonus:5,desc:'+5% de chance de rareté'},{name:'Canne explorer',cost:280,bonus:10,desc:'+10% de chance de rareté'},{name:'Canne abyssale',cost:650,bonus:18,desc:'+18% de chance de rareté'}];
 let state=JSON.parse(localStorage.getItem('fishingWorldSave')||'null')||{coins:120,xp:0,caught:0,rod:0,place:'lake',discovered:[],counts:{},};
-let fishing=false,timer=null,activeView='fish';
-function save(){localStorage.setItem('fishingWorldSave',JSON.stringify(state))}
-function level(){return 1+Math.floor(state.xp/100)}
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('visible');setTimeout(()=>t.classList.remove('visible'),2100)}
-function nav(view){activeView=view;document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.view===view));['fish','map','collection','shop','profile'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hidden',v!==view));render()}
-function rarityName(r){return {common:'Commun',rare:'Rare',epic:'Épique',legendary:'Légendaire'}[r]}
-function render(){
-document.getElementById('coins').textContent=state.coins;document.getElementById('level').textContent=level();document.getElementById('fishCount').textContent=state.discovered.length+' / '+fishList.length;document.getElementById('xp').textContent=state.xp+' XP';document.getElementById('rodName').textContent=rods[state.rod].name;document.getElementById('currentSpot').textContent=places.find(p=>p.id===state.place)?.name||'Lac Paisible';
-document.getElementById('missionProgress').style.width=Math.min(100,state.discovered.length/3*100)+'%';document.getElementById('missionText').textContent=Math.min(3,state.discovered.length)+' / 3 espèces découvertes';
-document.getElementById('collectionLabel').textContent=state.discovered.length+' découvert(s)';
-document.getElementById('profileLevel').textContent=level();document.getElementById('totalCaught').textContent=state.caught;document.getElementById('profileXP').textContent=state.xp;
-document.getElementById('placesGrid').innerHTML=places.map(p=>{const unlocked=level()>=p.unlock;return '<article class="place-card '+(!unlocked?'locked':'')+'"><div><div style="font-size:28px">'+p.icon+'</div><h4>'+p.name+'</h4><p>'+p.desc+'</p></div><button class="btn '+(!unlocked?'secondary':'')+'" '+(!unlocked?'disabled':'')+' onclick="travel(\''+p.id+'\')">'+(unlocked?(state.place===p.id?'Lieu actuel':'Explorer'):'🔒 Niveau '+p.unlock)+'</button></article>'}).join('');
-document.getElementById('collectionGrid').innerHTML=fishList.map(f=>{const got=state.discovered.includes(f.id);return '<article class="fish-card"><div class="emoji">'+(got?f.emoji:'❔')+'</div><h4>'+(got?f.name:'Espèce inconnue')+'</h4><p>'+(got?'Pêché '+(state.counts[f.id]||1)+' fois':'À découvrir')+'</p><span class="rarity '+f.rarity+'">'+(got?rarityName(f.rarity):'Non découvert')+'</span></article>'}).join('');
-document.getElementById('shopGrid').innerHTML=rods.map((r,i)=>'<article class="fish-card"><div class="emoji">🎣</div><h4>'+r.name+'</h4><p>'+r.desc+'</p><span class="rarity rare">Bonus rareté '+r.bonus+'%</span><button class="btn '+((i<=state.rod)?'secondary':'')+'" style="margin-top:12px;width:100%" '+((i<=state.rod)?'disabled':'')+' onclick="buyRod('+i+')">'+(i<=state.rod?(i===state.rod?'Équipée':'Déjà possédée'):'🪙 '+r.cost+' · Acheter')+'</button></article>').join('');
-}
-function travel(id){const p=places.find(x=>x.id===id);if(level()<p.unlock)return;state.place=id;save();toast('Destination : '+p.name);render()}
-function buyRod(i){if(i<=state.rod)return;const r=rods[i];if(state.coins<r.cost){toast('Pas assez de pièces !');return}state.coins-=r.cost;state.rod=i;save();toast('Équipement amélioré !');render()}
 const canvas=document.getElementById('fishingCanvas');
 const ctx=canvas.getContext('2d');
 let fishing='idle',timer=null,activeView='fish';
@@ -149,7 +132,7 @@ if(fishing!=='idle')return;
 fishing='waiting';const btn=document.getElementById('castBtn');btn.disabled=true;btn.textContent='La ligne est dans l’eau…';
 document.getElementById('catchResult').classList.remove('show');document.getElementById('fightMeter').classList.remove('active');
 setStatus('Ligne lancée…','Observe le flotteur : un poisson peut mordre à tout moment.');
-timer=setTimeout(()=>{fishing='bite';btn.disabled=false;btn.textContent='Ferrrer !';setStatus('Ça mord !','Appuie vite sur « Ferrer ! » pour accrocher le poisson.');},1900+Math.random()*2600);
+timer=setTimeout(()=>{fishing='bite';btn.disabled=false;btn.textContent='Ferrrer !';setStatus('Ça mord !','Appuie vite sur « Ferrer ! » pour accrocher le poisson.');timer=setTimeout(escapeFish,3600);},1900+Math.random()*2600);
 }
 function chooseFish(){
 const pool=fishList.filter(f=>f.places.includes(state.place));
