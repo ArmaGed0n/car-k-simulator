@@ -10,6 +10,31 @@
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0,#17324c 0,transparent 40%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button{font:inherit;color:inherit;cursor:pointer}.shell{max-width:1320px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#47d3df,#2788ad);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #33b9d333}.brand h1{font-size:19px;letter-spacing:.5px;margin:0}.brand small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.wallet{display:flex;gap:10px}.pill{border:1px solid var(--line);background:#111e2c;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px}.pill span{color:var(--gold)}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px}.sidebar,.panel{background:linear-gradient(180deg,#132338,#101b2a);border:1px solid var(--line);border-radius:18px}.sidebar{padding:12px;height:max-content;position:sticky;top:20px}.nav{width:100%;text-align:left;padding:13px 14px;border:0;background:transparent;border-radius:12px;color:var(--muted);margin:3px 0;font-weight:650}.nav.active,.nav:hover{color:var(--text);background:#1d3047}.nav .ico{display:inline-block;width:27px}.main{min-width:0}.hero{min-height:245px;border:1px solid #28455c;border-radius:20px;overflow:hidden;background:linear-gradient(90deg,#10263cdd,#122b41a0),url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1600&q=85') center/cover;display:flex;align-items:end;padding:28px;margin-bottom:18px}.hero h2{font-size:clamp(26px,4vw,38px);margin:0 0 8px}.hero p{margin:0;color:#c4d8e9}.hero-tag{display:inline-flex;padding:6px 10px;background:#55d4e822;border:1px solid #55d4e855;color:#b9f5ff;border-radius:30px;font-size:12px;font-weight:700;margin-bottom:12px}.hero-content{max-width:550px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat{padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:23px;margin-top:5px}.panel{padding:20px;margin-bottom:16px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.panel-head h3{margin:0;font-size:17px}.sub{color:var(--muted);font-size:13px}.btn{border:1px solid #3c7186;background:linear-gradient(135deg,#1e6b86,#237f9b);padding:11px 16px;border-radius:11px;font-weight:750}.btn:disabled{opacity:.5;cursor:not-allowed}.btn.secondary{background:#1a293a;border-color:var(--line)}.fish-zone{min-height:230px;border-radius:15px;background:linear-gradient(180,#18334c,#102638);border:1px solid #294a61;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;overflow:hidden}.fish-zone:before,.fish-zone:after{content:"";position:absolute;border-radius:50%;width:300px;height:90px;border:1px solid #55d4e818;bottom:25px;left:-60px;transform:rotate(-10deg)}.fish-zone:after{left:auto;right:-100px;bottom:60px;transform:rotate(14deg)}.fish-emoji{font-size:56px;filter:drop-shadow(0 7px 12px #0003);margin-bottom:12px;z-index:1}.zone-status{font-weight:750;font-size:18px;z-index:1}.zone-tip{color:var(--muted);margin:8px 0 18px;z-index:1}.catch-result{display:none;margin-top:12px;padding:12px;border:1px solid #42627a;background:#182b3c;border-radius:12px}.catch-result.show{display:block}.catch-result b{color:var(--green)}.grid-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.fish-card,.place-card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}.fish-card .emoji{font-size:32px}.fish-card h4{margin:8px 0 5px}.fish-card p{margin:0;color:var(--muted);font-size:12px}.rarity{font-size:11px;font-weight:800;letter-spacing:.4px;margin-top:8px;display:inline-block}.common{color:#9cb3c8}.rare{color:#55d4e8}.epic{color:#bd9bff}.legendary{color:#f6c86a}.place-card{min-height:150px;display:flex;flex-direction:column;justify-content:space-between}.place-card.locked{opacity:.65}.place-card h4{margin:6px 0}.place-card p{font-size:12px;color:var(--muted);margin:0 0 12px}.place-card button{width:100%}.progress{height:8px;background:#27384b;border-radius:99px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4ccbdc,#89e3b0);border-radius:99px}.hidden{display:none!important}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);padding:12px 18px;background:#183044;border:1px solid #3a617c;border-radius:12px;box-shadow:0 12px 40px #0005;z-index:5;opacity:0;transition:.25s;pointer-events:none}.toast.visible{opacity:1}.empty{color:var(--muted);padding:20px;text-align:center}.mobile-nav{display:none}
 @media(max-width:850px){.shell{padding:14px}.layout{grid-template-columns:1fr}.sidebar{display:none}.mobile-nav{display:flex;gap:6px;overflow:auto;margin-bottom:14px;padding-bottom:4px}.mobile-nav .nav{white-space:nowrap;width:auto}.hero{min-height:200px;padding:20px}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:19px}.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:460px){.wallet{gap:6px}.pill{padding:9px;font-size:12px}.grid-cards{grid-template-columns:1fr 1fr}.panel{padding:14px}.top{align-items:flex-start}}
+
+/* 2D fishing scene */
+.hero{background:linear-gradient(115deg,#10394b 0%,#176074 55%,#274f5b 100%)}
+.game-stage{position:relative;overflow:hidden;border:1px solid #2c596c;border-radius:16px;background:#102d40}
+.game-hud{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;background:#102638;color:#dff7f8;font-size:13px;font-weight:750}
+.game-hud span:last-child{color:#9fc3d2;font-weight:550;text-align:right}
+#fishingCanvas{display:block;width:100%;height:auto;aspect-ratio:16/9;touch-action:pan-y;background:#9ed5df}
+.game-status{padding:12px 14px 4px;text-align:center;font-weight:800;font-size:16px}
+.game-tip{padding:3px 14px 12px;text-align:center;color:#a9c3d2;font-size:12px}
+.game-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px 14px;background:#102638}
+.move-controls{display:flex;gap:8px}
+.touch-btn{width:48px;height:44px;border:1px solid #3b667b;border-radius:12px;background:#1a3a50;font-size:20px;font-weight:900;touch-action:none;user-select:none}
+.touch-btn:active{background:#28617a;transform:translateY(1px)}
+.game-controls .btn{min-width:150px}
+.fight-meter{display:none;padding:10px 14px 14px;background:#102638}
+.fight-meter.active{display:block}
+.fight-label{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:12px;color:#c9e0e9}
+.fight-track{height:18px;border-radius:99px;background:#263c4b;position:relative;overflow:hidden;border:1px solid #426477}
+.fight-safe{position:absolute;left:42%;width:18%;height:100%;background:#5cc99588;border-left:2px solid #9af0bd;border-right:2px solid #9af0bd}
+.fight-marker{position:absolute;left:0;top:0;width:7px;height:100%;border-radius:5px;background:#ffe08a;box-shadow:0 0 10px #ffe08a}
+.fight-meter p{margin:8px 0 0;text-align:center;color:#9fb9c9;font-size:11px}
+.game-feedback{display:none;margin:0 14px 14px;padding:11px 13px;border:1px solid #42627a;background:#182f40;border-radius:12px;font-size:13px;line-height:1.5}
+.game-feedback.show{display:block}
+@media(max-width:520px){.game-hud{font-size:11px;padding:9px 10px}.game-controls{padding:10px;gap:8px}.touch-btn{width:42px;height:42px}.game-controls .btn{min-width:0;flex:1;padding:11px 9px;font-size:13px}.game-status{font-size:14px}}
+
 </style>
 </head>
 <body>
@@ -28,11 +53,22 @@
 <button class="nav" data-view="profile"><span class="ico">👤</span> Profil</button>
 </aside>
 <main class="main">
-<section class="hero"><div class="hero-content"><span class="hero-tag">ZONE DE DÉPART · DÉBLOQUÉE</span><h2>Bienvenue au Lac Paisible</h2><p>Prends ton temps, explore les eaux et complète ton carnet de pêche.</p></div></section>
+<section class="hero"><div class="hero-content"><span class="hero-tag">AVENTURE 2D · ZONE DE DÉPART</span><h2>Bienvenue au Lac Paisible</h2><p>Déplace ton pêcheur, observe les poissons et maîtrise le ferrage pour remplir ton carnet.</p></div></section>
 <div class="stats"><div class="stat"><small>Poissons découverts</small><strong id="fishCount">0 / 12</strong></div><div class="stat"><small>XP du pêcheur</small><strong id="xp">0 XP</strong></div><div class="stat"><small>Équipement</small><strong id="rodName">Canne basique</strong></div></div>
 <section id="view-fish">
 <div class="panel"><div class="panel-head"><h3>🎣 Session de pêche</h3><span class="sub" id="currentSpot">Lac Paisible</span></div>
-<div class="fish-zone"><div class="fish-emoji" id="fishingEmoji">🌊</div><div class="zone-status" id="fishStatus">Tout est calme à la surface…</div><div class="zone-tip" id="fishTip">Lance ta ligne et reste attentif au signal !</div><button class="btn" id="castBtn">Lancer la ligne</button><div class="catch-result" id="catchResult"></div></div>
+<div class="game-stage" id="gameStage">
+<div class="game-hud"><span id="scenePlace">🏞️ Lac Paisible</span><span>Déplacement : ← → / A D</span></div>
+<canvas id="fishingCanvas" width="960" height="540" aria-label="Scène de pêche en deux dimensions"></canvas>
+<div class="game-status" id="fishStatus">Le lac est calme…</div>
+<div class="game-tip" id="fishTip">Déplace-toi sur la berge puis lance ta ligne.</div>
+<div class="game-controls">
+<div class="move-controls"><button class="touch-btn" id="leftBtn" aria-label="Aller à gauche">◀</button><button class="touch-btn" id="rightBtn" aria-label="Aller à droite">▶</button></div>
+<button class="btn" id="castBtn">Lancer la ligne</button>
+</div>
+<div class="fight-meter" id="fightMeter"><div class="fight-label"><span>🎯 Zone de ferrage</span><b id="fightScore">0 / 3 réussites</b></div><div class="fight-track"><span class="fight-safe"></span><span class="fight-marker" id="fightMarker"></span></div><p>Appuie sur « Ramener ! » quand le repère doré traverse la zone verte.</p></div>
+<div class="game-feedback" id="catchResult"></div>
+</div>
 </div>
 <div class="panel"><div class="panel-head"><h3>📋 Objectif du jour</h3><span class="sub">Progression</span></div><div>Découvrir 3 poissons différents</div><div class="progress"><span id="missionProgress"></span></div><div class="sub" id="missionText">0 / 3 espèces découvertes</div></div>
 </section>
@@ -79,11 +115,152 @@ document.getElementById('shopGrid').innerHTML=rods.map((r,i)=>'<article class="f
 }
 function travel(id){const p=places.find(x=>x.id===id);if(level()<p.unlock)return;state.place=id;save();toast('Destination : '+p.name);render()}
 function buyRod(i){if(i<=state.rod)return;const r=rods[i];if(state.coins<r.cost){toast('Pas assez de pièces !');return}state.coins-=r.cost;state.rod=i;save();toast('Équipement amélioré !');render()}
-function cast(){if(fishing)return;fishing=true;const btn=document.getElementById('castBtn');btn.disabled=true;document.getElementById('fishingEmoji').textContent='🪝';document.getElementById('fishStatus').textContent='Ligne lancée…';document.getElementById('fishTip').textContent='Les eaux frémissent, patience…';document.getElementById('catchResult').classList.remove('show');let wait=1800+Math.random()*3200;timer=setTimeout(()=>{document.getElementById('fishingEmoji').textContent='❗';document.getElementById('fishStatus').textContent='Ça mord !';document.getElementById('fishTip').textContent='Clique vite pour ferrer !';btn.disabled=false;btn.textContent='🎣 Ferrer !';btn.onclick=hook;fishing='bite';},wait)}
-function hook(){if(fishing!=='bite')return;clearTimeout(timer);const pool=fishList.filter(f=>f.places.includes(state.place));let chance=Math.random()+rods[state.rod].bonus/100;let weights=pool.map(f=>f.rarity==='legendary'?(chance>.94?1:0.02):f.rarity==='epic'?(chance>.75?2:1):f.rarity==='rare'?(chance>.55?3:2):5);let total=weights.reduce((a,b)=>a+b,0),pick=Math.random()*total;let fish=pool[0];for(let i=0;i<pool.length;i++){pick-=weights[i];if(pick<=0){fish=pool[i];break}}
-state.caught++;state.xp+=fish.xp;state.coins+=fish.value;state.counts[fish.id]=(state.counts[fish.id]||0)+1;let newDiscovery=!state.discovered.includes(fish.id);if(newDiscovery)state.discovered.push(fish.id);save();const result=document.getElementById('catchResult');result.innerHTML='<b>'+fish.emoji+' '+fish.name+'</b> · '+rarityName(fish.rarity)+'<br>+'+fish.xp+' XP · +'+fish.value+' pièces'+(newDiscovery?'<br><span style="color:#8de0b2">✨ Nouvelle espèce dans le carnet !</span>':'');result.classList.add('show');document.getElementById('fishingEmoji').textContent=fish.emoji;document.getElementById('fishStatus').textContent=newDiscovery?'Nouvelle découverte !':'Belle prise !';document.getElementById('fishTip').textContent='La prise est ajoutée à ton carnet.';const btn=document.getElementById('castBtn');btn.textContent='Lancer à nouveau';btn.disabled=false;btn.onclick=cast;fishing=false;render();if(level()>1)toast('Niveau '+level()+' atteint !')}
+const canvas=document.getElementById('fishingCanvas');
+const ctx=canvas.getContext('2d');
+let fishing='idle',timer=null,activeView='fish';
+let playerX=260,moveLeft=false,moveRight=false;
+let currentFish=null,fightHits=0,fightMisses=0;
+const palettes={
+lake:{sky1:'#82c9dd',sky2:'#d9eee0',water:'#319bb0',deep:'#15556f',hill:'#6eaa79',far:'#7da9a0',sun:'#fff0b3',accent:'#e7d69a'},
+river:{sky1:'#82b8c9',sky2:'#d4e3d8',water:'#2787a5',deep:'#104a69',hill:'#527e65',far:'#668b82',sun:'#f8e6aa',accent:'#c7d5b1'},
+lagoon:{sky1:'#67c6d4',sky2:'#d5f1dc',water:'#24b8c4',deep:'#08718b',hill:'#4c9b7b',far:'#6ab7a1',sun:'#fff1a8',accent:'#f2d58b'},
+abyss:{sky1:'#182d54',sky2:'#304c71',water:'#123d67',deep:'#071d3b',hill:'#273d5a',far:'#435b75',sun:'#c8d9ff',accent:'#9ae9ee'}
+};
+function save(){localStorage.setItem('fishingWorldSave',JSON.stringify(state))}
+function level(){return 1+Math.floor(state.xp/100)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('visible');setTimeout(()=>t.classList.remove('visible'),2100)}
+function nav(view){activeView=view;document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.view===view));['fish','map','collection','shop','profile'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hidden',v!==view));render()}
+function rarityName(r){return {common:'Commun',rare:'Rare',epic:'Épique',legendary:'Légendaire'}[r]}
+function render(){
+document.getElementById('coins').textContent=state.coins;document.getElementById('level').textContent=level();document.getElementById('fishCount').textContent=state.discovered.length+' / '+fishList.length;document.getElementById('xp').textContent=state.xp+' XP';document.getElementById('rodName').textContent=rods[state.rod].name;document.getElementById('currentSpot').textContent=places.find(p=>p.id===state.place)?.name||'Lac Paisible';
+document.getElementById('missionProgress').style.width=Math.min(100,state.discovered.length/3*100)+'%';document.getElementById('missionText').textContent=Math.min(3,state.discovered.length)+' / 3 espèces découvertes';
+document.getElementById('collectionLabel').textContent=state.discovered.length+' découvert(s)';
+document.getElementById('profileLevel').textContent=level();document.getElementById('totalCaught').textContent=state.caught;document.getElementById('profileXP').textContent=state.xp;
+document.getElementById('scenePlace').textContent=(places.find(p=>p.id===state.place)?.icon||'🏞️')+' '+(places.find(p=>p.id===state.place)?.name||'Lac Paisible');
+document.getElementById('placesGrid').innerHTML=places.map(p=>{const unlocked=level()>=p.unlock;return '<article class="place-card '+(!unlocked?'locked':'')+'"><div><div style="font-size:28px">'+p.icon+'</div><h4>'+p.name+'</h4><p>'+p.desc+'</p></div><button class="btn '+(!unlocked?'secondary':'')+'" '+(!unlocked?'disabled':'')+' onclick="travel(\''+p.id+'\')">'+(unlocked?(state.place===p.id?'Lieu actuel':'Explorer'):'🔒 Niveau '+p.unlock)+'</button></article>'}).join('');
+document.getElementById('collectionGrid').innerHTML=fishList.map(f=>{const got=state.discovered.includes(f.id);return '<article class="fish-card"><div class="emoji">'+(got?f.emoji:'❔')+'</div><h4>'+(got?f.name:'Espèce inconnue')+'</h4><p>'+(got?'Pêché '+(state.counts[f.id]||1)+' fois':'À découvrir')+'</p><span class="rarity '+f.rarity+'">'+(got?rarityName(f.rarity):'Non découvert')+'</span></article>'}).join('');
+document.getElementById('shopGrid').innerHTML=rods.map((r,i)=>'<article class="fish-card"><div class="emoji">🎣</div><h4>'+r.name+'</h4><p>'+r.desc+'</p><span class="rarity rare">Bonus rareté '+r.bonus+'%</span><button class="btn '+((i<=state.rod)?'secondary':'')+'" style="margin-top:12px;width:100%" '+((i<=state.rod)?'disabled':'')+' onclick="buyRod('+i+')">'+(i<=state.rod?(i===state.rod?'Équipée':'Déjà possédée'):'🪙 '+r.cost+' · Acheter')+'</button></article>').join('');
+}
+function travel(id){const p=places.find(x=>x.id===id);if(!p||level()<p.unlock)return;state.place=id;save();toast('Destination : '+p.name);render()}
+function buyRod(i){if(i<=state.rod)return;const r=rods[i];if(state.coins<r.cost){toast('Pas assez de pièces !');return}state.coins-=r.cost;state.rod=i;save();toast('Équipement amélioré !');render()}
+function setStatus(status,tip){document.getElementById('fishStatus').textContent=status;document.getElementById('fishTip').textContent=tip}
+function cast(){
+if(fishing!=='idle')return;
+fishing='waiting';const btn=document.getElementById('castBtn');btn.disabled=true;btn.textContent='La ligne est dans l’eau…';
+document.getElementById('catchResult').classList.remove('show');document.getElementById('fightMeter').classList.remove('active');
+setStatus('Ligne lancée…','Observe le flotteur : un poisson peut mordre à tout moment.');
+timer=setTimeout(()=>{fishing='bite';btn.disabled=false;btn.textContent='Ferrrer !';setStatus('Ça mord !','Appuie vite sur « Ferrer ! » pour accrocher le poisson.');},1900+Math.random()*2600);
+}
+function chooseFish(){
+const pool=fishList.filter(f=>f.places.includes(state.place));
+const luck=Math.random()+rods[state.rod].bonus/100;
+const weights=pool.map(f=>f.rarity==='legendary'?(luck>.94?1:.03):f.rarity==='epic'?(luck>.76?2:0.8):f.rarity==='rare'?(luck>.52?3:1.8):5);
+let roll=Math.random()*weights.reduce((a,b)=>a+b,0);
+for(let i=0;i<pool.length;i++){roll-=weights[i];if(roll<=0)return pool[i]}
+return pool[pool.length-1];
+}
+function startFight(){
+if(fishing!=='bite')return;
+clearTimeout(timer);currentFish=chooseFish();fishing='fight';fightHits=0;fightMisses=0;
+document.getElementById('fightMeter').classList.add('active');document.getElementById('fightScore').textContent='0 / 3 réussites';
+const btn=document.getElementById('castBtn');btn.disabled=false;btn.textContent='Ramener !';
+setStatus('Le poisson résiste !','Synchronise tes appuis avec le repère doré.');
+timer=setTimeout(escapeFish,12000);
+}
+function reel(){
+if(fishing!=='fight')return;
+const marker=(Math.sin(performance.now()/360)+1)/2;
+if(marker>=.42&&marker<=.60){
+fightHits++;document.getElementById('fightScore').textContent=fightHits+' / 3 réussites';
+setStatus('Bien joué !','Tu gardes le contrôle de la ligne. Encore '+(3-fightHits)+' réussite(s).');
+if(fightHits>=3){catchFish();return}
+}else{
+fightMisses++;setStatus('La ligne tire fort !','Essaie de viser le passage dans la zone verte.');
+if(fightMisses>=3){escapeFish();return}
+}
+}
+function handleFishingAction(){if(fishing==='idle')cast();else if(fishing==='bite')startFight();else if(fishing==='fight')reel()}
+function catchFish(){
+clearTimeout(timer);fishing='idle';document.getElementById('fightMeter').classList.remove('active');
+const fish=currentFish;state.caught++;state.xp+=fish.xp;state.coins+=fish.value;state.counts[fish.id]=(state.counts[fish.id]||0)+1;
+const newDiscovery=!state.discovered.includes(fish.id);if(newDiscovery)state.discovered.push(fish.id);save();
+const result=document.getElementById('catchResult');
+result.innerHTML='<b>'+fish.emoji+' '+fish.name+'</b> · '+rarityName(fish.rarity)+'<br>+'+fish.xp+' XP · +'+fish.value+' pièces'+(newDiscovery?'<br><span style="color:#8de0b2">✨ Nouvelle espèce dans le carnet !</span>':'');
+result.classList.add('show');setStatus(newDiscovery?'Nouvelle découverte !':'Belle prise !','La prise est ajoutée à ton carnet.');
+const btn=document.getElementById('castBtn');btn.textContent='Lancer à nouveau';btn.disabled=false;currentFish=null;render();
+if(level()>1)toast('Niveau '+level()+' atteint !');
+}
+function escapeFish(){
+clearTimeout(timer);fishing='idle';currentFish=null;document.getElementById('fightMeter').classList.remove('active');
+const btn=document.getElementById('castBtn');btn.textContent='Réessayer';btn.disabled=false;
+setStatus('Le poisson s’est échappé…','Pas grave : relance ta ligne et retente ta chance.');
+}
+function polygon(points,color){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();ctx.fill()}
+function drawFish(x,y,s,color,phase){
+ctx.save();ctx.translate(x,y);ctx.scale(Math.cos(phase)>0?1:-1,1);ctx.fillStyle=color;
+ctx.beginPath();ctx.moveTo(-13*s,0);ctx.lineTo(-27*s,-12*s);ctx.lineTo(-27*s,12*s);ctx.closePath();ctx.fill();
+ctx.beginPath();ctx.ellipse(0,0,18*s,10*s,0,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(10*s,-3*s,2.8*s,0,Math.PI*2);ctx.fill();ctx.fillStyle='#173347';ctx.beginPath();ctx.arc(11*s,-3*s,1.2*s,0,Math.PI*2);ctx.fill();
+ctx.restore();
+}
+function drawTree(x,y,scale,color){
+ctx.fillStyle='#70563f';ctx.fillRect(x-5*scale,y-22*scale,10*scale,28*scale);
+ctx.fillStyle=color;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(x,y-62*scale+i*15*scale);ctx.lineTo(x-24*scale+i*4*scale,y-18*scale+i*9*scale);ctx.lineTo(x+24*scale-i*4*scale,y-18*scale+i*9*scale);ctx.closePath();ctx.fill()}
+}
+function drawPlayer(x,base,phase){
+ctx.save();ctx.translate(x,base);
+ctx.fillStyle='#18344955';ctx.beginPath();ctx.ellipse(0,3,29,7,0,0,Math.PI*2);ctx.fill();
+const step=Math.sin(phase/100)*3;
+ctx.fillStyle='#30445a';ctx.fillRect(-12, -22+step,10,22);ctx.fillRect(3,-22-step,10,22);
+ctx.fillStyle='#e8b66e';ctx.fillRect(-15,-26,14,6);ctx.fillRect(1,-26,14,6);
+ctx.fillStyle='#e0a66f';ctx.fillRect(-14,-61,29,30);
+ctx.fillStyle='#2d8c88';ctx.fillRect(-17,-61,34,23);
+ctx.fillStyle='#f1c49a';ctx.fillRect(-10,-86,21,24);
+ctx.fillStyle='#344c62';ctx.fillRect(-13,-91,27,8);ctx.fillRect(-8,-97,18,7);
+ctx.fillStyle='#253a50';ctx.fillRect(2,-77,3,3);
+ctx.strokeStyle='#5a3d2b';ctx.lineWidth=4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(11,-56);ctx.lineTo(24,-70);ctx.stroke();
+ctx.strokeStyle='#d9c5a0';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(20,-69);ctx.lineTo(116,-131);ctx.stroke();
+ctx.restore();
+}
+function drawScene(time){
+const p=palettes[state.place]||palettes.lake;
+const sky=ctx.createLinearGradient(0,0,0,330);sky.addColorStop(0,p.sky1);sky.addColorStop(1,p.sky2);ctx.fillStyle=sky;ctx.fillRect(0,0,960,540);
+ctx.fillStyle=p.sun;ctx.beginPath();ctx.arc(790,90,34,0,Math.PI*2);ctx.fill();
+ctx.globalAlpha=.25;ctx.fillStyle='#ffffff';for(let i=0;i<3;i++){const cx=((i*310+time*.012)%1100)-80;ctx.beginPath();ctx.ellipse(cx,95+i*35,42,10,0,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+polygon([[0,280],[120,165],[230,265],[360,150],[500,280],[650,185],[790,280],[900,205],[960,270],[960,355],[0,355]],p.far);
+polygon([[0,310],[130,225],[255,310],[390,205],[535,315],[690,230],[830,310],[960,250],[960,370],[0,370]],p.hill);
+ctx.fillStyle=p.water;ctx.fillRect(0,310,960,230);
+const waterGrad=ctx.createLinearGradient(0,310,0,540);waterGrad.addColorStop(0,p.water);waterGrad.addColorStop(1,p.deep);ctx.fillStyle=waterGrad;ctx.fillRect(0,310,960,230);
+ctx.strokeStyle='#d7f5f055';ctx.lineWidth=2;for(let i=0;i<10;i++){const y=330+i*22;const offset=(time*.035+i*79)%1040;ctx.beginPath();ctx.moveTo(offset-100,y);ctx.quadraticCurveTo(offset-50,y-5,offset,y);ctx.stroke()}
+polygon([[0,300],[405,300],[490,360],[460,540],[0,540]],p.accent);
+ctx.fillStyle='#7bb878';ctx.fillRect(0,296,410,12);
+for(let i=0;i<7;i++){const tx=45+i*52;drawTree(tx,296,0.55+(i%3)*.12,p.hill)}
+ctx.fillStyle='#c9d99a';for(let i=0;i<18;i++){const gx=(i*37+12)%430;ctx.fillRect(gx,286-(i%3)*4,3,10+(i%4)*3)}
+for(let i=0;i<5;i++){const fx=470+i*112+Math.sin(time/700+i)*23;const fy=365+i%3*45+Math.sin(time/500+i*2)*12;drawFish(fx,fy,0.65+(i%2)*.22,['#f3a95f','#8ed4d0','#e8d27d','#b9a7ee','#f08f8f'][i],time/450+i)}
+drawPlayer(playerX,303,time);
+if(fishing!=='idle'){
+ctx.strokeStyle='#f4e5c1';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(playerX+115,172);ctx.quadraticCurveTo(530,235,640,350);ctx.stroke();
+ctx.fillStyle='#e94f55';ctx.beginPath();ctx.ellipse(640,352,7,10,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff4dc';ctx.fillRect(635,352,10,5);
+ctx.strokeStyle='#ffffff99';ctx.lineWidth=2;ctx.beginPath();ctx.arc(640,365,14+Math.sin(time/150)*4,0,Math.PI*2);ctx.stroke();
+if(fishing==='bite'){ctx.fillStyle='#fff5c5';ctx.font='bold 34px system-ui';ctx.fillText('!',628,315)}
+if(fishing==='fight'){ctx.fillStyle='#fff2b3';ctx.font='bold 20px system-ui';ctx.fillText('↗',660,325)}
+}
+if(state.place==='abyss'){ctx.fillStyle='#a7e9f0';for(let i=0;i<18;i++){const bx=(i*61+time*.02)%960,by=320+(i*43)%210;ctx.globalAlpha=.3+Math.sin(time/300+i)*.2;ctx.beginPath();ctx.arc(bx,by,2+(i%3),0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
+}
+function gameLoop(time){
+if(moveLeft)playerX=Math.max(115,playerX-3.2);if(moveRight)playerX=Math.min(365,playerX+3.2);
+drawScene(time);if(fishing==='fight'){const marker=(Math.sin(time/360)+1)/2;document.getElementById('fightMarker').style.left='calc('+((marker*100).toFixed(1))+'% - 3px)'}
+requestAnimationFrame(gameLoop);
+}
+document.getElementById('castBtn').addEventListener('click',handleFishingAction);
+document.getElementById('leftBtn').addEventListener('pointerdown',e=>{e.preventDefault();moveLeft=true});
+document.getElementById('rightBtn').addEventListener('pointerdown',e=>{e.preventDefault();moveRight=true});
+['pointerup','pointercancel','pointerleave'].forEach(type=>{document.getElementById('leftBtn').addEventListener(type,()=>moveLeft=false);document.getElementById('rightBtn').addEventListener(type,()=>moveRight=false)});
+window.addEventListener('keydown',e=>{if(['ArrowLeft','a','A'].includes(e.key)){moveLeft=true;e.preventDefault()}if(['ArrowRight','d','D'].includes(e.key)){moveRight=true;e.preventDefault()}if(e.code==='Space'&&!e.repeat){e.preventDefault();handleFishingAction()}});
+window.addEventListener('keyup',e=>{if(['ArrowLeft','a','A'].includes(e.key))moveLeft=false;if(['ArrowRight','d','D'].includes(e.key))moveRight=false});
+requestAnimationFrame(gameLoop);
 document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.view)));
-document.getElementById('castBtn').addEventListener('click',cast);
+
 document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Effacer la progression Fishing World sur cet appareil ?')){localStorage.removeItem('fishingWorldSave');location.reload()}});
 document.getElementById('mobileNav').innerHTML=['fish','map','collection','shop','profile'].map((v,i)=>'<button class="nav '+(!i?'active':'')+'" data-view="'+v+'">'+['🎣 Pêcher','🗺️ Carte','📘 Collection','🛒 Boutique','👤 Profil'][i]+'</button>').join('');
 document.querySelectorAll('#mobileNav .nav').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.view)));
