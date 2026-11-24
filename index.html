@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0b1726">
 <title>Fishing World — Explore. Catch. Collect.</title>
 <style>
@@ -35,6 +35,40 @@
 .game-feedback.show{display:block}
 @media(max-width:520px){.game-hud{font-size:11px;padding:9px 10px}.game-controls{padding:10px;gap:8px}.touch-btn{width:42px;height:42px}.game-controls .btn{min-width:0;flex:1;padding:11px 9px;font-size:13px}.game-status{font-size:14px}}
 
+
+/* Mobile-only layout: keep the experience phone-sized on every viewport */
+html{min-width:320px;background:var(--bg);-webkit-text-size-adjust:100%}
+body{min-width:320px;min-height:100svh;overflow-x:hidden;overscroll-behavior-y:contain}
+.shell{width:100%;max-width:520px;margin:0 auto;padding:12px 12px calc(94px + env(safe-area-inset-bottom))}
+.top{gap:8px;margin-bottom:12px;align-items:center}
+.brand{gap:8px}.logo{width:40px;height:40px;border-radius:12px;font-size:21px}
+.brand h1{font-size:16px}.brand small{font-size:10px}
+.wallet{gap:5px}.pill{padding:8px 9px;font-size:12px;border-radius:10px}
+.layout{display:block}.sidebar{display:none!important}.main{width:100%;min-width:0}
+.hero{min-height:170px;padding:17px;margin-bottom:12px;border-radius:16px}
+.hero h2{font-size:25px}.hero p{font-size:13px;line-height:1.45}
+.stats{gap:7px;margin-bottom:12px}.stat{padding:10px 9px;border-radius:12px}
+.stat small{font-size:10px}.stat strong{font-size:17px;margin-top:4px}
+.panel{padding:12px;margin-bottom:12px;border-radius:14px}
+.panel-head{margin-bottom:12px}.panel-head h3{font-size:15px}.sub{font-size:11px}
+.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fish-card,.place-card{padding:11px;border-radius:12px}
+.mobile-nav{display:flex!important;position:fixed;z-index:20;left:0;right:0;bottom:0;gap:3px;margin:0;padding:7px 6px calc(7px + env(safe-area-inset-bottom));overflow-x:auto;justify-content:space-around;background:#0d1b2aee;border-top:1px solid #294158;backdrop-filter:blur(14px)}
+.mobile-nav .nav{flex:1;min-width:0;width:auto;margin:0;padding:10px 4px;text-align:center;font-size:11px;white-space:nowrap;border-radius:10px}
+.game-stage{border-radius:13px}
+#fishingCanvas{width:100%;height:auto;aspect-ratio:16/10;object-fit:fill;touch-action:pan-y}
+.game-hud{font-size:10px;padding:9px}
+.game-controls{padding:11px;gap:9px}
+.move-controls{gap:9px}
+.touch-btn{width:54px;height:52px;font-size:21px;border-radius:14px;touch-action: manipulation}
+.game-controls .btn{min-height:52px;min-width:0;flex:1;padding:12px 8px;font-size:14px;touch-action:manipulation}
+.fight-meter{padding:12px}
+.fight-track{height:24px}
+.fight-meter p{font-size:12px;line-height:1.4}
+.game-status{font-size:15px}.game-tip{font-size:11px;line-height:1.4}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media(max-width:360px){.shell{padding-left:9px;padding-right:9px}.brand small{display:none}.mobile-nav .nav{font-size:10px}.touch-btn{width:48px}.stats{gap:5px}.stat strong{font-size:15px}}
+
 </style>
 </head>
 <body>
@@ -58,7 +92,7 @@
 <section id="view-fish">
 <div class="panel"><div class="panel-head"><h3>🎣 Session de pêche</h3><span class="sub" id="currentSpot">Lac Paisible</span></div>
 <div class="game-stage" id="gameStage">
-<div class="game-hud"><span id="scenePlace">🏞️ Lac Paisible</span><span>Déplacement : ← → / A D</span></div>
+<div class="game-hud"><span id="scenePlace">🏞️ Lac Paisible</span><span>Commandes tactiles</span></div>
 <canvas id="fishingCanvas" width="960" height="540" aria-label="Scène de pêche en deux dimensions"></canvas>
 <div class="game-status" id="fishStatus">Le lac est calme…</div>
 <div class="game-tip" id="fishTip">Déplace-toi sur la berge puis lance ta ligne.</div>
@@ -239,8 +273,6 @@ document.getElementById('castBtn').addEventListener('click',handleFishingAction)
 document.getElementById('leftBtn').addEventListener('pointerdown',e=>{e.preventDefault();moveLeft=true});
 document.getElementById('rightBtn').addEventListener('pointerdown',e=>{e.preventDefault();moveRight=true});
 ['pointerup','pointercancel','pointerleave'].forEach(type=>{document.getElementById('leftBtn').addEventListener(type,()=>moveLeft=false);document.getElementById('rightBtn').addEventListener(type,()=>moveRight=false)});
-window.addEventListener('keydown',e=>{if(['ArrowLeft','a','A'].includes(e.key)){moveLeft=true;e.preventDefault()}if(['ArrowRight','d','D'].includes(e.key)){moveRight=true;e.preventDefault()}if(e.code==='Space'&&!e.repeat){e.preventDefault();handleFishingAction()}});
-window.addEventListener('keyup',e=>{if(['ArrowLeft','a','A'].includes(e.key))moveLeft=false;if(['ArrowRight','d','D'].includes(e.key))moveRight=false});
 requestAnimationFrame(gameLoop);
 document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.view)));
 
