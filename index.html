@@ -1,160 +1,56 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1726">
-<title>Fishing World 2.0 — Pêche tactile</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#20180f"><title>Fishing World — L'Atelier du Pêcheur</title>
 <style>
-:root{--bg:#09121f;--panel:#111e2e;--panel2:#17263a;--line:#25374d;--text:#eaf2fb;--muted:#93a8bf;--cyan:#55d4e8;--green:#8de0b2;--gold:#f6c86a;--purple:#bd9bff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0,#17324c 0,transparent 40%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}button{font:inherit;color:inherit;cursor:pointer}.shell{max-width:1320px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#47d3df,#2788ad);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #33b9d333}.brand h1{font-size:19px;letter-spacing:.5px;margin:0}.brand small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.wallet{display:flex;gap:10px}.pill{border:1px solid var(--line);background:#111e2c;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px}.pill span{color:var(--gold)}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px}.sidebar,.panel{background:linear-gradient(180deg,#132338,#101b2a);border:1px solid var(--line);border-radius:18px}.sidebar{padding:12px;height:max-content;position:sticky;top:20px}.nav{width:100%;text-align:left;padding:13px 14px;border:0;background:transparent;border-radius:12px;color:var(--muted);margin:3px 0;font-weight:650}.nav.active,.nav:hover{color:var(--text);background:#1d3047}.nav .ico{display:inline-block;width:27px}.main{min-width:0}.hero{min-height:245px;border:1px solid #28455c;border-radius:20px;overflow:hidden;background:linear-gradient(90deg,#10263cdd,#122b41a0),url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1600&q=85') center/cover;display:flex;align-items:end;padding:28px;margin-bottom:18px}.hero h2{font-size:clamp(26px,4vw,38px);margin:0 0 8px}.hero p{margin:0;color:#c4d8e9}.hero-tag{display:inline-flex;padding:6px 10px;background:#55d4e822;border:1px solid #55d4e855;color:#b9f5ff;border-radius:30px;font-size:12px;font-weight:700;margin-bottom:12px}.hero-content{max-width:550px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat{padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:23px;margin-top:5px}.panel{padding:20px;margin-bottom:16px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.panel-head h3{margin:0;font-size:17px}.sub{color:var(--muted);font-size:13px}.btn{border:1px solid #3c7186;background:linear-gradient(135deg,#1e6b86,#237f9b);padding:11px 16px;border-radius:11px;font-weight:750}.btn:disabled{opacity:.5;cursor:not-allowed}.btn.secondary{background:#1a293a;border-color:var(--line)}.fish-zone{min-height:230px;border-radius:15px;background:linear-gradient(180,#18334c,#102638);border:1px solid #294a61;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;overflow:hidden}.fish-zone:before,.fish-zone:after{content:"";position:absolute;border-radius:50%;width:300px;height:90px;border:1px solid #55d4e818;bottom:25px;left:-60px;transform:rotate(-10deg)}.fish-zone:after{left:auto;right:-100px;bottom:60px;transform:rotate(14deg)}.fish-emoji{font-size:56px;filter:drop-shadow(0 7px 12px #0003);margin-bottom:12px;z-index:1}.zone-status{font-weight:750;font-size:18px;z-index:1}.zone-tip{color:var(--muted);margin:8px 0 18px;z-index:1}.catch-result{display:none;margin-top:12px;padding:12px;border:1px solid #42627a;background:#182b3c;border-radius:12px}.catch-result.show{display:block}.catch-result b{color:var(--green)}.grid-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.fish-card,.place-card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}.fish-card .emoji{font-size:32px}.fish-card h4{margin:8px 0 5px}.fish-card p{margin:0;color:var(--muted);font-size:12px}.rarity{font-size:11px;font-weight:800;letter-spacing:.4px;margin-top:8px;display:inline-block}.common{color:#9cb3c8}.rare{color:#55d4e8}.epic{color:#bd9bff}.legendary{color:#f6c86a}.place-card{min-height:150px;display:flex;flex-direction:column;justify-content:space-between}.place-card.locked{opacity:.65}.place-card h4{margin:6px 0}.place-card p{font-size:12px;color:var(--muted);margin:0 0 12px}.place-card button{width:100%}.progress{height:8px;background:#27384b;border-radius:99px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#4ccbdc,#89e3b0);border-radius:99px}.hidden{display:none!important}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);padding:12px 18px;background:#183044;border:1px solid #3a617c;border-radius:12px;box-shadow:0 12px 40px #0005;z-index:5;opacity:0;transition:.25s;pointer-events:none}.toast.visible{opacity:1}.empty{color:var(--muted);padding:20px;text-align:center}.mobile-nav{display:none}
-@media(max-width:850px){.shell{padding:14px}.layout{grid-template-columns:1fr}.sidebar{display:none}.mobile-nav{display:flex;gap:6px;overflow:auto;margin-bottom:14px;padding-bottom:4px}.mobile-nav .nav{white-space:nowrap;width:auto}.hero{min-height:200px;padding:20px}.stats{gap:8px}.stat{padding:12px}.stat strong{font-size:19px}.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:460px){.wallet{gap:6px}.pill{padding:9px;font-size:12px}.grid-cards{grid-template-columns:1fr 1fr}.panel{padding:14px}.top{align-items:flex-start}}
-
-/* 2D fishing scene */
-.hero{background:linear-gradient(115deg,#10394b 0%,#176074 55%,#274f5b 100%)}
-.game-stage{position:relative;overflow:hidden;border:1px solid #2c596c;border-radius:16px;background:#102d40}
-.game-hud{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;background:#102638;color:#dff7f8;font-size:13px;font-weight:750}
-.game-hud span:last-child{color:#9fc3d2;font-weight:550;text-align:right}
-#fishingCanvas{display:block;width:100%;height:auto;aspect-ratio:16/9;touch-action:pan-y;background:#9ed5df}
-.game-status{padding:12px 14px 4px;text-align:center;font-weight:800;font-size:16px}
-.game-tip{padding:3px 14px 12px;text-align:center;color:#a9c3d2;font-size:12px}
-.game-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 14px 14px;background:#102638}
-.move-controls{display:flex;gap:8px}
-.touch-btn{width:48px;height:44px;border:1px solid #3b667b;border-radius:12px;background:#1a3a50;font-size:20px;font-weight:900;touch-action:none;user-select:none}
-.touch-btn:active{background:#28617a;transform:translateY(1px)}
-.game-controls .btn{min-width:150px}
-.fight-meter{display:none;padding:10px 14px 14px;background:#102638}
-.fight-meter.active{display:block}
-.fight-label{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:12px;color:#c9e0e9}
-.fight-track{height:18px;border-radius:99px;background:#263c4b;position:relative;overflow:hidden;border:1px solid #426477}
-.fight-safe{position:absolute;left:42%;width:18%;height:100%;background:#5cc99588;border-left:2px solid #9af0bd;border-right:2px solid #9af0bd}
-.fight-marker{position:absolute;left:0;top:0;width:7px;height:100%;border-radius:5px;background:#ffe08a;box-shadow:0 0 10px #ffe08a}
-.fight-meter p{margin:8px 0 0;text-align:center;color:#9fb9c9;font-size:11px}
-.game-feedback{display:none;margin:0 14px 14px;padding:11px 13px;border:1px solid #42627a;background:#182f40;border-radius:12px;font-size:13px;line-height:1.5}
-.game-feedback.show{display:block}
-@media(max-width:520px){.game-hud{font-size:11px;padding:9px 10px}.game-controls{padding:10px;gap:8px}.touch-btn{width:42px;height:42px}.game-controls .btn{min-width:0;flex:1;padding:11px 9px;font-size:13px}.game-status{font-size:14px}}
-
-
-/* Mobile-only layout: keep the experience phone-sized on every viewport */
-:focus-visible{outline:3px solid #9cecf2;outline-offset:3px}
-.nav:active,.btn:active,.touch-btn:active{filter:brightness(1.18)}
-.game-stage{box-shadow:0 12px 30px #0002}
-.game-controls{padding-bottom:max(12px,env(safe-area-inset-bottom))}
-.touch-btn{min-width:54px;min-height:54px;box-shadow:inset 0 1px #ffffff18,0 4px 0 #0a1d2b}
-.touch-btn:active{box-shadow:inset 0 1px #ffffff18,0 1px 0 #0a1d2b}
-.game-controls .btn{box-shadow:0 4px 0 #0b4357}
-.game-controls .btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0b4357}
-.game-status{min-height:25px}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-html{min-width:320px;background:var(--bg);-webkit-text-size-adjust:100%}
-body{min-width:320px;min-height:100svh;overflow-x:hidden;overscroll-behavior-y:contain}
-.shell{width:100%;max-width:520px;margin:0 auto;padding:12px 12px calc(94px + env(safe-area-inset-bottom))}
-.top{gap:8px;margin-bottom:12px;align-items:center}
-.brand{gap:8px}.logo{width:40px;height:40px;border-radius:12px;font-size:21px}
-.brand h1{font-size:16px}.brand small{font-size:10px}
-.wallet{gap:5px}.pill{padding:8px 9px;font-size:12px;border-radius:10px}
-.layout{display:block}.sidebar{display:none!important}.main{width:100%;min-width:0}
-.hero{min-height:170px;padding:17px;margin-bottom:12px;border-radius:16px}
-.hero h2{font-size:25px}.hero p{font-size:13px;line-height:1.45}
-.stats{gap:7px;margin-bottom:12px}.stat{padding:10px 9px;border-radius:12px}
-.stat small{font-size:10px}.stat strong{font-size:17px;margin-top:4px}
-.panel{padding:12px;margin-bottom:12px;border-radius:14px}
-.panel-head{margin-bottom:12px}.panel-head h3{font-size:15px}.sub{font-size:11px}
-.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.fish-card,.place-card{padding:11px;border-radius:12px}
-.mobile-nav{display:flex!important;position:fixed;z-index:20;left:0;right:0;bottom:0;gap:3px;margin:0;padding:7px 6px calc(7px + env(safe-area-inset-bottom));overflow-x:auto;justify-content:space-around;background:#0d1b2aee;border-top:1px solid #294158;backdrop-filter:blur(14px)}
-.mobile-nav .nav{flex:1;min-width:0;width:auto;margin:0;padding:10px 4px;text-align:center;font-size:11px;white-space:nowrap;border-radius:10px}
-.game-stage{border-radius:13px}
-#fishingCanvas{width:100%;height:auto;aspect-ratio:16/10;object-fit:fill;touch-action:pan-y}
-.game-hud{font-size:10px;padding:9px}
-.game-controls{padding:11px;gap:9px}
-.move-controls{gap:9px}
-.touch-btn{width:54px;height:52px;font-size:21px;border-radius:14px;touch-action: manipulation}
-.game-controls .btn{min-height:52px;min-width:0;flex:1;padding:12px 8px;font-size:14px;touch-action:manipulation}
-.fight-meter{padding:12px}
-.fight-track{height:24px}
-.fight-meter p{font-size:12px;line-height:1.4}
-.game-status{font-size:15px}.game-tip{font-size:11px;line-height:1.4}
-button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-@media(max-width:360px){.shell{padding-left:9px;padding-right:9px}.brand small{display:none}.mobile-nav .nav{font-size:10px}.touch-btn{width:48px}.stats{gap:5px}.stat strong{font-size:15px}}
-
-
-/* HUD refresh 2.1 — immersive, clean and thumb-first */
-.game-stage{border:0;border-radius:22px;background:#081b2a;box-shadow:0 18px 42px #0004}
-.game-hud{position:absolute;z-index:3;top:12px;left:12px;right:auto;display:inline-flex;width:max-content;max-width:calc(100% - 24px);padding:8px 13px;border:1px solid #ffffff35;border-radius:999px;background:#071a2bc9;color:#f2fbff;font-size:12px;backdrop-filter:blur(12px);box-shadow:0 5px 18px #06152255}
-.game-hud span:last-child{display:none}
-#fishingCanvas{aspect-ratio:16/10}
-.game-status{padding:14px 12px 3px;min-height:42px;color:#f1f8fc;font-size:16px;letter-spacing:.1px}
-.game-tip{padding:2px 12px 13px;color:#91aebe;font-size:12px}
-.game-controls{padding:8px 14px 16px;background:transparent;gap:12px}
-.move-controls{gap:10px}
-.touch-btn{width:58px;height:58px;border-radius:50%;border:1px solid #42677a;background:linear-gradient(180deg,#1d3b50,#102a3d);color:#e8f7ff;font-size:20px;box-shadow:0 5px 0 #081a28,0 8px 18px #0003}
-.touch-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #081a28}
-.game-controls .btn{min-height:58px;border:0;border-radius:17px;background:linear-gradient(135deg,#39c4d4,#1686a7);color:#06202b;font-size:15px;font-weight:850;box-shadow:0 5px 0 #0c526b,0 8px 18px #0003}
-.game-controls .btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0c526b}
-.fight-meter{margin:0 12px 12px;padding:13px 14px;border:1px solid #ffffff1c;border-radius:16px;background:#102638}
-.fight-label{font-size:12px}
-.fight-track{height:22px;border:0;background:#263c4b}
-.fight-safe{left:42%;width:18%;border-radius:6px;background:#63d69a88}
-.fight-marker{width:8px;border-radius:8px}
-.fight-meter p{font-size:11px;line-height:1.45}
-.game-feedback{margin:0 12px 14px;border-radius:15px}
-@media(max-width:520px){
- .game-stage{border-radius:19px}
- .game-hud{top:10px;left:10px;padding:7px 11px;font-size:11px}
- .game-status{font-size:15px;padding-top:12px}
- .game-tip{font-size:11px;padding-bottom:11px}
- .game-controls{padding:7px 12px 15px;gap:9px}
- .touch-btn{width:54px;height:54px}
- .game-controls .btn{min-height:56px;font-size:14px}
- .fight-meter{margin:0 10px 10px}
-}
-</style>
-</head>
-<body>
-<div class="shell">
-<header class="top">
-<div class="brand"><div class="logo">🎣</div><div><h1>FISHING WORLD</h1><small>Explore · Catch · Collect</small></div></div>
-<div class="wallet"><div class="pill">🪙 <span id="coins">120</span></div><div class="pill">⭐ <span id="level">1</span></div></div>
-</header>
-<div class="mobile-nav" id="mobileNav"></div>
-<div class="layout">
-<aside class="sidebar" id="sidebar">
-<button class="nav active" data-view="fish"><span class="ico">🎣</span> Pêcher</button>
-<button class="nav" data-view="map"><span class="ico">🗺️</span> Explorer</button>
-<button class="nav" data-view="collection"><span class="ico">📘</span> Collection</button>
-<button class="nav" data-view="shop"><span class="ico">🛒</span> Équipement</button>
-<button class="nav" data-view="profile"><span class="ico">👤</span> Profil</button>
-</aside>
-<main class="main">
-<section class="hero"><div class="hero-content"><span class="hero-tag">FISHING WORLD · ÉDITION MOBILE 2.0</span><h2>À toi de jouer !</h2><p>Explore les eaux, lance ta ligne et ramène de nouvelles espèces. Tout se joue au toucher.</p></div></section>
-<div class="stats"><div class="stat"><small>Poissons découverts</small><strong id="fishCount">0 / 12</strong></div><div class="stat"><small>XP du pêcheur</small><strong id="xp">0 XP</strong></div><div class="stat"><small>Équipement</small><strong id="rodName">Canne basique</strong></div></div>
-<section id="view-fish">
-<div class="panel"><div class="panel-head"><h3>🎣 Session de pêche</h3><span class="sub" id="currentSpot">Lac Paisible</span></div>
-<div class="game-stage" id="gameStage">
-<div class="game-hud"><span id="scenePlace">🏞️ Lac Paisible</span><span>Commandes tactiles</span></div>
-<canvas id="fishingCanvas" width="960" height="540" aria-label="Scène de pêche en deux dimensions"></canvas>
-<div class="game-status" id="fishStatus">Le lac est calme…</div>
-<div class="game-tip" id="fishTip">Maintiens ◀ ou ▶ pour te déplacer, puis lance ta ligne.</div>
-<div class="game-controls">
-<div class="move-controls"><button class="touch-btn" id="leftBtn" aria-label="Aller à gauche">◀</button><button class="touch-btn" id="rightBtn" aria-label="Aller à droite">▶</button></div>
-<button class="btn" id="castBtn">Lancer la ligne</button>
-</div>
-<div class="fight-meter" id="fightMeter"><div class="fight-label"><span>🎯 Zone de ferrage</span><b id="fightScore">0 / 3 réussites</b></div><div class="fight-track"><span class="fight-safe"></span><span class="fight-marker" id="fightMarker"></span></div><p>Touche « Ramener ! » lorsque le repère doré passe dans la zone verte.</p></div>
-<div class="game-feedback" id="catchResult"></div>
-</div>
-</div>
-<div class="panel"><div class="panel-head"><h3>📋 Objectif du jour</h3><span class="sub">Progression</span></div><div>Découvrir 3 poissons différents</div><div class="progress"><span id="missionProgress"></span></div><div class="sub" id="missionText">0 / 3 espèces découvertes</div></div>
-</section>
-<section id="view-map" class="hidden"><div class="panel"><div class="panel-head"><h3>🗺️ Explorer les lieux</h3><span class="sub">De nouvelles eaux t'attendent</span></div><div class="grid-cards" id="placesGrid"></div></div></section>
-<section id="view-collection" class="hidden"><div class="panel"><div class="panel-head"><h3>📘 Carnet de collection</h3><span class="sub" id="collectionLabel">0 découverts</span></div><div class="grid-cards" id="collectionGrid"></div></div></section>
-<section id="view-shop" class="hidden"><div class="panel"><div class="panel-head"><h3>🛒 Équipement</h3><span class="sub">Améliore ton matériel</span></div><div class="grid-cards" id="shopGrid"></div></div></section>
-<section id="view-profile" class="hidden"><div class="panel"><div class="panel-head"><h3>👤 Profil pêcheur</h3></div><div class="stats"><div class="stat"><small>Niveau</small><strong id="profileLevel">1</strong></div><div class="stat"><small>Total pêché</small><strong id="totalCaught">0</strong></div><div class="stat"><small>XP total</small><strong id="profileXP">0</strong></div></div><p class="sub">Les découvertes et améliorations sont sauvegardées automatiquement sur cet appareil.</p><button class="btn secondary" id="resetBtn">Réinitialiser la sauvegarde</button></div></section>
-</main>
-</div>
-</div>
-<div class="toast" id="toast"></div>
+:root{--ink:#302114;--deep:#21180e;--wood:#49301b;--wood2:#694727;--paper:#e9d8b0;--paper2:#d5bd8d;--gold:#f2c86f;--gold2:#b67d35;--blue:#276d80;--green:#577b48;--red:#9d4e39}
+*{box-sizing:border-box}html{background:#1b140c;min-width:320px;-webkit-text-size-adjust:100%}body{margin:0;color:var(--ink);font-family:Georgia,'Trebuchet MS',serif;background:radial-gradient(ellipse at 50% 0,#65502d 0,#302114 40%,#1b140c 100%);min-height:100svh;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.shell{width:100%;max-width:520px;margin:auto;padding:10px 10px calc(92px + env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;padding:8px 10px;border:2px solid #8a6438;border-radius:12px;background:repeating-linear-gradient(90deg,#4b321b 0,#4b321b 8px,#51371e 9px,#51371e 16px);box-shadow:0 4px 0 #1b1209, inset 0 1px #b58b51}
+.brand{display:flex;align-items:center;gap:9px;color:#f5e4bd}.logo{width:40px;height:40px;display:grid;place-items:center;border:2px solid #a87b3e;border-radius:10px;background:radial-gradient(circle,#d8b46c,#76502a);font-size:22px;box-shadow:inset 0 0 0 2px #4c3218}.brand h1{font-size:16px;margin:0;letter-spacing:1px;text-shadow:0 2px #160e07}.brand small{display:block;color:#d4b989;font-size:10px;margin-top:3px;letter-spacing:.5px}
+.wallet{display:flex;gap:5px}.pill{padding:7px 8px;border:1px solid #9a713e;border-radius:8px;background:linear-gradient(#d8bd83,#a7834b);box-shadow:inset 0 1px #f4e3b2,0 2px #24170b;font-size:12px;font-weight:bold;color:#382514;white-space:nowrap}.pill span{color:#573713}
+.mobile-nav{display:flex;gap:4px;position:fixed;z-index:20;left:0;right:0;bottom:0;padding:7px 5px calc(7px + env(safe-area-inset-bottom));background:linear-gradient(#50351c,#24180c);border-top:3px solid #997044;box-shadow:0 -4px 12px #0005;justify-content:space-around}
+.nav{flex:1;min-width:0;border:1px solid #936a3c;border-radius:8px;background:linear-gradient(#77542e,#4b3219);color:#e8d2a0;padding:9px 3px;text-align:center;font-size:10px;font-weight:bold;text-shadow:0 1px #211408;box-shadow:inset 0 1px #c59b5d}
+.nav.active{background:linear-gradient(#e4c47f,#aa7b3e);color:#342211;border-color:#e4bf70;box-shadow:inset 0 1px #f9e6b5,0 1px #1a1008}
+.nav:active{transform:translateY(1px);filter:brightness(1.1)}
+.layout{display:block}.sidebar{display:none!important}.main{min-width:0}
+.hero{position:relative;overflow:hidden;padding:18px 17px;margin-bottom:11px;border:3px solid #92683b;border-radius:14px;background:linear-gradient(125deg,#47311b,#70502b 58%,#382516);box-shadow:0 4px #211509,inset 0 0 0 2px #2c1c0c,inset 0 1px #c59a59;color:#f2dfb6}
+.hero:before{content:"";position:absolute;inset:0;opacity:.22;background-image:repeating-linear-gradient(45deg,transparent 0 6px,#c7a46a 7px,transparent 8px 15px),radial-gradient(#e8c887 1px,transparent 1.5px);background-size:auto,9px 9px;pointer-events:none}
+.hero-content{position:relative;z-index:1}.hero-tag{display:inline-block;padding:5px 8px;border:1px solid #c39b60;border-radius:5px;background:#281a0cc9;color:#e8c879;font-size:10px;font-weight:bold;letter-spacing:1px;margin-bottom:10px}.hero h2{margin:0 0 7px;font-size:24px;color:#f8e8c2;text-shadow:0 2px #201308}.hero p{margin:0;color:#d7bf91;font-size:13px;line-height:1.45}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px}.stat{padding:10px 8px;border:2px solid #a17a48;border-radius:9px;background:linear-gradient(#e8d8ae,#c5a36d);box-shadow:inset 0 1px #f7e9c5,0 3px #24180c;text-align:center}.stat small{display:block;font-size:10px;color:#604322}.stat strong{display:block;font-size:16px;margin-top:4px;color:#352313;overflow-wrap:anywhere}
+.panel{padding:12px;margin-bottom:11px;border:3px solid #8f6636;border-radius:13px;background:linear-gradient(145deg,#e6d5aa,#c7a572);box-shadow:0 4px #24170b,inset 0 0 0 2px #a37a47,inset 0 1px #f4e6c1;position:relative}
+.panel:before{content:"";position:absolute;inset:4px;border:1px solid #9b7545;border-radius:8px;pointer-events:none;opacity:.65}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:11px;padding-bottom:8px;border-bottom:2px solid #9a7545}.panel-head h3{margin:0;font-size:15px;color:#3a2613}.sub{color:#72532e;font-size:11px}
+.btn{border:2px solid #c99c52;border-radius:9px;background:linear-gradient(#3c8291,#205c6e);color:#f4e6c2;padding:11px 13px;font-weight:bold;box-shadow:inset 0 1px #a4d5d7,0 3px #193746;text-shadow:0 1px #12313b}.btn:active{transform:translateY(2px);box-shadow:inset 0 1px #a4d5d7,0 1px #193746}.btn:disabled{opacity:.55;filter:grayscale(.4)}
+.btn.secondary{background:linear-gradient(#75552e,#4e351b);border-color:#a47b46;color:#ebd5a5;box-shadow:inset 0 1px #d1a96c,0 3px #24170b}
+.game-stage{overflow:hidden;border:3px solid #8d673b;border-radius:11px;background:#48311b;box-shadow:inset 0 0 0 2px #25170b}
+.game-hud{display:flex;justify-content:space-between;padding:8px 10px;background:repeating-linear-gradient(90deg,#50351b 0 7px,#593a1e 8px 14px);color:#f0d7a1;font-size:11px;font-weight:bold;border-bottom:2px solid #a37a47}
+.game-hud span:last-child{display:none}#fishingCanvas{display:block;width:100%;height:auto;aspect-ratio:16/10;touch-action:pan-y;background:#9ed5df}
+.game-status{padding:12px 10px 3px;text-align:center;font-size:15px;font-weight:bold;color:#402916;min-height:40px}.game-tip{padding:3px 11px 11px;text-align:center;font-size:11px;color:#76532c;line-height:1.4}
+.game-controls{display:flex;align-items:center;gap:8px;padding:9px;background:linear-gradient(#d1b07a,#b78c52);border-top:2px solid #99703e}.move-controls{display:flex;gap:7px}.touch-btn{width:53px;height:52px;border:2px solid #bb8b4b;border-radius:10px;background:linear-gradient(#79552e,#513719);color:#f0d9a8;font-size:20px;font-weight:bold;box-shadow:inset 0 1px #d3a66b,0 3px #27190b;touch-action:none;user-select:none}.touch-btn:active{transform:translateY(2px);box-shadow:inset 0 1px #d3a66b,0 1px #27190b}
+.game-controls .btn{flex:1;min-width:0;min-height:52px;padding:10px 5px;font-size:13px}
+.fight-meter{display:none;padding:11px;background:#d1b17a;border-top:2px solid #9b7545}.fight-meter.active{display:block}.fight-label{display:flex;justify-content:space-between;gap:8px;margin-bottom:7px;color:#483018;font-size:11px}.fight-track{height:22px;border-radius:7px;background:#57401f;position:relative;overflow:hidden;border:2px solid #9c7444}.fight-safe{position:absolute;left:42%;width:18%;height:100%;background:#76b977;border:1px solid #d5efb5}.fight-marker{position:absolute;left:0;top:0;width:7px;height:100%;border-radius:3px;background:#f3d16f;box-shadow:0 0 7px #f3d16f}.fight-meter p{margin:7px 0 0;text-align:center;color:#684a25;font-size:11px}
+.game-feedback{display:none;margin:0 9px 10px;padding:11px;border:2px solid #997243;border-radius:8px;background:linear-gradient(#e5d1a1,#c8a572);font-size:12px;line-height:1.5}.game-feedback.show{display:block}.game-feedback b{color:#315b36}
+.grid-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.fish-card,.place-card{position:relative;min-width:0;padding:11px;border:2px solid #a47b47;border-radius:9px;background:linear-gradient(145deg,#e5d3a5,#c6a16c);box-shadow:inset 0 1px #f3e5c1,0 3px #8e6636;color:#3a2613;overflow:hidden}.fish-card:before,.place-card:before{content:"";position:absolute;inset:4px;border:1px solid #a17b49;border-radius:5px;pointer-events:none}.fish-card .emoji{font-size:32px;text-align:center;padding:6px;background:radial-gradient(ellipse,#f2e5bf,#c4a06b);border:1px solid #b18a51;border-radius:6px}.fish-card h4,.place-card h4{margin:8px 0 5px;font-size:14px}.fish-card p,.place-card p{margin:0;color:#76552c;font-size:11px;line-height:1.4}.rarity{display:inline-block;font-size:10px;font-weight:bold;margin-top:8px;text-transform:uppercase;letter-spacing:.5px}.common{color:#695632}.rare{color:#25677b}.epic{color:#654a8b}.legendary{color:#9a651d}.place-card{min-height:150px;display:flex;flex-direction:column;justify-content:space-between}.place-card.locked{filter:sepia(.4);opacity:.68}.place-card button{width:100%;margin-top:10px;position:relative;z-index:1}
+.progress{height:10px;background:#80603a;border:1px solid #a27b47;border-radius:5px;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#6e994f,#c9d779);border-radius:5px}
+.hidden{display:none!important}.toast{position:fixed;z-index:30;bottom:calc(86px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);max-width:92%;padding:11px 15px;border:2px solid #bc9254;border-radius:9px;background:linear-gradient(#52371c,#29190b);color:#f1d8a2;font-size:13px;box-shadow:0 8px 22px #0007;opacity:0;transition:.2s;pointer-events:none;text-align:center}.toast.visible{opacity:1}
+:focus-visible{outline:3px solid #f4d28a;outline-offset:3px}
+@media(max-width:370px){.shell{padding-left:8px;padding-right:8px}.brand small{display:none}.nav{font-size:9px}.touch-btn{width:48px;height:48px}.stats{gap:4px}.stat{padding:8px 4px}.stat strong{font-size:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style></head>
+<body><div class="shell">
+<header class="top"><div class="brand"><div class="logo">🎣</div><div><h1>FISHING WORLD</h1><small>Le carnet du pêcheur</small></div></div><div class="wallet"><div class="pill">🪙 <span id="coins">120</span></div><div class="pill">✦ Niv. <span id="level">1</span></div></div></header>
+<div class="mobile-nav" id="mobileNav"></div><div class="layout"><aside class="sidebar" id="sidebar"><button class="nav active" data-view="fish">🎣 Pêcher</button><button class="nav" data-view="map">🗺️ Explorer</button><button class="nav" data-view="collection">📖 Carnet</button><button class="nav" data-view="shop">🧰 Boutique</button><button class="nav" data-view="profile">👤 Profil</button></aside>
+<main class="main"><section class="hero"><div class="hero-content"><span class="hero-tag">✧ AVENTURE · PÊCHE · COLLECTION ✧</span><h2>Bienvenue au bord de l'eau</h2><p>Prépare ta canne, explore les rives et remplis ton carnet de découvertes.</p></div></section>
+<div class="stats"><div class="stat"><small>Espèces trouvées</small><strong id="fishCount">0 / 12</strong></div><div class="stat"><small>Expérience</small><strong id="xp">0 XP</strong></div><div class="stat"><small>Canne équipée</small><strong id="rodName">Canne basique</strong></div></div>
+<section id="view-fish"><div class="panel"><div class="panel-head"><h3>🎣 Poste de pêche</h3><span class="sub" id="currentSpot">Lac Paisible</span></div><div class="game-stage" id="gameStage"><div class="game-hud"><span id="scenePlace">🏞️ Lac Paisible</span><span>Commandes tactiles</span></div><canvas id="fishingCanvas" width="960" height="540" aria-label="Scène de pêche en deux dimensions"></canvas><div class="game-status" id="fishStatus">Le lac est calme…</div><div class="game-tip" id="fishTip">Maintiens ◀ ou ▶ pour te déplacer, puis lance ta ligne.</div><div class="game-controls"><div class="move-controls"><button class="touch-btn" id="leftBtn" aria-label="Aller à gauche">◀</button><button class="touch-btn" id="rightBtn" aria-label="Aller à droite">▶</button></div><button class="btn" id="castBtn">Lancer la ligne</button></div><div class="fight-meter" id="fightMeter"><div class="fight-label"><span>🎯 Zone de ferrage</span><b id="fightScore">0 / 3 réussites</b></div><div class="fight-track"><span class="fight-safe"></span><span class="fight-marker" id="fightMarker"></span></div><p>Appuie sur Ramener quand le repère traverse la zone verte.</p></div><div class="game-feedback" id="catchResult"></div></div></div>
+<div class="panel"><div class="panel-head"><h3>📜 Défi en cours</h3><span class="sub">Petit objectif</span></div><div>Découvrir 3 espèces de poissons</div><div class="progress"><span id="missionProgress"></span></div><div class="sub" id="missionText">0 / 3 espèces découvertes</div></div></section>
+<section id="view-map" class="hidden"><div class="panel"><div class="panel-head"><h3>🗺️ Carte des eaux</h3><span class="sub">Choisis ta destination</span></div><div class="grid-cards" id="placesGrid"></div></div></section>
+<section id="view-collection" class="hidden"><div class="panel"><div class="panel-head"><h3>📖 Carnet illustré</h3><span class="sub" id="collectionLabel">0 découverts</span></div><div class="grid-cards" id="collectionGrid"></div></div></section>
+<section id="view-shop" class="hidden"><div class="panel"><div class="panel-head"><h3>🧰 Atelier d'équipement</h3><span class="sub">Améliore ton matériel</span></div><div class="grid-cards" id="shopGrid"></div></div></section>
+<section id="view-profile" class="hidden"><div class="panel"><div class="panel-head"><h3>👤 Carnet de voyage</h3></div><div class="stats"><div class="stat"><small>Niveau</small><strong id="profileLevel">1</strong></div><div class="stat"><small>Prises totales</small><strong id="totalCaught">0</strong></div><div class="stat"><small>XP cumulée</small><strong id="profileXP">0</strong></div></div><p class="sub">La progression est conservée sur cet appareil.</p><button class="btn secondary" id="resetBtn">Effacer la sauvegarde</button></div></section></main></div></div><div class="toast" id="toast"></div>
 <script>
 const fishList=[
 {id:'minnow',name:'Gardon',emoji:'🐟',rarity:'common',xp:8,value:8,places:['lake']},
@@ -331,6 +227,4 @@ document.getElementById('resetBtn').addEventListener('click',()=>{if(confirm('Ef
 document.getElementById('mobileNav').innerHTML=['fish','map','collection','shop','profile'].map((v,i)=>'<button class="nav '+(!i?'active':'')+'" data-view="'+v+'">'+['🎣 Pêcher','🗺️ Carte','📘 Collection','🛒 Boutique','👤 Profil'][i]+'</button>').join('');
 document.querySelectorAll('#mobileNav .nav').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.view)));
 render();
-</script>
-</body>
-</html>
+</script></body></html>
